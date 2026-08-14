@@ -1,0 +1,50 @@
+.add_pub{
+    padding: 4%;
+    max-width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid black;
+    border-radius: 10px;
+    margin: 25%;
+    margin-top: 0%;
+    min-width: 40%;
+    gap: 10%;
+    margin-bottom: 5%;
+}
+.btn_pub{
+    background-color: white;
+    border-radius: 10px;
+    padding: 3%;
+}
+.publicacao{
+    padding: 4%;
+    max-width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid black;
+    border-radius: 10px;
+    margin: 25%;
+    margin-top: 0%;
+    min-width: 40%;
+    gap: 10%;
+}
+.mini_perfil{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid black;
+    border-radius: 10px;
+    margin: 25%;
+    margin-top: 0%;
+    min-width: 40%;
+    gap: 10%;
+}
+
+nav ul {
+    display: flex;
+    align-items: center   ;
+
+}
