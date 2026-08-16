@@ -1,46 +1,79 @@
-.add_pub{
-    padding: 4%;
-    max-width: 50%;
+body{
+    background-color: rgb(223, 216, 208);
+}
+.feed{
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.add_pub {
     display: flex;
     align-items: center;
-    justify-content: center;
-    border: 2px solid black;
-    border-radius: 10px;
-    margin: 25%;
-    margin-top: 0%;
-    min-width: 40%;
-    gap: 10%;
-    margin-bottom: 5%;
+    gap: 12px;
 }
-.btn_pub{
-    background-color: white;
-    border-radius: 10px;
-    padding: 3%;
+
+.btn-pub{
+    flex: 1;
+    background-color: #f3f2ef;
+    border: 1px solid #c0c0c0;
+    border-radius: 20px;
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 0.95rem;
+    cursor: pointer;
+    color: #5e5e5e;
+
 }
-.publicacao{
-    padding: 4%;
-    max-width: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid black;
+.btn-pub:hover {
+    background-color: #e4e3e0;
+}
+.publicacao, .add_pub{
+    background-color: #ffffff;
+    border: 1px solid #d3ceb8; /* Borda visível e com contraste adequado */
     border-radius: 10px;
-    margin: 25%;
-    margin-top: 0%;
-    min-width: 40%;
-    gap: 10%;
+    padding: 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1)
 }
 .mini_perfil{
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
-    justify-content: center;
-    border: 2px solid black;
-    border-radius: 10px;
-    margin: 25%;
+    gap: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.info-post{
+    display: flex;
+    flex-direction: column;
+}
+
+.nome-perfil-pub{
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.data-pub{
+    margin: 2px 0 0 0;
+    font-size: 0.85rem;
+    color: #5e5e5e;
+}
+
+.text-pub{
+    flex: 70%;
+    text-align: start;
+    margin: 3%;
     margin-top: 0%;
-    min-width: 40%;
-    gap: 10%;
+}
+
+.foto_perfil_pub, .foto_perfil{
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
 nav ul {
