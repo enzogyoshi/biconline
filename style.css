@@ -1,7 +1,11 @@
-body{
+body {
     background-color: rgb(223, 216, 208);
+    margin: 0;
+    padding: 0;
+
 }
-.feed{
+
+.feed {
     max-width: 600px;
     margin: 0 auto;
     display: flex;
@@ -15,7 +19,7 @@ body{
     gap: 12px;
 }
 
-.btn-pub{
+.btn-pub {
     flex: 1;
     background-color: #f3f2ef;
     border: 1px solid #c0c0c0;
@@ -27,17 +31,22 @@ body{
     color: #5e5e5e;
 
 }
+
 .btn-pub:hover {
     background-color: #e4e3e0;
 }
-.publicacao, .add_pub{
+
+.publicacao,
+.add_pub {
     background-color: #ffffff;
-    border: 1px solid #d3ceb8; /* Borda visível e com contraste adequado */
+    border: 1px solid #d3ceb8;
+    /* Borda visível e com contraste adequado */
     border-radius: 10px;
     padding: 16px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1)
 }
-.mini_perfil{
+
+.mini_perfil {
     display: flex;
     align-items: center;
     gap: 12px;
@@ -45,39 +54,75 @@ body{
     border-bottom: 1px solid #e0e0e0;
 }
 
-.info-post{
+.info-post {
     display: flex;
     flex-direction: column;
 }
 
-.nome-perfil-pub{
+.nome-perfil-pub {
     margin: 0;
     font-size: 1rem;
     font-weight: 600;
 }
 
-.data-pub{
+.data-pub {
     margin: 2px 0 0 0;
     font-size: 0.85rem;
     color: #5e5e5e;
 }
 
-.text-pub{
+.text-pub {
     flex: 70%;
     text-align: start;
     margin: 3%;
     margin-top: 0%;
 }
 
-.foto_perfil_pub, .foto_perfil{
+.foto_perfil_pub,
+.foto_perfil {
     width: 48px;
     height: 48px;
     border-radius: 50%;
     object-fit: cover;
 }
 
-nav ul {
-    display: flex;
-    align-items: center   ;
 
+
+/* 
+Header / navbar
+*/
+
+.nav-bar {
+    display: flex;
+    background-color: white;
+    text-align: center;
+    border: 1px solid black;
+
+
+    max-height: 50px;
+    justify-content: space-between;
+    flex: 100%; 
+
+}
+
+.nav-bar ul {
+    list-style-type: none;
+    display: flex;
+    text-align: center;
+    
+}
+
+.nav-bar li {
+    margin: 0 20px;
+    align-items: end;
+    text-align: end;
+    margin-bottom: 50px;
+    
+
+}   
+
+.nav-bar input{
+    margin: 0 20px;
+    border: 1px solid black;
+    border-radius: 10px;
 }
