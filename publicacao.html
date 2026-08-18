@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Publicacao - Biconline</title>
+</head>
+<body>
+    <form action="/criar-publicacao" method="POST" enctype="multipart/form-data">
+    <div class="form-body">
+        <label for="post-texto" class="sr-only">o que deseja compartilhar</label>
+        <textarea id="post-texto" name="texto" rows="5" placeholder="o que deseja compartilhar..." required></textarea>
+    </div>
+    <div class="form-extra">
+        <div class="file-input">
+            <label id="label-midia" for="post-midia">Adicionar foto / vídeo</label>
+            <input type="file" class="midia-form" name="midia" accept="image/*,video/*">
+        </div>
+
+        <div class="input-links">
+            <label for="post-link">Adicionar link (opcional)</label>
+            <input type="url" id="post-link" name="link" placeholder="https://exemplo.com">
+        </div>
+    </div>
+
+    <div class="form-footer">
+        <button type="submit" class="btn-publicar">Publicar</button>
+    </div>
+
+</form>
+
+</body>
+</html>
