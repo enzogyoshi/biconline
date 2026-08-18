@@ -1,7 +1,8 @@
-body{
+body {
     background-color: rgb(223, 216, 208);
 }
-.feed{
+
+.feed {
     max-width: 600px;
     margin: 0 auto;
     display: flex;
@@ -15,7 +16,7 @@ body{
     gap: 12px;
 }
 
-.btn-pub{
+.btn-pub {
     flex: 1;
     background-color: #f3f2ef;
     border: 1px solid #c0c0c0;
@@ -27,17 +28,22 @@ body{
     color: #5e5e5e;
 
 }
+
 .btn-pub:hover {
     background-color: #e4e3e0;
 }
-.publicacao, .add_pub{
+
+.publicacao,
+.add_pub {
     background-color: #ffffff;
-    border: 1px solid #d3ceb8; /* Borda visível e com contraste adequado */
+    border: 1px solid #d3ceb8;
+    /* Borda visível e com contraste adequado */
     border-radius: 10px;
     padding: 16px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1)
 }
-.mini_perfil{
+
+.mini_perfil {
     display: flex;
     align-items: center;
     gap: 12px;
@@ -45,31 +51,32 @@ body{
     border-bottom: 1px solid #e0e0e0;
 }
 
-.info-post{
+.info-post {
     display: flex;
     flex-direction: column;
 }
 
-.nome-perfil-pub{
+.nome-perfil-pub {
     margin: 0;
     font-size: 1rem;
     font-weight: 600;
 }
 
-.data-pub{
+.data-pub {
     margin: 2px 0 0 0;
     font-size: 0.85rem;
     color: #5e5e5e;
 }
 
-.text-pub{
+.text-pub {
     flex: 70%;
     text-align: start;
     margin: 3%;
     margin-top: 0%;
 }
 
-.foto_perfil_pub, .foto_perfil{
+.foto_perfil_pub,
+.foto_perfil {
     width: 48px;
     height: 48px;
     border-radius: 50%;
@@ -78,6 +85,125 @@ body{
 
 nav ul {
     display: flex;
-    align-items: center   ;
+    align-items: center;
 
+}
+
+
+
+
+
+
+
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f3f2ef;
+    color: #1d2226;
+}
+
+main {
+    width: 850px;
+    margin: 30px auto;
+}
+
+.perfil {
+    background-color: white;
+    padding: 25px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    margin-bottom: 15px;
+}
+
+.foto-perfil {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: #ddd;
+}
+
+.foto-perfil img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.dados-perfil h1 {
+    margin-bottom: 10px;
+}
+
+.dados-perfil p {
+    margin: 7px 0;
+    color: #555;
+}
+
+.dados-perfil button {
+    background-color: #0a66c2;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    margin-top: 10px;
+}
+
+.sobre,
+.servicos,
+.informacoes,
+.fotos,
+.avaliacoes {
+    background-color: white;
+    padding: 25px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.sobre p {
+    line-height: 1.5;
+    color: #555;
+}
+
+.servicos li {
+    margin-bottom: 10px;
+}
+
+.informacoes p {
+    margin: 10px 0;
+}
+
+.fotos-trabalhos {
+    display: flex;
+    gap: 15px;
+}
+
+.foto-trabalho {
+    width: 30%;
+    height: 180px;
+    background-color: #ddd;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.foto-trabalho img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.nota {
+    color: #f5a623;
+    font-size: 20px;
+}
+
+.avaliacao {
+    border-top: 1px solid #ddd;
+    padding: 15px 0;
+}
+
+.avaliacao p {
+    color: #555;
 }
