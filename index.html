@@ -1,54 +1,67 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <title>Biconline</title>
 </head>
+
 <body>
+
     <header>
-        <div class="nav-bar">
-                <input type="search" name="Pesquisar" placeholder="Pesquisar">
-              
-            <ul>
+        <nav>
+            <img src="#" alt="Logo">
+            <input type="search" name="Pesquisar" placeholder="Pesquisar" class="logo">
+
+            <input type="checkbox" id="menu-toggle">
+
+            <label for="menu-toggle" class="menu-btn">☰ </label>
+            <ul class="nav-links">
                 <li>
-                    <a href="index.html" target="_self" rel=""> HOME</a>
+                    <a href="index.html">
+                        <span class="icone-casa">⌂</span> HOME
+                    </a>
                 </li>
                 <li>
-                    <a href="#" target="_self" rel="" >VAGAS ANTIGAS </a>
+                    <a href="#">✉ VAGAS</a>
                 </li>
-                <li>    
-                    <a href="Perfil.html" target="_self" rel=""> <img src="img/ex_foto_de_perfil.jpg" alt="Perfil">  </a>
+                <li>
+                    <a href="Perfil.html">
+                        <img src="" alt="Perfil">
+                    </a>
                 </li>
-                
+
             </ul>
-        </div>
-        </header>
+        </nav>
+    </header>
 
 
 
 
-<main class="feed">
-    <div class="add_pub">
-        <img src="" alt="foto-perfil" class="foto_perfil">
+    <main class="feed">
+        <div class="add_pub">
+            <img src="" alt="foto-perfil" class="foto_perfil">
             <button type="button" class="btn-pub">
                 adicionar publicação
             </button>
-    </div>
-    <article class="publicacao">
-        <header class="mini_perfil">
-            <img src="" alt="foto-perfil-pub" class="foto_perfil_pub">
-            <div class="info-post">
-                <h2 class="nome-perfil-pub">enzo gutierrez yoshizumi</h2>
-                <p class="data-pub">há 2d</p>
-            </div>
-        </header>
-        <div class="text-pub">
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste nam hic soluta eos temporibus iure sequi,
-             ab tempora qui! Ad ullam expedita, aliquid illum quos fugit dolorem id ea deserunt!</p>
         </div>
-    </article>
-</main>
+        <article class="publicacao">
+            <header class="mini_perfil">
+                <img src="" alt="foto-perfil-pub" class="foto_perfil_pub">
+                <div class="info-post">
+                    <h2 class="nome-perfil-pub">enzo gutierrez yoshizumi</h2>
+                    <p class="data-pub">há 2d</p>
+                </div>
+            </header>
+            <div class="text-pub">
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste nam hic soluta eos temporibus iure
+                    sequi,
+                    ab tempora qui! Ad ullam expedita, aliquid illum quos fugit dolorem id ea deserunt!</p>
+            </div>
+        </article>
+    </main>
 </body>
+
 </html>
