@@ -7,24 +7,32 @@
     <title>Publicacao - Biconline</title>
 </head>
 <body>
-    <form action="/criar-publicacao" method="POST" enctype="multipart/form-data">
+    <form action="/criar-publicacao" method="POST" enctype="multipart/form-data" class="formulario-post">
+    <div class="back-btn">
+        <a href="index.html" class="back-btn">X</a>
+    </div>
+    <hr>
     <div class="form-body">
-        <label for="post-texto" class="sr-only">o que deseja compartilhar</label>
+        <label for="post-texto" class="sr-only"><strong>O que deseja compartilhar?</strong></label>
         <textarea id="post-texto" name="texto" rows="5" placeholder="o que deseja compartilhar..." required></textarea>
     </div>
     <div class="form-extra">
+        <br>
         <div class="file-input">
             <label id="label-midia" for="post-midia">Adicionar foto / vídeo</label>
+            <br>
             <input type="file" class="midia-form" name="midia" accept="image/*,video/*">
         </div>
-
+        <br>
         <div class="input-links">
             <label for="post-link">Adicionar link (opcional)</label>
+            <br>
             <input type="url" id="post-link" name="link" placeholder="https://exemplo.com">
         </div>
     </div>
 
     <div class="form-footer">
+        <br>
         <button type="submit" class="btn-publicar">Publicar</button>
     </div>
 

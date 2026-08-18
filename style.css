@@ -28,10 +28,31 @@ body{
     color: #5e5e5e;
 
 }
+.btn-pub-link{
+    font-size: 0.95rem;
+    cursor: pointer;
+    color: #5e5e5e;
+    border: none;
+}
+.redirection{
+    text-decoration: none;
+    color: #5e5e5e;
+}
+.back-btn{
+    font-size: 1.5rem;
+    text-decoration: none;
+    color: #5e5e5e;
+}
+.back-btn:hover{
+    color: red;
+}
 .btn-pub:hover {
     background-color: #e4e3e0;
 }
-.publicacao, .add_pub{
+.btn-pub-link:hover {
+    background-color: #e4e3e0;
+}
+.publicacao, .add_pub, .formulario-post{
     background-color: #ffffff;
     border: 1px solid #d3ceb8;
     border-radius: 10px;
@@ -82,4 +103,34 @@ nav ul {
     display: flex;
     align-items: center   ;
 
+}
+.formulario-post{
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
+    min-width: 300px;
+    max-width: 600px;
+    margin: 0 auto;
+    font-size: 1.2rem;
+}
+.midia-form, #post-link{
+    font-size: 0.95rem;
+    cursor: pointer;
+    color: #5e5e5e;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+#post-link{
+    border: 1px solid black;
+}
+.sr-only{
+    font-size: 1.5rem;
+}
+#post-texto{
+    border: 2px solid black;
+    border-radius: 10px;
+    min-width: 100%;
+    font-size: 1.2rem;
+    min-height: 60%;
 }
