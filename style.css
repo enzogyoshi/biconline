@@ -1,5 +1,8 @@
 body {
     background-color: rgb(223, 216, 208);
+    margin: 0;
+    padding: 0;
+
 }
 
 .feed {
@@ -101,11 +104,6 @@ body {
     object-fit: cover;
 }
 
-nav ul {
-    display: flex;
-    align-items: center;
-
-}
 .formulario-post{
     display: flex;
     justify-content: center;
@@ -246,4 +244,44 @@ main {
 
 .avaliacao p {
     color: #555;
+}
+
+
+/* 
+Header / navbar
+*/
+
+.nav-bar {
+    display: flex;
+    background-color: white;
+    text-align: center;
+    border: 1px solid black;
+
+
+    max-height: 50px;
+    justify-content: space-between;
+    flex: 100%; 
+
+}
+
+.nav-bar ul {
+    list-style-type: none;
+    display: flex;
+    text-align: center;
+    
+}
+
+.nav-bar li {
+    margin: 0 20px;
+    align-items: end;
+    text-align: end;
+    margin-bottom: 50px;
+    
+
+}   
+
+.nav-bar input{
+    margin: 0 20px;
+    border: 1px solid black;
+    border-radius: 10px;
 }
