@@ -8,19 +8,27 @@ function validarCadastro() {
     const cidade = document.getElementById("txtCidade")
     const uf = document.getElementById("ufSelect")
 
-    if (nome.value.length.trim() < 3 || nome.value.length.trim() > 100) {
-        return cadInvalido()
+    if (nome.value.trim().length < 3 || nome.value.trim().length > 100) {
+        return cadInvalido(nome)
     }
 
-    if (!validarCPF(cpf) || !cpf) {
-        return cadInvalido()
+    if (!(cpf.value === "") && !(cnpj.value === "")) {
+        cnpj.value = ""
+        return cadInvalido(cpf)
     }
 
-    if (!validarCNPJ(cnpj) || !cnpj) {
-        return cadInvalido()
+    if (!(cpf.value === "")) {
+        if (!validarCPF(cpf.value)) {
+            return cadInvalido(cpf)
+        }
+    }
+    if (!(cnpj.value === "")) {
+        if (!validarCNPJ(cnpj.value)) {
+            return cadInvalido(cnpj)
+        }
     }
 
-
+    return true
 }
 
 function validarCNPJ(cnpj) {
