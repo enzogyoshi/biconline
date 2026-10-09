@@ -5,11 +5,13 @@ $texto_publicacao = isset($_POST["texto"]) ? $_POST["texto"] : "";
 $arquivo_midia    = isset($_FILES["midia"]) ? $_FILES["midia"] : "";
 $link_publicacao  = isset($_POST["link"]) ? trim($_POST["link"]) : "";
 
+//id teste
+$id_usuario = 1;
+
 $limite_tamanho_foto = 5242880; 
 $caminho_midia = '';
 
-// exemplo teste
-$id_usuario = 1;
+
 
 // Área de arquivos/fotos
 if (isset($arquivo_midia["error"]) && $arquivo_midia["error"] == 0) {
@@ -36,9 +38,12 @@ if (isset($arquivo_midia["error"]) && $arquivo_midia["error"] == 0) {
     }
 }
 
+//pegar os input e fazer com que nao de bug no db, devido a astericos, etc
+$texto_seguro = $conn->real_escape_string($texto_publicacao);
+$link_seguro  = $conn->real_escape_string($link_publicacao);
 
 $sql = "INSERT INTO publicacao (conteudo, url_midia, link, data_pub, id_usuario)
-        VALUES ('$texto_publicacao', '$caminho_midia', '$link_publicacao', NOW(), '$id_usuario')";
+        VALUES ('$texto_seguro', '$caminho_midia', '$link_seguro', NOW(), '$id_usuario')";
 
 if ($conn->query($sql) === TRUE) {
     echo "Publicação realizada com sucesso!";
