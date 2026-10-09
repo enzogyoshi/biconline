@@ -1,0 +1,76 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: Arial, sans-serif;
+  background: #eef0f7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.chat {
+  width: 100%;
+  max-width: 420px;
+  height: 600px;
+  background: #fff;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.topo {
+  background: #6c5ce7;
+  color: #fff;
+  padding: 16px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+}
+.topo span { font-size: 12px; font-weight: normal; opacity: 0.8; }
+
+.mensagens {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.msg {
+  max-width: 75%;
+  padding: 8px 14px;
+  border-radius: 16px;
+  word-wrap: break-word;
+}
+.msg .nome { font-size: 12px; font-weight: bold; margin-bottom: 2px; color: #6c5ce7; }
+.msg .hora { font-size: 11px; opacity: 0.6; text-align: right; margin-top: 2px; }
+
+.recebida { background: #eef0f7; align-self: flex-start; }
+.enviada { background: #6c5ce7; color: #fff; align-self: flex-end; }
+.enviada .nome { display: none; }
+
+.envio {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  border-top: 1px solid #ddd;
+}
+.envio input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  outline: none;
+}
+.envio button {
+  background: #6c5ce7;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 20px;
+  cursor: pointer;
+}
