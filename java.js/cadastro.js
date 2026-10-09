@@ -1,4 +1,6 @@
 function validarCadastro() {
+    document.getElementById("msgErro").textContent = ""
+
     const nome = document.getElementById("txtNome")
     const cpf = document.getElementById("txtCpf")
     const cnpj = document.getElementById("txtCnpj")
@@ -9,22 +11,22 @@ function validarCadastro() {
     const uf = document.getElementById("ufSelect")
 
     if (nome.value.trim().length < 3 || nome.value.trim().length > 100) {
-        return cadInvalido(nome)
+        return cadInvalido(nome, "o nome deve ter entre 3 e 100 caracteres")
     }
 
-    if (!(cpf.value === "") && !(cnpj.value === "")) {
-        cnpj.value = ""
-        return cadInvalido(cpf)
+    if ((!(cpf.value === "") && !(cnpj.value === "")) || ((cpf.value === "") && (cnpj.value === ""))) {
+        cnpj.focus()
+        return cadInvalido(cpf, "apenas um entre o cpf e cnpj deve ser preenchido")
     }
 
     if (!(cpf.value === "")) {
         if (!validarCPF(cpf.value)) {
-            return cadInvalido(cpf)
+            return cadInvalido(cpf, "cpf invalido")
         }
     }
     if (!(cnpj.value === "")) {
         if (!validarCNPJ(cnpj.value)) {
-            return cadInvalido(cnpj)
+            return cadInvalido(cnpj, "cnpj invalido")
         }
     }
 
@@ -91,8 +93,8 @@ function validarCPF(cpf) {
     return true
 }
 
-function cadInvalido(item) {
+function cadInvalido(item, erro) {
+    document.getElementById("msgErro").textContent = erro
     item.focus()
-    item.value = ""
     return false
 }

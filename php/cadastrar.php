@@ -21,16 +21,17 @@
         ?>
        <form action="cadastrar_php.php" method="post" onsubmit="return validarCadastro()">
         
+        <p id="msgErro" style="color: red;"></p>
         <label for="nome">Nome Completo:</label>
         <input type="text" id="txtNome" name="nome" class="txtbox">
         <br><br>
 
         <label for="cpf">CPF (Somente números):</label>
-        <input type="text" if="txtCpf" name="cpf" maxlength="11" pattern="\d{11}" class="txtbox">
+        <input type="text" id="txtCpf" name="cpf" maxlength="11" pattern="\d{11}" class="txtbox">
         <br><br>
 
-        <label for="cnpj">CNPJ (Somente números):</label>
-        <input type="text" id="txtCnpj" name="cnpj" maxlength="14" pattern="\d{14}" class="txtbox">
+        <label for="cnpj">CNPJ:</label>
+        <input type="text" id="txtCnpj" name="cnpj" class="txtbox">
         <br><br>
 
         <label for="senha">Senha:</label>
@@ -84,7 +85,7 @@
 
         <button type="submit" class="btnSubmit" id="btnSubmit">Cadastrar</button>
 
-    <script src="java.js/cadastro.js"></script>
+    <script src="../java.js/cadastro.js"></script>
     </form>
 </body>
 </html>
