@@ -18,11 +18,31 @@ if (!meuId) {
 }
 
 // conecta ao servidor (ws:// ou wss:// conforme a página)
-const protocolo = location.protocol === "https:" ? "wss://" : "ws://";
-const socket = new WebSocket(protocolo + location.host);
+let socket;
 
-socket.onopen = () => (status.textContent = "online");
-socket.onclose = () => (status.textContent = "desconectado");
+function conectar() {
+  const protocolo = location.protocol === "https:" ? "wss://" : "ws://";
+  socket = new WebSocket(protocolo + location.host);
+
+  socket.onopen = () => (status.textContent = "online");
+
+  socket.onclose = () => {
+    status.textContent = "reconectando...";
+    setTimeout(conectar, 2000); // tenta de novo em 2 segundos
+  };
+
+  socket.onmessage = (evento) => {
+    const msg = JSON.parse(evento.data);
+    // ... aqui fica o mesmo código que cria a bolha da mensagem ...
+  };
+}
+
+conectar();
+
+// ping a cada 25s para a conexão não ficar ociosa
+setInterval(() => {
+  if (socket.readyState === 1) socket.send(JSON.stringify({ tipo: "ping", id: meuId, nome: nome, texto: "" }));
+}, 25000);
 
 socket.onmessage = (evento) => {
   const msg = JSON.parse(evento.data);
