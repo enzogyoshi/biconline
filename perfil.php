@@ -1,3 +1,33 @@
+
+<?php
+
+require_once("conn.php");
+
+$id_usuario = $_GET["id_usuario"] ?? "1";
+
+if (isset($_SESSION["id_usuario"]) &&
+    $_SESSION["id_usuario"] == $id_usuario) {
+    $permissoes = true;
+} else {
+    $permissoes = false;
+}
+
+$sql = "select name,cidade,uf,bio,score_avaliacao where id_usuario = ?";
+$stmt = $conn->prepare($sql);
+
+$stmt->bind_param("i", $id_usuario,);
+$stmt->execute();
+
+$resultado = $stmt -> get_result();
+$usuario = $resultado->fetch_assoc();
+
+$name = $usuario["name"] ?? "Sem nome";
+$cidade = $usuario["cidade"] ?? "Sem cidade";
+$uf = $usuario["uf"] ??"uf não encontrada";
+$bio = $usuario["bio"] ?? "Sem biografia";
+$score = $usuario["score_avaliacao"] ?? "0";
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -12,7 +42,9 @@
 <header>
         <nav>
             <img src="#" alt="Logo">
-            <input type="search" name="Pesquisar" placeholder="Pesquisar" class="logo">
+            <form action="perfil.php" method="get" >
+                <input type="search" name="Pesquisar" placeholder="Pesquisar" class="logo">
+            </form>
 
             <input type="checkbox" id="menu-toggle">
 
@@ -41,15 +73,15 @@
         <div class="perfil">
 
             <div class="foto-perfil">
-                <img src="" alt="Foto de perfil">
+                <img src="<??>" alt="Foto de perfil">
             </div>
 
             <div class="dados-perfil">
-                <h1>Luís Henrique de Oliveira Garcia</h1>
-                <p>Jardineiro</p>
-                <p>Barroso-MG</p>
-                <p>6 anos de experiência</p>
-                <p>Disponível para trabalhos</p>
+                <h1><?echo($name)?></h1>
+                <p id="profissão">Jardineiro</p>
+                <p id="cidade">Barroso-MG </p>
+                <p id="experiência">6 anos de experiência</p>
+                <p id="disponbilidade">Disponível para trabalhos</p>
             </div>
 
         </div>
@@ -57,23 +89,24 @@
         <div class="sobre">
 
             <h2>Sobre mim</h2>
+<button></button>
+            <p><? ?> </p>
+            <? if($permissoes): ?>
+                <div class= add_bio>
+                    <form action="editar_perfil.php" method="get">
+                       <input type="button" value="editar perfil">
+                    </form>
+                </div>
+            </div>
+            <?php endif;?>
 
-            <p>
-                Trabalho como jardineiro há 6 anos, realizando serviços de
-                manutenção e cuidados com jardins. Procuro sempre fazer um
-                trabalho bem feito e deixar o espaço limpo e organizado.
-            </p>
-
-        </div>
 
         <div class="servicos">
 
             <h2>Serviços oferecidos</h2>
 
             <ul>
-                <li>Corte de grama</li>
-                <li>Manutenção de jardins</li>
-                <li>Limpeza de jardins</li>
+                
             </ul>
 
         </div>
@@ -114,27 +147,7 @@
 
             <h2>Avaliações</h2>
 
-            <div class="nota">
-                <p>Nota: 4,5 de 5</p>
-            </div>
-
-            <div class="avaliacao">
-                <h3>Bernardo Atroz</h3>
-                <p>4,5 de 5</p>
-                <p>Ótimo trabalho, mudou a cara da minha padaria.</p>
-            </div>
-
-            <div class="avaliacao">
-                <h3>Enzo saltiton</h3>
-                <p>4 de 5</p>
-                <p>Ótimo profissional, minha pastelaria esta irreconhecivel.</p>
-            </div>
-
-            <div class="avaliacao">
-                <h3>Alberti Noédos</h3>
-                <p>4 de 5</p>
-                <p>Serviço top e em um otimo preço. E em tese foi o responsavel pelo crescimento de visitas no meu parque.</p>
-            </div>
+            
 
 
         </div>

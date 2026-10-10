@@ -52,13 +52,15 @@ CREATE TABLE moderacao(
     );
     
 CREATE TABLE publicacao(
-	id INT AUTO_INCREMENT PRIMARY KEY,
-	conteudo VARCHAR(500) NOT NULL,
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    conteudo VARCHAR(500) NOT NULL,
+    url_midia VARCHAR(255) NULL,
+    link VARCHAR(255) NULL,
     data_pub DATE NOT NULL,
     id_usuario INT,
     CONSTRAINT fk_usuario_pub
     FOREIGN KEY (id_usuario) REFERENCES usuario(id)
-    );
+);
     
 CREATE TABLE servico(
 	id INT AUTO_INCREMENT PRIMARY KEY,
@@ -118,3 +120,5 @@ CREATE TABLE mensagem(
     CONSTRAINT fk_msg_usuario
     FOREIGN KEY (id_usuario) REFERENCES usuario(id)
     );
+
+
