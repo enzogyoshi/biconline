@@ -46,10 +46,6 @@
         <input type="email" id="txtEmail" name="email" maxlength="50" class="txtbox">
         <br><br>
 
-        <label for="cidade">Cidade:</label>
-        <input type="text" id="txtCidade" name="cidade" maxlength="50" class="txtbox">
-        <br><br>
-
         <label for="uf">Estado (UF):</label>
         <select name="uf" id="ufSelect">
             <option value="">Selecione...</option>
@@ -82,6 +78,14 @@
             <option value="TO">TO</option>
         </select>
         <br><br>
+
+        <label for="cidade">Cidade:</label>
+        <input type="text" list="cidades" id="txtCidade" name="cidade" maxlength="50" class="txtbox">
+        <br><br>
+
+        <datalist id="cidades">
+    
+        </datalist>
 
         <button type="submit" class="btnSubmit" id="btnSubmit">Cadastrar</button>
 

@@ -1,3 +1,7 @@
+let txtCidade = document.getElementById("txtCidade")
+txtCidade.disabled = true
+let ufSelect = document.getElementById("ufSelect")
+
 function validarCadastro() {
     document.getElementById("msgErro").textContent = ""
 
@@ -28,6 +32,30 @@ function validarCadastro() {
         if (!validarCNPJ(cnpj.value)) {
             return cadInvalido(cnpj, "cnpj invalido")
         }
+    }
+
+    if (senha.value.length < 8 || senha.value.length > 100) {
+        return cadInvalido(senha, "a senha deve ter no minimo 8 caracteres e no maximo 100")
+    }
+
+    if (data_nasc.value === "") {
+        return cadInvalido(data_nasc, "preencha a data de nascimento")
+    }
+
+    if (!verificarMaioridade(data_nasc.value)) {
+        return cadInvalido(data_nasc, "o usuario deve ter 18 anos ou mais")
+    }
+    
+    if (email.value === "" || !validarEmail(email.value)) {
+        return cadInvalido(email, "digite um email valido")
+    }
+
+    if (uf.value === "") {
+        return cadInvalido(uf, "escolha uma unidade federativa")
+    }
+
+    if (cidade.value.trim() === "") {
+        return cadInvalido(cidade, "digite uma cidade")
     }
 
     return true
@@ -93,8 +121,64 @@ function validarCPF(cpf) {
     return true
 }
 
+function verificarMaioridade(dataNascimentoString) {
+    const hoje = new Date()
+    hoje.setHours(0, 0, 0, 0)
+
+    const dataLimite = new Date(hoje)
+    dataLimite.setFullYear(hoje.getFullYear() - 18)
+
+    const [ano, mes, dia] = dataNascimentoString.split('-')
+
+    const dataNascimento = new Date(ano, mes - 1, dia)
+    dataNascimento.setHours(0, 0, 0, 0)
+
+    return dataNascimento <= dataLimite
+}
+
+function validarEmail(email) {
+    const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+    return regexEmail.test(email)
+}
+
 function cadInvalido(item, erro) {
     document.getElementById("msgErro").textContent = erro
     item.focus()
     return false
 }
+
+ufSelect.addEventListener("change", function() {
+    let datalist = document.getElementById("cidades")
+    datalist.replaceChildren()
+    txtCidade.value = ""
+    txtCidade.disabled = true
+    document.getElementById("msgErro").textContent = ""
+
+    if (ufSelect.value === "") {
+        return
+    }
+    
+    const url = `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${ufSelect.value}/municipios`
+
+    fetch(url)
+     .then(r => { 
+        if (!r.ok) {
+            throw new Error(`ERRO HTTP! Status: ${r.status}`)
+        }
+        return r.json()
+     })
+
+     .then(dados => {
+        dados.forEach((cidade) => {
+            const op = document.createElement("option")
+            op.value = cidade.nome
+            datalist.appendChild(op)
+        })
+        txtCidade.disabled = false
+    })
+    
+    .catch(error => {
+        document.getElementById("msgErro").textContent = "falha na requisição, tente novamente"
+        console.error("Erro capturado: " + error.message)
+    })
+})
