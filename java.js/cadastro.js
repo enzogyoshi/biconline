@@ -1,3 +1,4 @@
+let lista_cidades = []
 let txtCidade = document.getElementById("txtCidade")
 txtCidade.disabled = true
 let ufSelect = document.getElementById("ufSelect")
@@ -54,8 +55,8 @@ function validarCadastro() {
         return cadInvalido(uf, "escolha uma unidade federativa")
     }
 
-    if (cidade.value.trim() === "") {
-        return cadInvalido(cidade, "digite uma cidade")
+    if (cidade.value.trim() === "" || !validarCidade(cidade.value)) {
+        return cadInvalido(cidade, "escolha uma cidade da lista")
     }
 
     return true
@@ -141,6 +142,13 @@ function validarEmail(email) {
     return regexEmail.test(email)
 }
 
+function validarCidade(cidade) {
+    if (lista_cidades.length === 0) {
+        return false
+    }
+    return lista_cidades.includes(cidade.trim())
+}
+
 function cadInvalido(item, erro) {
     document.getElementById("msgErro").textContent = erro
     item.focus()
@@ -150,6 +158,7 @@ function cadInvalido(item, erro) {
 ufSelect.addEventListener("change", function() {
     let datalist = document.getElementById("cidades")
     datalist.replaceChildren()
+    lista_cidades = []
     txtCidade.value = ""
     txtCidade.disabled = true
     document.getElementById("msgErro").textContent = ""
@@ -170,6 +179,7 @@ ufSelect.addEventListener("change", function() {
 
      .then(dados => {
         dados.forEach((cidade) => {
+            lista_cidades.push(cidade.nome)
             const op = document.createElement("option")
             op.value = cidade.nome
             datalist.appendChild(op)
