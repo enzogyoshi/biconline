@@ -21,75 +21,77 @@
         ?>
        <form action="cadastrar_php.php" method="post" onsubmit="return validarCadastro()">
         
-        <p id="msgErro" style="color: red;"></p>
-        <label for="nome">Nome Completo:</label>
-        <input type="text" id="txtNome" name="nome" class="txtbox">
-        <br><br>
+            <p id="msgErro" style="color: red;"></p>
+            <label for="txtNome">Nome Completo:</label>
+            <input type="text" id="txtNome" name="nome" class="txtbox">
+            <br><br>
 
-        <label for="cpf">CPF (Somente números):</label>
-        <input type="text" id="txtCpf" name="cpf" maxlength="11" pattern="\d{11}" class="txtbox">
-        <br><br>
+            <label for="txtCpf">CPF (Somente números):</label>
+            <input type="text" id="txtCpf" name="cpf" maxlength="11" pattern="\d{11}" class="txtbox">
+            <br><br>
 
-        <label for="cnpj">CNPJ:</label>
-        <input type="text" id="txtCnpj" name="cnpj" class="txtbox">
-        <br><br>
+            <label for="txtCnpj">CNPJ:</label>
+            <input type="text" id="txtCnpj" name="cnpj" class="txtbox">
+            <br><br>
 
-        <label for="senha">Senha:</label>
-        <input type="password" id="txtSenha" name="senha" class="txtbox">
-        <br><br>
+            <label for="txtSenha">Senha:</label>
+            <input type="password" id="txtSenha" name="senha" class="txtbox">
+            <br><br>
 
-        <label for="data_nascimento">Data de Nascimento:</label>
-        <input type="date" id="data_nasc" name="data_nascimento" class="data_nascbox">
-        <br><br>
+            <label for="senhaConfirm">Confirmar senha:</label>
+            <input type="password" id="senhaConfirm" name="senhaConfirm" class="txtbox">
+            <br><br>
 
-        <label for="email">E-mail:</label>
-        <input type="email" id="txtEmail" name="email" maxlength="50" class="txtbox">
-        <br><br>
+            <label for="data_nasc">Data de Nascimento:</label>
+            <input type="date" id="data_nasc" name="data_nasc" class="data_nascbox">
+            <br><br>
 
-        <label for="uf">Estado (UF):</label>
-        <select name="uf" id="ufSelect">
-            <option value="">Selecione...</option>
-            <option value="AC">AC</option>
-            <option value="AL">AL</option>
-            <option value="AP">AP</option>
-            <option value="AM">AM</option>
-            <option value="BA">BA</option>
-            <option value="CE">CE</option>
-            <option value="DF">DF</option>
-            <option value="ES">ES</option>
-            <option value="GO">GO</option>
-            <option value="MA">MA</option>
-            <option value="MT">MT</option>
-            <option value="MS">MS</option>
-            <option value="MG">MG</option>
-            <option value="PA">PA</option>
-            <option value="PB">PB</option>
-            <option value="PR">PR</option>
-            <option value="PE">PE</option>
-            <option value="PI">PI</option>
-            <option value="RJ">RJ</option>
-            <option value="RN">RN</option>
-            <option value="RS">RS</option>
-            <option value="RO">RO</option>
-            <option value="RR">RR</option>
-            <option value="SC">SC</option>
-            <option value="SP">SP</option>
-            <option value="SE">SE</option>
-            <option value="TO">TO</option>
-        </select>
-        <br><br>
+            <label for="txtEmail">E-mail:</label>
+            <input type="email" id="txtEmail" name="email" maxlength="50" class="txtbox">
+            <br><br>
 
-        <label for="cidade">Cidade:</label>
-        <input type="text" list="cidades" id="txtCidade" name="cidade" maxlength="50" class="txtbox">
-        <br><br>
+            <label for="ufSelect">Estado (UF):</label>
+            <select name="uf" id="ufSelect">
+                <option value="">Selecione...</option>
+                <option value="AC">AC</option>
+                <option value="AL">AL</option>
+                <option value="AP">AP</option>
+                <option value="AM">AM</option>
+                <option value="BA">BA</option>
+                <option value="CE">CE</option>
+                <option value="DF">DF</option>
+                <option value="ES">ES</option>
+                <option value="GO">GO</option>
+                <option value="MA">MA</option>
+                <option value="MT">MT</option>
+                <option value="MS">MS</option>
+                <option value="MG">MG</option>
+                <option value="PA">PA</option>
+                <option value="PB">PB</option>
+                <option value="PR">PR</option>
+                <option value="PE">PE</option>
+                <option value="PI">PI</option>
+                <option value="RJ">RJ</option>
+                <option value="RN">RN</option>
+                <option value="RS">RS</option>
+                <option value="RO">RO</option>
+                <option value="RR">RR</option>
+                <option value="SC">SC</option>
+                <option value="SP">SP</option>
+                <option value="SE">SE</option>
+                <option value="TO">TO</option>
+            </select>
+            <br><br>
 
-        <datalist id="cidades">
-    
-        </datalist>
+            <label for="txtCidade">Cidade:</label>
+            <input type="text" list="cidades" id="txtCidade" name="cidade" maxlength="50" class="txtbox">
+            <br><br>
 
-        <button type="submit" class="btnSubmit" id="btnSubmit">Cadastrar</button>
+            <datalist id="cidades"></datalist>
 
+            <button type="submit" class="btnSubmit" id="btnSubmit">Cadastrar</button>
+
+        </form>
     <script src="../java.js/cadastro.js"></script>
-    </form>
 </body>
 </html>

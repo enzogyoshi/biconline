@@ -2,14 +2,14 @@ let lista_cidades = []
 let txtCidade = document.getElementById("txtCidade")
 txtCidade.disabled = true
 let ufSelect = document.getElementById("ufSelect")
+let cpf = document.getElementById("txtCpf")
+let cnpj = document.getElementById("txtCnpj")
 
 function validarCadastro() {
     document.getElementById("msgErro").textContent = ""
-
     const nome = document.getElementById("txtNome")
-    const cpf = document.getElementById("txtCpf")
-    const cnpj = document.getElementById("txtCnpj")
     const senha = document.getElementById("txtSenha")
+    const confirmSenha = document.getElementById("senhaConfirm")
     const data_nasc = document.getElementById("data_nasc")
     const email = document.getElementById("txtEmail")
     const cidade = document.getElementById("txtCidade")
@@ -19,9 +19,12 @@ function validarCadastro() {
         return cadInvalido(nome, "o nome deve ter entre 3 e 100 caracteres")
     }
 
-    if ((!(cpf.value === "") && !(cnpj.value === "")) || ((cpf.value === "") && (cnpj.value === ""))) {
-        cnpj.focus()
-        return cadInvalido(cpf, "apenas um entre o cpf e cnpj deve ser preenchido")
+    if (cpf.value !== "" && cnpj.value !== "") {
+        return cadInvalido(cpf, "preencha apenas o CPF ou apenas o CNPJ")
+    }
+
+    if (cpf.value === "" && cnpj.value === "") {
+        return cadInvalido(cpf, "preencha o CPF ou o CNPJ")
     }
 
     if (!(cpf.value === "")) {
@@ -37,6 +40,10 @@ function validarCadastro() {
 
     if (senha.value.length < 8 || senha.value.length > 100) {
         return cadInvalido(senha, "a senha deve ter no minimo 8 caracteres e no maximo 100")
+    }
+
+    if (senha.value !== confirmSenha.value) {
+        return cadInvalido(senha, "senha não confirmada, tente novamente")
     }
 
     if (data_nasc.value === "") {
@@ -191,4 +198,12 @@ ufSelect.addEventListener("change", function() {
         document.getElementById("msgErro").textContent = "falha na requisição, tente novamente"
         console.error("Erro capturado: " + error.message)
     })
+})
+
+cpf.addEventListener("input", function() {
+    cnpj.disabled = cpf.value !== ""
+})
+
+cnpj.addEventListener("input", function() {
+    cpf.disabled = cnpj.value !== ""
 })
