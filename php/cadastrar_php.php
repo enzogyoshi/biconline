@@ -50,6 +50,7 @@
         'SE', // Sergipe
         'TO'  // Tocantins
     ];
+
     function cadInvalido($erro) {
         $_SESSION["erro"] = $erro;
         header("Location: cadastrar.php");
@@ -145,6 +146,37 @@
         return preg_match($regexEmail, $email) === 1;
     }
 
+    function fetchCidades($uf) {
+        $lista_cidades = [];
+        $url = "https://servicodados.ibge.gov.br/api/v1/localidades/estados/$uf/municipios";
+
+        $opcoes = [
+            'http' => [
+                'method' => 'GET',
+                'timeout' => 5
+            ]
+        ];
+
+        $contexto = stream_context_create($opcoes);
+
+        $respJson = @file_get_contents($url, false, $contexto);
+        if ($respJson !== false) {
+            $cidades = json_decode($respJson, true);
+        } else {
+            return false;
+        }
+
+        if ($cidades === null) {
+            return false;
+        }
+
+        foreach ($cidades as $cidade) {
+            $lista_cidades[] = $cidade["nome"];
+        }
+
+        return $lista_cidades;
+    }
+
     if (trim($nome) === "") {
         cadInvalido("preencha o nome e tente novamente");
     }
@@ -161,17 +193,21 @@
         cadInvalido("preencha o CPF ou o CNPJ");
     }
 
+    $cpfLimpo = null;
+    $cnpjLimpo = null;
+
     if (!(trim($cpf) === "")) {
         if (!validarCPF(trim($cpf))) {
             cadInvalido("cpf invalido");
         }
+        $cpfLimpo = preg_replace('/[^\d]/', '', $cpf);
     }
-    $cpfLimpo = preg_replace("/\.-/","", $cpf);
 
     if (!(trim($cnpj) === "")) {
         if (!validarCNPJ(trim($cnpj))) {
             cadInvalido("cnpj invalido");
         }
+        $cnpjLimpo = strtoupper(preg_replace('/[^\dA-Z]/', '', strtoupper(trim($cnpj))));
     }
 
     if ($senha !== $senhaConfirm) {
@@ -209,5 +245,35 @@
     if (trim($cidade) === "") {
         cadInvalido("preencha a cidade e tente novamente");
     }
+
+    $nome = trim($nome);
+    $data_nasc = trim($data_nasc);
+    $email = strtolower(trim($email));
+    $uf = trim($uf);
+    $cidade = trim($cidade);
+
+    $stmt = $conn->prepare("SELECT cpf, cnpj, email FROM usuario WHERE cpf = ? OR cnpj = ? OR email = ?");
+    $stmt->bind_param("sss", $cpfLimpo, $cnpjLimpo, $email);
+
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if($result->num_rows > 0) {
+        $stmt->close();
+        cadInvalido("Já existe uma conta cadastrada com este documento ou email registrado");
+    }
+
+    $stmt->close();
+
+    $lista = fetchCidades($uf);
+
+    if ($lista) {
+        if (!in_array(trim($cidade), $lista)) {
+            cadInvalido("cidade inválida, insira uma cidade da lista");
+        } else {
+            cadInvalido("estamos com problemas no servidor, tente novamente mais tarde");
+        }
+    }
+
 
 ?>

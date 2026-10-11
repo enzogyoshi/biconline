@@ -14,9 +14,8 @@ CREATE TABLE usuario(
     uf CHAR(2) NOT NULL,
     url_foto_perfil VARCHAR(200),
     bio VARCHAR(500),
-    score_avaliacao INT,
-    is_moderador BOOLEAN NOT NULL,
-    CONSTRAINT chk_senha CHECK (LENGTH(senha) BETWEEN 8 AND 255),
+    score_avaliacao DECIMAL(3,2) DEFAULT 0.00,
+    is_moderador BOOLEAN NOT NULL DEFAULT FALSE,
     CONSTRAINT chk_documento
     CHECK ((cpf IS NOT NULL OR cnpj IS NOT NULL)
 	AND (NOT(cpf IS NOT NULL AND cnpj IS NOT NULL)))
