@@ -5,38 +5,55 @@
         header('Location: cadastrar.php');
         exit;
     }
-    $nome = $_POST['nome'] ?? "";
-    $cpf = $_POST['cpf'] ?? "";
-    $cnpj = $_POST['cnpj'] ?? "";
-    $senha = $_POST['senha'] ?? "";
-    $senhaConfirm = $_POST['senhaConfirm'] ?? "";
-    $data_nasc = $_POST['data_nasc'] ?? "";
-    $email = $_POST['email'] ?? "";
-    $uf = $_POST['uf'] ?? "";
-    $cidade = $_POST['cidade'] ?? "";
 
+    function campo($chave) {
+        return (isset($_POST[$chave]) && is_string($_POST[$chave])) ? $_POST[$chave] :"";
+    }
+
+    $nome = campo("nome");
+    $cpf = campo("cpf");
+    $cnpj = campo("cnpj");
+    $senha = campo("senha");
+    $senhaConfirm = campo("senhaConfirm");
+    $data_nasc = campo("data_nasc");
+    $email = campo("email");
+    $uf = campo("uf");
+    $cidade = campo("cidade");
+
+    $ufs = [
+        'AC', // Acre
+        'AL', // Alagoas
+        'AP', // Amapá
+        'AM', // Amazonas
+        'BA', // Bahia
+        'CE', // Ceará
+        'DF', // Distrito Federal
+        'ES', // Espírito Santo
+        'GO', // Goiás
+        'MA', // Maranhão
+        'MT', // Mato Grosso
+        'MS', // Mato Grosso do Sul
+        'MG', // Minas Gerais
+        'PA', // Pará
+        'PB', // Paraíba
+        'PR', // Paraná
+        'PE', // Pernambuco
+        'PI', // Piauí
+        'RJ', // Rio de Janeiro
+        'RN', // Rio Grande do Norte
+        'RS', // Rio Grande do Sul
+        'RO', // Rondônia
+        'RR', // Roraima
+        'SC', // Santa Catarina
+        'SP', // São Paulo
+        'SE', // Sergipe
+        'TO'  // Tocantins
+    ];
     function cadInvalido($erro) {
         $_SESSION["erro"] = $erro;
         header("Location: cadastrar.php");
         exit;
     }
-
-    if ($senha !== $senhaConfirm) {
-        cadInvalido("senha não confirmada, tente novamente");
-    }
-
-    if (trim($nome) === "" || empty($data_nasc) || trim($email) === "" || trim($uf) === "" || trim($cidade) === "") {
-        cadInvalido("cadastro incompleto tente novamente");
-    }
-
-    if (trim($cpf) !== "" && trim($cnpj) !== "") {
-        cadInvalido("preencha apenas o CPF ou apenas o CNPJ");
-    }
-
-    if (trim($cpf) === "" && trim($cnpj) === "") {
-        cadInvalido("preencha o CPF ou o CNPJ");
-    }
-
     function validarCNPJ($cnpj) {
         $cnpj = strtoupper(preg_replace('/[^a-zA-Z0-9]/', '', $cnpj));
 
@@ -112,7 +129,11 @@
         $dataLimite = clone $hoje;
         $dataLimite->modify('-18 years');
 
-        $dataNascimento = new DateTime($dataNascimentoString);
+        $dataNascimento = DateTime::createFromFormat('Y-m-d', $dataNascimentoString);
+        if (!$dataNascimento) {
+            return false;
+        }
+
         $dataNascimento->setTime(0, 0, 0);
 
         return $dataNascimento <= $dataLimite;
@@ -123,15 +144,68 @@
         return preg_match($regexEmail, $email) === 1;
     }
 
-    if (!empty($cpf)) {
-        if (!validarCPF($cpf)) {
+    if (trim($nome) === "") {
+        cadInvalido("preencha o nome e tente novamente");
+    }
+
+    if (strlen(trim($nome)) < 3 || strlen(trim($nome)) > 100) {
+        cadInvalido("o nome deve ter entre 3 e 100 caracteres");
+    }
+
+    if (trim($cpf) !== "" && trim($cnpj) !== "") {
+        cadInvalido("preencha apenas o CPF ou apenas o CNPJ");
+    }
+
+    if (trim($cpf) === "" && trim($cnpj) === "") {
+        cadInvalido("preencha o CPF ou o CNPJ");
+    }
+
+    if (!(trim($cpf) === "")) {
+        if (!validarCPF(trim($cpf))) {
             cadInvalido("cpf invalido");
         }
     }
 
-    if (!empty($cnpj)) {
-        if (!validarCNPJ($cnpj)) {
-            cadInvalido("cpf invalido");
+    if (!(trim($cnpj) === "")) {
+        if (!validarCNPJ(trim($cnpj))) {
+            cadInvalido("cnpj invalido");
         }
     }
+
+    if ($senha !== $senhaConfirm) {
+        cadInvalido("senha não confirmada, tente novamente");
+    }
+
+    if (strlen($senha) > 72 || strlen($senha) < 8) {
+        cadInvalido("a senha deve ter entre 8 e 72 bytes");
+    }
+
+    if (trim($data_nasc) === "") {
+        cadInvalido("preencha a data de nascimento e tente novamente");
+    }
+
+    if (!verificarMaioridade($data_nasc)) {
+        cadInvalido("o usuário deve ter 18 anos ou mais");
+    }
+
+    if (trim($email) === "") {
+        cadInvalido("preencha o email e tente novamente");
+    }
+
+    if (!validarEmail(trim($email))) {
+        cadInvalido("email inválido tente novamente");
+    }
+
+    if (trim($uf) === "") {
+        cadInvalido("preencha a UF e tente novamente");
+    }
+
+    if (!in_array(trim($uf), $ufs)) {
+        cadInvalido("UF selecionado invalido, tente novamente");
+    }
+
+    if (trim($cidade) === "") {
+        cadInvalido("preencha a cidade e tente novamente");
+    }
+
 ?>

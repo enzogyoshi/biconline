@@ -7,7 +7,7 @@ CREATE TABLE usuario(
     nome VARCHAR(100) NOT NULL,
     cpf CHAR(11) UNIQUE,
     cnpj CHAR(14) UNIQUE,
-    senha VARCHAR(60) NOT NULL,
+    senha VARCHAR(255) NOT NULL,
     data_nascimento DATE NOT NULL,
     email VARCHAR(50) NOT NULL UNIQUE,
     cidade VARCHAR(50) NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE usuario(
     bio VARCHAR(500),
     score_avaliacao INT,
     is_moderador BOOLEAN NOT NULL,
-    CONSTRAINT chk_senha CHECK (LENGTH(senha) BETWEEN 7 AND 60),
+    CONSTRAINT chk_senha CHECK (LENGTH(senha) BETWEEN 8 AND 255),
     CONSTRAINT chk_documento
     CHECK ((cpf IS NOT NULL OR cnpj IS NOT NULL)
 	AND (NOT(cpf IS NOT NULL AND cnpj IS NOT NULL)))
