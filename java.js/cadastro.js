@@ -5,6 +5,12 @@ let ufSelect = document.getElementById("ufSelect")
 let cpf = document.getElementById("txtCpf")
 let cnpj = document.getElementById("txtCnpj")
 
+window.addEventListener("pageshow", function(event) {
+    bloquearSeOutroPreenchido(cnpj, cpf)
+    bloquearSeOutroPreenchido(cpf,cnpj)
+    fetchCidades()
+})
+
 function validarCadastro() {
     document.getElementById("msgErro").textContent = ""
     const nome = document.getElementById("txtNome")
@@ -60,6 +66,10 @@ function validarCadastro() {
 
     if (uf.value === "") {
         return cadInvalido(uf, "escolha uma unidade federativa")
+    }
+
+    if (lista_cidades.length === 0) {
+        return cadInvalido(uf, "lista de cidades não carregou, troque o uf para Selecione.. e tente de novo")
     }
 
     if (cidade.value.trim() === "" || !validarCidade(cidade.value)) {
@@ -162,13 +172,20 @@ function cadInvalido(item, erro) {
     return false
 }
 
-ufSelect.addEventListener("change", function() {
+function bloquearSeOutroPreenchido(doc, docTroca) {
+    doc.disabled = docTroca.value !== ""
+}
+
+function fetchCidades(trocouUF = false) {
     let datalist = document.getElementById("cidades")
     datalist.replaceChildren()
     lista_cidades = []
-    txtCidade.value = ""
     txtCidade.disabled = true
-    document.getElementById("msgErro").textContent = ""
+
+    if (trocouUF) {
+        txtCidade.value = ""
+        document.getElementById("msgErro").textContent = ""
+    }
 
     if (ufSelect.value === "") {
         return
@@ -195,15 +212,19 @@ ufSelect.addEventListener("change", function() {
     })
     
     .catch(error => {
-        document.getElementById("msgErro").textContent = "falha na requisição, tente novamente"
+        document.getElementById("msgErro").textContent = "lista de cidades não carregou, troque o uf para Selecione.. e tente de novo"
         console.error("Erro capturado: " + error.message)
     })
+}
+
+ufSelect.addEventListener("change", function() {
+    fetchCidades(true)
 })
 
 cpf.addEventListener("input", function() {
-    cnpj.disabled = cpf.value !== ""
+    bloquearSeOutroPreenchido(cnpj, cpf)
 })
 
 cnpj.addEventListener("input", function() {
-    cpf.disabled = cnpj.value !== ""
+    bloquearSeOutroPreenchido(cpf, cnpj)
 })

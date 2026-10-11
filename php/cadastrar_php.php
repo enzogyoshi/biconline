@@ -6,6 +6,7 @@
         exit;
     }
 
+    require_once "conn.php";
     function campo($chave) {
         return (isset($_POST[$chave]) && is_string($_POST[$chave])) ? $_POST[$chave] :"";
     }
@@ -165,6 +166,7 @@
             cadInvalido("cpf invalido");
         }
     }
+    $cpfLimpo = preg_replace("/\.-/","", $cpf);
 
     if (!(trim($cnpj) === "")) {
         if (!validarCNPJ(trim($cnpj))) {
