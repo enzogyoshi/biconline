@@ -275,5 +275,22 @@
     if (!in_array($cidade, $lista, true)) {
         cadInvalido("cidade inválida, insira uma cidade da lista");
     }
-            
+
+    $hashSenha = password_hash($senha, PASSWORD_DEFAULT);
+
+    $stmt = $conn->prepare("INSERT INTO
+                            usuario (nome, cpf, cnpj, senha, data_nascimento, email, cidade, uf)
+                            VALUES
+                             (?, ?, ?, ?, ?, ?, ?, ?);");
+
+    $stmt->bind_param("ssssssss", $nome, $cpfLimpo, $cnpjLimpo, $hashSenha, $data_nasc, $email, $cidade, $uf);
+
+    if (!$stmt->execute()) {
+        cadInvalido("estamos com problemas no servidor, tente novamente mais tarde");
+    }
+    $stmt->close();
+
+    $_SESSION['sucesso'] = "Cadastro realizado com sucesso! Faça seu login.";
+    header("Location: login.php");
+    exit;
 ?>

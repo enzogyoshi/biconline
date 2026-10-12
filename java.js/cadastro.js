@@ -76,6 +76,10 @@ function validarCadastro() {
         return cadInvalido(cidade, "escolha uma cidade da lista")
     }
 
+    const btn = document.getElementById("btnSubmit")
+    btn.disabled = true
+    btn.textContent = "Cadastrando..."
+
     return true
 }
 
