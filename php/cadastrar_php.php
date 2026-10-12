@@ -160,13 +160,14 @@
         $contexto = stream_context_create($opcoes);
 
         $respJson = @file_get_contents($url, false, $contexto);
+
         if ($respJson !== false) {
             $cidades = json_decode($respJson, true);
         } else {
             return false;
         }
 
-        if ($cidades === null) {
+        if (empty($cidades)) {
             return false;
         }
 
@@ -267,13 +268,12 @@
 
     $lista = fetchCidades($uf);
 
-    if ($lista) {
-        if (!in_array(trim($cidade), $lista)) {
-            cadInvalido("cidade inválida, insira uma cidade da lista");
-        } else {
-            cadInvalido("estamos com problemas no servidor, tente novamente mais tarde");
-        }
+    if (empty($lista)) {
+        cadInvalido("estamos com problemas no servidor, tente novamente mais tarde");
     }
 
-
+    if (!in_array($cidade, $lista, true)) {
+        cadInvalido("cidade inválida, insira uma cidade da lista");
+    }
+            
 ?>
