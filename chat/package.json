@@ -1,7 +1,12 @@
 {
   "name": "chat",
-  "version": "1.0.0",
-  "scripts": { "start": "node server.js" },
+  "version": "2.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --env-file=.env server.js"
+  },
+  "engines": { "node": ">=20.6" },
   "dependencies": {
     "express": "^4.19.2",
     "ws": "^8.18.0"
