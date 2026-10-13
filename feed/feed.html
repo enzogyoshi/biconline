@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BicoOnline - Feed</title>
+    <link rel="stylesheet" href="feed.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <img src="#" alt="Logo">
+
+            <input type="search" name="Pesquisar"
+                   placeholder="Pesquisar" class="pesquisa-header">
+
+            <input type="checkbox" id="menu-toggle">
+
+            <label for="menu-toggle" class="menu-btn">☰</label>
+
+            <ul class="nav-links">
+                <li>
+                    <a href="index.html">
+                        <span class="icone-casa">⌂</span> HOME
+                    </a>
+                </li>
+                <li>
+                    <a href="#">✉ VAGAS</a>
+                </li>
+                <li>
+                    <a href="perfil.html">
+                        <img src="" alt="Perfil">
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="conteudo">
+        <aside class="lateral-esquerda">
+            <section class="cartao">
+                <h2>Mensagens</h2>
+                <div class="wrapper">
+                    <a href="chat.html" class="btn-animated">
+                        <span>Mensagens</span>
+                    </a>
+                </div>
+            </section>
+
+            <section class="cartao">
+                <h2>Notificações</h2>
+                <div class="wrapper">
+                    <a href="notificacoes.php" class="btn-animated">
+                        <span>Notificações</span>
+                    </a>
+                </div>
+            </section>
+        </aside>
+
+        <section class="feed">
+            <h2 class="titulo-feed">Feed</h2>
+            <div id="feed-publicacoes"></div>
+        </section>
+
+        <aside class="lateral-direita">
+            <section class="cartao">
+                <h2>Meus trabalhos</h2>
+                <a href="meus-trabalhos.php" class="link-trabalhos">
+                    Ver meus trabalhos
+                </a>
+            </section>
+
+            <a href="publicacao.html"
+               class="botao-publicar"
+               aria-label="Criar publicação"
+               title="Criar publicação">
+                +
+            </a>
+        </aside>
+    </main>
+    <script src="feed.js"></script>
+
+</body>
+</html>
