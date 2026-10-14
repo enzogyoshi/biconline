@@ -4,7 +4,7 @@ const path = require("path");
 const crypto = require("crypto");
 const { WebSocketServer } = require("ws");
 
-// ---------- Configuração (variáveis de ambiente) ----------
+// Configuração (variáveis de ambiente)
 const PORTA = process.env.PORT || 3000;
 const SEGREDO = process.env.CHAT_SEGREDO || "";
 const MODO_DEV = process.env.MODO_DEV === "true";
@@ -17,7 +17,7 @@ if (!SEGREDO && !MODO_DEV) {
   process.exit(1);
 }
 
-// ---------- Token assinado (gerado pelo PHP, validado aqui) ----------
+//Token assinado (gerado pelo PHP)
 function assinar(dados) {
   const b64 = Buffer.from(JSON.stringify(dados)).toString("base64url");
   const sig = crypto.createHmac("sha256", SEGREDO).update(b64).digest("hex");
@@ -39,7 +39,7 @@ function verificar(token) {
   return d;
 }
 
-// ---------- Servidor HTTP ----------
+//Servidor http
 const app = express();
 app.disable("x-powered-by");
 
@@ -57,14 +57,14 @@ app.use(express.static(path.join(__dirname, "public")));
 
 const server = http.createServer(app);
 
-// ---------- WebSocket ----------
+//WebSocket
 const wss = new WebSocketServer({
   server,
   maxPayload: 4096,
   verifyClient: ({ origin, req }) => {
     if (!origin) return MODO_DEV; // ferramentas sem origem só em testes
     try {
-      if (new URL(origin).host === req.headers.host) return true; // o próprio chat
+      if (new URL(origin).host === req.headers.host) return true; // chat
     } catch { return false; }
     return ORIGENS.includes(origin) || MODO_DEV;
   },
@@ -160,7 +160,8 @@ wss.on("connection", (socket) => {
       return;
     }
 
-    // ----- ações exclusivas de moderador (o papel vem do token, nunca do cliente) -----
+    //ações exclusivas de moderador
+    
     if (u.papel !== "moderador") return;
 
     if (m.tipo === "apagar") {
