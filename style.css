@@ -431,3 +431,20 @@ main {
 .cadastro-card br {
     display: none;
 }
+
+.login-redirect {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.login-redirect a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.login-redirect a:hover {
+    text-decoration: underline;
+}
