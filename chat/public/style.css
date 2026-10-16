@@ -1,0 +1,88 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: Arial, sans-serif;
+  background: #eef0f7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  height: 100dvh;
+}
+
+.chat {
+  width: 100%;
+  max-width: 420px;
+  height: min(600px, 100%);
+  background: #fff;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.topo {
+  background: #6c5ce7;
+  color: #fff;
+  padding: 16px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+}
+.topo span + span { font-size: 12px; font-weight: normal; opacity: 0.85; }
+
+.mensagens {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.msg {
+  max-width: 75%;
+  padding: 8px 14px;
+  border-radius: 16px;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+}
+.recebida { background: #eef0f7; align-self: flex-start; }
+.enviada { background: #6c5ce7; color: #fff; align-self: flex-end; }
+
+.nome { font-size: 12px; font-weight: bold; margin-bottom: 2px; color: #6c5ce7; }
+.selo { background: #e17055; color: #fff; font-size: 10px; padding: 1px 5px; border-radius: 6px; margin-left: 6px; }
+.hora { font-size: 11px; opacity: 0.6; text-align: right; margin-top: 2px; }
+
+.acoes { display: flex; gap: 6px; justify-content: flex-end; margin-top: 2px; opacity: 0.6; }
+.acoes button { background: none; border: none; cursor: pointer; font-size: 13px; }
+.acoes button:hover { opacity: 1; }
+
+.aviso {
+  align-self: center;
+  font-size: 12px;
+  color: #7a7f95;
+  background: #eef0f7;
+  padding: 4px 12px;
+  border-radius: 99px;
+  text-align: center;
+}
+
+.envio { display: flex; gap: 8px; padding: 12px; border-top: 1px solid #ddd; }
+.envio input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  outline: none;
+}
+.envio button {
+  background: #6c5ce7;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+.envio input:disabled, .envio button:disabled { opacity: 0.5; cursor: not-allowed; }
