@@ -119,6 +119,10 @@
 
             <button type="submit" class="btnSubmit" id="btnSubmit">Cadastrar</button>
 
+            <p class="login-redirect">
+                Já tem uma conta? <a href="login.php">Faça login</a>
+            </p>
+
         </form>
         </div>
     <script src="../java.js/cadastro.js"></script>
