@@ -68,7 +68,7 @@
             <button type="submit" class="btnSubmit" id="btnSubmit">Login</button>
 
             <p class="login-redirect">
-                Não tem uma conta? <a href="login.php">cadastre-se</a>
+                Não tem uma conta? <a href="cadastrar.php">cadastre-se</a>
             </p>
 
         </form>
