@@ -74,7 +74,7 @@ document.querySelectorAll("button, a").forEach(elemento => {
     if (elemento.textContent.trim() === "+") {
         elemento.addEventListener("click", function (evento) {
             evento.preventDefault();
-            window.location.href = "../biconline/publicacao.html";
+            window.location.href = "../publicacao.html";
         });
     }
 });
