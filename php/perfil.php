@@ -39,8 +39,8 @@ if ($tipo = "trabalhador"){
     
     $experiencia = $trabalhador["experiencia"] ?? "0";
     $disponibilidade = $trabalhador["disponibilidade"] ?? "0";
-    
-    $habilidade = $habilidades
+
+    $habilidade = $habilidades["habilidade"] ?? "";
 }
     
 

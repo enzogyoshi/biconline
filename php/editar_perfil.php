@@ -2,19 +2,59 @@
 require_once("conn.php");
 
 
-if (!isset($_SESSION["id_usuario"])) {
-    exit("Você precisa estar logado.");
+
+$sql = "SELECT nome, email, cidade, uf, bio, url_foto_perfil FROM usuario WHERE id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $_SESSION["id_usuario"]);
+$stmt->execute();
+
+$resultado = $stmt->get_result();
+$usuario = $resultado->fetch_assoc();
+
+
+if($_SERVER["REQUEST_METHOD"] === "POST") {
+
+    $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+    if ($email != $usuario["email"] ) {
+        editar_email($email);
+
+    };
+    $nome = filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_STRING);
+    if ($nome) {
+        editar_name($nome);
     }
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {}
-        
+    $cidade = filter_input(INPUT_POST, 'cidade', FILTER_SANITIZE_STRING);
+    if ($cidade) {
+        editar_cidade($cidade);
+    }
 
-        
+function editar_name($nome){
+    $sql = "UPDATE usuario SET nome = ? WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+        $stmt->bind_param("si", $nome, $_SESSION["id_usuario"]);
+        $stmt->execute();
+    }
+
+    function editar_email($email){
+        $sql = "UPDATE usuario SET email = ? WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("si", $email, $_SESSION["id_usuario"]);
+        $stmt->execute();
+    }
+
+    function editar_foto($url_foto){
+        $sql = "UPDATE usuario SET url_foto_perfil = ? WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("si", $url_foto, $_SESSION["id_usuario"]);
+        $stmt->execute();
+    }
+
+
+}
+
 
 ?>
-
-
-<!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
@@ -26,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {}
 <body>
     <div>
 
-        <form action="perfil.php" method="post">
+        <form action="perfil.php" method="post" onsubmit="return validar_edicao()">
             <label for="nome">Nome Completo:</label>
             <input type="text" id="txtNome" name="nome" class="txtbox" placeholder="<?php echo ($_SESSION("name")) ?>">
             <br><br>
@@ -95,21 +135,26 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {}
                 <Label for="habildade">Habilidade: </Label>
                 <input type="text" id="habilidade" name="habildade">
                 <br><br>
-                <label for="experiencia">Anos de experiencia: </label>
+                <label for="experiencia">Anos de experiencia:</label>
                 <input type="number" id="experiencia" name="experiencia">
                 <br><br>
-                <label for="disponibilidade">Disponibilidade</label>
+                <label for="disponibilidade">Disponibilidade:</label>
                 <input type="checkbox" name="disponibilidade" id="disponibilidade">
 
 
             </div>
-            <label for="telefone">Telefone de contato: </label>
+            <label for="telefone">Telefone de contato:</label>
             <input type="tel" id="telefone" name="telefone">
-            <label for="email">E-mail de contato: </label>
+            <label for="email">E-mail de contato:</label>
             <input type="email" id="email" name="email">
 
+
             <input type="submit" value="Editar">
+            <script src="editar.js"></script>
         </form>
+
+        <form action="" method="post"></form>
+        <input type="button" value="Deletar perfil">
     </div>
 
 </body>
