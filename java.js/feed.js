@@ -5,7 +5,7 @@ async function carregarPublicacoes() {
         return;
     }
     try {
-        const resposta = await fetch("../biconline/php/buscar-publicacao.php");
+        const resposta = await fetch("../php/buscar-publicacao.php");
         if (!resposta.ok) {
             throw new Error("Erro HTTP " + resposta.status);
         }
