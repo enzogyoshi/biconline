@@ -448,3 +448,34 @@ main {
 .login-redirect a:hover {
     text-decoration: underline;
 }
+
+.campo-senha {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.campo-senha input {
+    width: 100%;
+    padding-right: 40px;
+    box-sizing: border-box;
+}
+
+.btn-eye {
+    position: absolute;
+    right: 10px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    color: #666;
+    transition: color 0.2s ease;
+}
+
+.btn-eye:hover {
+    color: #333;
+}
