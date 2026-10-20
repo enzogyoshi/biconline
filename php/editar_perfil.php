@@ -1,60 +1,64 @@
 <?php
+session_start(); 
 require_once("conn.php");
 
+if (!isset($_SESSION["id_usuario"])) {
+    header("Location: login.php");
+    exit;
+}
 
+function editar_nome($conn, $nome, $id) {
+    $sql = "UPDATE usuario SET nome = ? WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("si", $nome, $id);
+    $stmt->execute();
+}
+
+function editar_email($conn, $email, $id) {
+    $sql = "UPDATE usuario SET email = ? WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("si", $email, $id);
+    $stmt->execute();
+}
+
+function editar_cidade($conn, $cidade, $id) {
+    $sql = "UPDATE usuario SET cidade = ? WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("si", $cidade, $id);
+    $stmt->execute();
+}
+
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $id_usuario = $_SESSION["id_usuario"];
+
+    $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+    if ($email) {
+        editar_email($conn, $email, $id_usuario);
+    }
+
+    $nome = filter_input(INPUT_POST, 'nome', FILTER_DEFAULT);
+    if (!empty($nome)) {
+        editar_nome($conn, $nome, $id_usuario);
+    }
+
+    $cidade = filter_input(INPUT_POST, 'cidade', FILTER_DEFAULT);
+    if (!empty($cidade)) {
+        editar_cidade($conn, $cidade, $id_usuario);
+    }
+    
+    header("Location: perfil.php");
+    exit;
+}
 
 $sql = "SELECT nome, email, cidade, uf, bio, url_foto_perfil FROM usuario WHERE id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $_SESSION["id_usuario"]);
 $stmt->execute();
-
 $resultado = $stmt->get_result();
 $usuario = $resultado->fetch_assoc();
-
-
-if($_SERVER["REQUEST_METHOD"] === "POST") {
-
-    $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
-    if ($email != $usuario["email"] ) {
-        editar_email($email);
-
-    };
-    $nome = filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_STRING);
-    if ($nome) {
-        editar_name($nome);
-    }
-
-    $cidade = filter_input(INPUT_POST, 'cidade', FILTER_SANITIZE_STRING);
-    if ($cidade) {
-        editar_cidade($cidade);
-    }
-
-function editar_name($nome){
-    $sql = "UPDATE usuario SET nome = ? WHERE id = ?";
-    $stmt = $conn->prepare($sql);
-        $stmt->bind_param("si", $nome, $_SESSION["id_usuario"]);
-        $stmt->execute();
-    }
-
-    function editar_email($email){
-        $sql = "UPDATE usuario SET email = ? WHERE id = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("si", $email, $_SESSION["id_usuario"]);
-        $stmt->execute();
-    }
-
-    function editar_foto($url_foto){
-        $sql = "UPDATE usuario SET url_foto_perfil = ? WHERE id = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("si", $url_foto, $_SESSION["id_usuario"]);
-        $stmt->execute();
-    }
-
-
-}
-
-
 ?>
+<!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
@@ -65,27 +69,27 @@ function editar_name($nome){
 
 <body>
     <div>
-
-        <form action="perfil.php" method="post" onsubmit="return validar_edicao()">
-            <label for="nome">Nome Completo:</label>
-            <input type="text" id="txtNome" name="nome" class="txtbox" placeholder="<?php echo ($_SESSION("name")) ?>">
+        <form action="perfil.php" method="post" enctype="multipart/form-data" onsubmit="return validar_edicao()">
+            
+            <label for="txtNome">Nome Completo:</label>
+            <input type="text" id="txtNome" name="nome" class="txtbox" placeholder="<?php echo htmlspecialchars($usuario["nome"] ?? ''); ?>">
             <br><br>
 
             <label for="foto_perfil">Foto de perfil:</label>
             <input type="file" name="foto_perfil" id="foto_perfil">
+            <br><br>
 
-
-            <label for="email">E-mail:</label>
+            <label for="txtEmail">E-mail:</label>
             <input type="email" id="txtEmail" name="email" maxlength="50" class="txtbox"
-                placeholder="<?php echo ($_SESSION("email")) ?>">
+                placeholder="<?php echo htmlspecialchars($usuario["email"] ?? ''); ?>">
             <br><br>
 
-            <label for="cidade">Cidade:</label>
+            <label for="txtCidade">Cidade:</label>
             <input type="text" id="txtCidade" name="cidade" maxlength="50" class="txtbox"
-                placeholder="<?php echo ($_SESSION("cidade")) ?>">
+                placeholder="<?php echo htmlspecialchars($usuario["cidade"] ?? ''); ?>">
             <br><br>
 
-            <label for="uf">Estado (UF):</label>
+            <label for="ufSelect">Estado (UF):</label>
             <select name="uf" id="ufSelect">
                 <option value="">Selecione...</option>
                 <option value="AC">AC</option>
@@ -118,45 +122,15 @@ function editar_name($nome){
             </select>
             <br><br>
 
-
             <label for="bio">Biografia: </label>
-            <input type="text" maxlength="500" name="bio" id="bio" placeholder="<?php echo ($bio) ?>">
-
+            <input type="text" maxlength="500" name="bio" id="bio" placeholder="<?php echo htmlspecialchars($usuario["bio"] ?? ''); ?>">
             <br><br>
-
-            <label for="tipo">Você deseja mudar sua conta para perfil de trabalhador </label>
-
-            <input type="checkbox" name="tipo" id="tipo">
-
-            <br><br>
-
-
-            <div class="trabalhador">
-                <Label for="habildade">Habilidade: </Label>
-                <input type="text" id="habilidade" name="habildade">
-                <br><br>
-                <label for="experiencia">Anos de experiencia:</label>
-                <input type="number" id="experiencia" name="experiencia">
-                <br><br>
-                <label for="disponibilidade">Disponibilidade:</label>
-                <input type="checkbox" name="disponibilidade" id="disponibilidade">
-
-
-            </div>
-            <label for="telefone">Telefone de contato:</label>
-            <input type="tel" id="telefone" name="telefone">
-            <label for="email">E-mail de contato:</label>
-            <input type="email" id="email" name="email">
-
 
             <input type="submit" value="Editar">
-            <script src="editar.js"></script>
         </form>
-
-        <form action="" method="post"></form>
-        <input type="button" value="Deletar perfil">
+        
+        <script src="editar.js"></script>
     </div>
-
 </body>
 
 </html>
