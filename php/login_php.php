@@ -37,7 +37,7 @@
         if (password_verify($senha, $hashSenha)) {
             session_regenerate_id(true);
             $_SESSION["usuario"] = $row["id"];
-            echo "login realizado com sucesso";
+            header("Location: ../feed/feed.html");
 
         } else {
             logInvalido("email ou senha incorretos");

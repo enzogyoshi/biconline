@@ -232,3 +232,22 @@
     cnpj.addEventListener("input", function() {
         bloquearSeOutroPreenchido(cpf, cnpj)
     })
+
+    document.querySelectorAll(".btn-eye").forEach(btn => {
+        btn.addEventListener("click", function() {
+            const targetId = this.dataset.target
+            const input = document.getElementById(targetId)
+            const iconEye = this.querySelector(".icon-eye")
+            const iconEyeOff = this.querySelector(".icon-eye-off")
+
+            if (input && input.type === "password") {
+                input.type = "text"
+                if (iconEye) iconEye.style.display = "none"
+                if (iconEyeOff) iconEyeOff.style.display = "block"
+            } else if (input) {
+                input.type = "password"
+                if (iconEye) iconEye.style.display = "block"
+                if (iconEyeOff) iconEyeOff.style.display = "none"
+            }
+        })
+    })
