@@ -32,19 +32,14 @@
     $result = $stmt->get_result();
 
     if ($row = $result->fetch_assoc()) {
-        $hashSenha = $row["senha"];
-
-        if (password_verify($senha, $hashSenha)) {
-            session_regenerate_id(true);
-            $_SESSION["usuario"] = $row["id"];
-            header("Location: ../feed/feed.html");
-
-        } else {
-            logInvalido("email ou senha incorretos");
-        }
-
-    } else {
-        logInvalido("email ou senha incorretos");
+        if (password_verify($senha, $row["senha"])) {
+        session_regenerate_id(true);
+        $_SESSION["usuario"] = $row["id"];
+        header("Location: chat.php"); // temporário, depois vira a página inicial
+        exit;
     }
+}
+
+logInvalido("email ou senha incorretos");
 
 ?>
