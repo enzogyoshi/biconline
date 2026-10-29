@@ -1,5 +1,5 @@
 <?php
-
+require_once "proteger.php";
 require_once("conn.php");
 
 $pesquisa = filter_input(INPUT_GET, "pesquisa", FILTER_DEFAULT);

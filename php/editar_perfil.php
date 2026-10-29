@@ -1,17 +1,6 @@
 <?php
-
+require_once "proteger.php";
 require_once("conn.php");
-
-
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-if (!isset($_SESSION['usuario']) || empty($_SESSION['usuario'])) {
-    header('Location: login.php');
-    exit;
-}
-
 
 $id_usuario = $_SESSION["usuario"];
 

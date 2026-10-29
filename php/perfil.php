@@ -1,14 +1,7 @@
 <?php
+require_once "proteger.php";
 require_once("conn.php");
 include("pesquisa.php");
-
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-if (!isset($_SESSION['usuario']) || empty($_SESSION['usuario'])) {
-    header('Location: login.php');
-    exit;
-}
 
 $permissoes = false;
 
