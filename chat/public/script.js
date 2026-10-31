@@ -3,8 +3,7 @@ const texto = document.getElementById("texto");
 const botao = form.querySelector("button");
 const mensagens = document.getElementById("mensagens");
 const status = document.getElementById("status");
-
-// token vindo do site (PHP). Some da barra de endereço logo ao abrir.
+const titulo = document.getElementById("titulo");
 const params = new URLSearchParams(location.search);
 const tokenInicial = params.get("token");
 if (tokenInicial) history.replaceState(null, "", location.pathname);
@@ -13,7 +12,7 @@ const ler = (k) => { try { return localStorage.getItem(k); } catch { return null
 const guardar = (k, v) => { try { localStorage.setItem(k, v); } catch {} };
 
 let nomeDev = params.get("nome") || ler("nome");
-let socket, usuario = null, renovacao = null;
+let socket, usuario = null, renovacao = null, moderacao = false;
 let tentativas = 0, encerrado = false, totalOnline = 0;
 
 function el(tag, classe, conteudo) {
@@ -36,7 +35,7 @@ function dadosAuth() {
     nomeDev = prompt("Qual é o seu nome?") || "Anônimo";
     guardar("nome", nomeDev);
   }
-  return { tipo: "auth", dev: true, nome: nomeDev };
+  return { tipo: "auth", dev: true, nome: nomeDev, sala: params.get("sala") || "geral" };
 }
 
 function adicionar(m) {
@@ -51,32 +50,33 @@ function adicionar(m) {
   }
   div.append(el("div", "conteudo", m.texto), el("div", "hora", m.hora));
 
-  if (usuario && usuario.papel === "moderador") {
-    const acoes = el("div", "acoes");
+  const acoes = el("div", "acoes");
+  if (minha || moderacao) {
     const apagar = el("button", "", "🗑");
     apagar.type = "button";
     apagar.title = "Apagar mensagem";
     apagar.onclick = () => enviar({ tipo: "apagar", mid: m.mid });
     acoes.append(apagar);
-
-    if (!minha && m.papel !== "moderador") {
-      const mudo = el("button", "", "🔇");
-      mudo.type = "button";
-      mudo.title = "Silenciar usuário";
-      mudo.onclick = () => {
-        const min = prompt("Silenciar por quantos minutos?", "10");
-        if (min) enviar({ tipo: "silenciar", uid: m.uid, minutos: min });
-      };
-      acoes.append(mudo);
-    }
-    div.append(acoes);
   }
+  if (moderacao && !minha && m.papel !== "moderador") {
+    const mudo = el("button", "", "🔇");
+    mudo.type = "button";
+    mudo.title = "Silenciar usuário";
+    mudo.onclick = () => {
+      const min = prompt("Silenciar por quantos minutos?", "10");
+      if (min) enviar({ tipo: "silenciar", uid: m.uid, minutos: min });
+    };
+    acoes.append(mudo);
+  }
+  if (acoes.children.length) div.append(acoes);
   mensagens.append(div);
 }
 
 function tratar(m) {
   if (m.tipo === "ok") {
     usuario = m.usuario;
+    moderacao = !!m.moderacao;
+    if (m.titulo) titulo.textContent = "💬 " + m.titulo;
     renovacao = m.renovacao || renovacao;
     tentativas = 0;
     habilitar(true);
@@ -136,7 +136,6 @@ form.addEventListener("submit", (e) => {
   texto.focus();
 });
 
-// batimento a cada 25s (evita conexão ociosa e conta como atividade no Render)
 setInterval(() => enviar({ tipo: "ping" }), 25000);
 
 conectar();
