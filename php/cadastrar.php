@@ -13,33 +13,6 @@ if (session_id() == "") {
     <link rel="stylesheet" href="../style.css">
 </head>
 
-<body>
-    <header>
-        <nav>
-            <img src="#" alt="Logo">
-            <input type="search" name="Pesquisar" placeholder="Pesquisar" class="logo">
-
-            <input type="checkbox" id="menu-toggle">
-
-            <label for="menu-toggle" class="menu-btn">☰ </label>
-            <ul class="nav-links">
-                <li>
-                    <a href="index.html">
-                        <span class="icone-casa">⌂</span> HOME
-                    </a>
-                </li>
-                <li>
-                    <a href="#">✉ VAGAS</a>
-                </li>
-                <li>
-                    <a href="Perfil.html">
-                        <img src="" alt="Perfil">
-                    </a>
-                </li>
-
-            </ul>
-        </nav>
-    </header>
     <section class="cadastro-container">
         <div class="cadastro-card">
             <h2>cadastro</h2>

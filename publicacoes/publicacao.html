@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Publicação - Biconline</title>
+</head>
+<body>
+
+
+    <form action="php/criar-publicacao.php" method="POST" enctype="multipart/form-data" class="formulario-post">
+        
+        <div class="back-btn">
+            <button type="button" class="btn-voltar" onclick="voltarPagina()">X</button>
+        </div>
+        <hr>
+
+        <div class="form-body">
+            <label for="post-texto" class="sr-only"><strong>O que deseja compartilhar?</strong></label>
+            <textarea id="post-texto" name="texto" rows="5" placeholder="O que deseja compartilhar..." required></textarea>
+        </div>
+
+        <div class="form-extra">
+            <br>
+            <div class="file-input">
+                <label id="label-midia" for="post-midia">Adicionar foto / vídeo</label>
+                <br>
+                <input type="file" id="post-midia" class="midia-form" name="midia" accept="image/*,video/*">
+            </div>
+            <br>
+            <div class="input-links">
+                <label for="post-link">Adicionar link (opcional)</label>
+                <br>
+                <input type="url" id="post-link" name="link" placeholder="https://exemplo.com">
+            </div>
+        </div>
+
+        <div class="form-footer">
+            <br>
+            <button type="submit" class="btn-publicar">Publicar</button>
+        </div>
+
+    </form>
+
+    <script src="publicacao.js"></script>
+
+</body>
+</html>
