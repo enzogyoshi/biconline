@@ -1,8 +1,10 @@
 <?php
+// Mostra uma conversa privada. Uso: chat.php?id=ID_DA_CONVERSA
 session_start();
 require_once __DIR__ . '/conn.php';
 require_once __DIR__ . '/config.local.php';
 require_once __DIR__ . '/gerar-token.php';
+require_once __DIR__ . '/conversas_lib.php';
 
 if (empty($_SESSION['usuario'])) {
     header('Location: login.php');
@@ -17,6 +19,7 @@ if ($idChat <= 0) {
     exit;
 }
 
+// a conversa existe E o usuário logado faz parte dela? (sem isso, ninguém entra)
 $stmt = $conn->prepare("
     SELECT c.id,
            CASE WHEN c.id_usuario = ? THEN ut.nome ELSE uc.nome END AS outro
@@ -52,17 +55,30 @@ $token = gerarTokenChat([
     'sala'   => 'c' . $idChat,
     'titulo' => $conversa['outro'],
 ]);
-$src = CHAT_URL . '/?token=' . urlencode($token);
+
+//url chat = auto
+$base = (CHAT_URL === 'auto')
+    ? 'http://' . preg_replace('/[^A-Za-z0-9.\-]/', '', $_SERVER['SERVER_NAME'] ?? 'localhost') . ':3000'
+    : CHAT_URL;
+$src = $base . '/?token=' . urlencode($token);
+
+$conversas = listarConversas($conn, $idUsuario);
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Conversa com <?= htmlspecialchars($conversa['outro']) ?></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Conversa com <?= h($conversa['outro']) ?></title>
+  <link rel="stylesheet" href="chat-paginas.css">
 </head>
 <body>
-  <p><a href="conversas.php">&larr; Minhas conversas</a></p>
-  <iframe src="<?= htmlspecialchars($src) ?>"
-          style="width:100%; max-width:450px; height:620px; border:none; border-radius:16px;"></iframe>
+  <div class="app com-conversa">
+    <?php renderLateral($conversas, $idChat); ?>
+    <section class="principal">
+      <a class="voltar" href="conversas.php">&larr; Conversas</a>
+      <iframe src="<?= h($src) ?>" title="Conversa com <?= h($conversa['outro']) ?>"></iframe>
+    </section>
+  </div>
 </body>
 </html>

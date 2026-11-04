@@ -76,7 +76,7 @@ function tratar(m) {
   if (m.tipo === "ok") {
     usuario = m.usuario;
     moderacao = !!m.moderacao;
-    if (m.titulo) titulo.textContent = "💬 " + m.titulo;
+    if (m.titulo) titulo.textContent = "" + m.titulo;
     renovacao = m.renovacao || renovacao;
     tentativas = 0;
     habilitar(true);
