@@ -197,7 +197,7 @@ $url_foto = $usuario["url_foto_perfil"] ?? "";
     </div>
 
     <?php if (!empty($permissoes)): ?>
-        <a href="../publicacao.html" class="btn-criar-pub">Criar publicações</a>
+    <a href="../publicacoes/publicacao.html" class="btn-criar-pub">Criar publicações</a>
     <?php endif; ?>
 </div>
 

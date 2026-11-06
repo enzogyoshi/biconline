@@ -1,4 +1,21 @@
 const feed = document.getElementById("feed-publicacoes");
+function corrigirCaminho(caminho) {
+    if (!caminho) return "";
+
+    if (caminho.startsWith("http://") || caminho.startsWith("https://")) {
+        return caminho;
+    }
+
+    if (caminho.startsWith("/biconline/")) {
+        return caminho;
+    }
+
+    const caminhoLimpo = caminho
+        .replace(/^(\.\.\/|\.\/)+/, "")
+        .replace(/^\/+/, "");
+
+    return "/biconline/" + caminhoLimpo;
+}
 
 async function carregarPublicacoes() {
     if (!feed) {
@@ -36,11 +53,9 @@ async function carregarPublicacoes() {
             const foto = document.createElement("img");
             foto.className = "publicacao-foto";
             
-            const fotoUrl = publicacao.url_foto_perfil 
-                ? "../" + publicacao.url_foto_perfil.replace(/^\/+/, "")
-                : "../img/perfil-padrao.png";
-            foto.src = fotoUrl;
-            foto.alt = "Foto de perfil";
+            const fotoUrl = publicacao.url_foto_perfil
+            ? corrigirCaminho(publicacao.url_foto_perfil)
+            : "/biconline/img/perfil-padrao.png";
 
             const usuario = document.createElement("div");
             usuario.className = "publicacao-usuario";
@@ -70,7 +85,7 @@ async function carregarPublicacoes() {
             cartao.append(cabecalho, texto);
 
             if (publicacao.url_midia) {
-                const caminhoMidia = "../" + publicacao.url_midia.replace(/^\/+/, "");
+                const caminhoMidia = corrigirCaminho(publicacao.url_midia);
                 const extensao = caminhoMidia.split('.').pop().toLowerCase();
 
                 if (['mp4', 'webm'].includes(extensao)) {
@@ -115,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (elemento.textContent.trim() === "+") {
             elemento.addEventListener("click", function (evento) {
                 evento.preventDefault();
-                window.location.href = "../publicacao.html";
+                window.location.href = "../publicacoes/publicacao.html";
             });
         }
     });
