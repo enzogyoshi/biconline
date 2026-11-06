@@ -76,6 +76,7 @@ $score = $usuario["score_avaliacao"] ?? 0;
 $url_foto = $usuario["url_foto_perfil"] ?? "";
 ?>
 
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 
