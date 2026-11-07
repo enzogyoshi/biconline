@@ -1,15 +1,7 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
+require_once "proteger.php";
 require_once("conn.php");
 
-
-if (!isset($_SESSION['usuario']) || empty($_SESSION['usuario'])) {
-    header('Location: login.php');
-    exit;
-}
 
 $permissoes = false;
 $id_url = filter_input(INPUT_GET, 'pesquisa', FILTER_VALIDATE_INT);

@@ -1,3 +1,7 @@
+<?php 
+    require_once "proteger.php";
+    require_once "conn.php";
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
