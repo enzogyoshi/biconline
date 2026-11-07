@@ -44,8 +44,8 @@ if (!empty($arquivo_midia["name"])) {
         $url_midia = "/biconline/img/" . $nome_arquivo;
     }else {
         die("Erro ao salvar a mídia.");
+    }
 }
-
 $sql = "INSERT INTO publicacao (conteudo, url_midia, link, data_pub, id_usuario)
         VALUES (?, ?, ?, NOW(), ?)";
 
