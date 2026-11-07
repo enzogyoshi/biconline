@@ -1,6 +1,6 @@
 <?php
 require_once("usuario.php");
-require_once('pesquisa.php');
+
 
 ?>
 <!DOCTYPE html>
