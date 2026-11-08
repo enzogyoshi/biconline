@@ -36,6 +36,7 @@ function listarConversas(mysqli $conn, int $idUsuario): array {
 
 function renderLateral(array $conversas, int $ativo = 0): void { ?>
   <aside class="lateral">
+    <a class="voltar-site" href="../feed/feed.html">&larr; Voltar ao feed</a>
     <h1>Conversas</h1>
     <div class="lista">
       <?php if (!$conversas): ?>

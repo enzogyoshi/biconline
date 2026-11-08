@@ -58,3 +58,6 @@ body {
   .sem-conversa .principal { display: none; }
   .voltar { display: block; }
 }
+
+.voltar-site { display: block; padding: 16px 20px 0; color: var(--cor); text-decoration: none; font-weight: 600; font-size: 14px; }
+.voltar-site:hover { text-decoration: underline; }

@@ -8,24 +8,30 @@ if (empty($_SESSION['usuario'])) {
 }
 
 $idUsuario = (int)$_SESSION['usuario'];
-$idTrabalhador = (int)($_GET['trabalhador'] ?? 0);
+$porUsuario = isset($_GET['usuario']);
+$idParam = (int)($_GET['usuario'] ?? $_GET['trabalhador'] ?? 0);
 
-if ($idTrabalhador <= 0) {
+if ($idParam <= 0) {
     http_response_code(400);
-    exit('Trabalhador inválido.');
+    exit('Pedido inválido.');
 }
 
-$stmt = $conn->prepare("SELECT id_usuario FROM trabalhador WHERE id = ?");
-$stmt->bind_param("i", $idTrabalhador);
+$sql = $porUsuario
+    ? "SELECT id, id_usuario FROM trabalhador WHERE id_usuario = ? LIMIT 1"
+    : "SELECT id, id_usuario FROM trabalhador WHERE id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $idParam);
 $stmt->execute();
 $t = $stmt->get_result()->fetch_assoc();
 
 if (!$t) {
     http_response_code(404);
-    exit('Trabalhador não encontrado.');
+    exit('Essa pessoa não é um trabalhador, então não recebe conversas.');
 }
 
+$idTrabalhador = (int)$t['id'];
 $idOutro = (int)$t['id_usuario'];
+
 if ($idOutro === $idUsuario) {
     exit('Você não pode abrir uma conversa consigo mesmo.');
 }
@@ -44,10 +50,17 @@ $c = $stmt->get_result()->fetch_assoc();
 if (!$c) {
     $stmt = $conn->prepare("INSERT INTO chat (id_usuario, id_trabalhador) VALUES (?, ?)");
     $stmt->bind_param("ii", $idUsuario, $idTrabalhador);
-    $stmt->execute();
-    $idChat = (int)$conn->insert_id;
+    if (!$stmt->execute()) {
+        http_response_code(500);
+        exit('Erro ao criar a conversa: ' . htmlspecialchars($stmt->error));
+    }
+    $idChat = (int)$stmt->insert_id;
 } else {
     $idChat = (int)$c['id'];
+}
+
+if ($idChat <= 0) {
+    exit('Não foi possível abrir a conversa.');
 }
 
 header('Location: chat.php?id=' . $idChat);
