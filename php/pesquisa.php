@@ -19,7 +19,7 @@ if (!empty($pesquisa)) {
 if (!empty($usuarios)) {
   header("Location: perfil.php?pesquisa=" . $resultado_busca["id"]);
     exit;
-} else {
+} else  {
     $_SESSION["erro"] = "Nenhum usuário encontrado.";
     header("Location: perfil.php");
     exit;   }

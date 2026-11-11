@@ -1,6 +1,6 @@
 <?php
 require_once("usuario.php");
-require_once('pesquisa.php');
+
 
 ?>
 <!DOCTYPE html>
@@ -41,6 +41,7 @@ require_once('pesquisa.php');
         </nav>
     </header>
     <main>
+
         <div class="perfil">
             <div class="foto-perfil">
                 <?php if (!empty($url_foto)): ?>
@@ -105,6 +106,14 @@ require_once('pesquisa.php');
         <?php if (!empty($publicacoes)): ?>
             <?php foreach ($publicacoes as $pub): ?>
                 <div class="publicacao">
+                    <?php if ($permissoes): ?>
+                        <a href="editar-publicacao.php?id=<?= htmlspecialchars($pub['id'] ?? '') ?>" class="btn-editar">Editar</a>
+                        <form action="deletar_publicacao.php" method="post" onsubmit="return confirm('Tem certeza que deseja deletar esta publicação?')">
+                            <input type="hidden" name="id" value="<?= htmlspecialchars($pub['id'] ?? '') ?>">
+                            <input type="submit" value="Deletar">
+                        </form>
+                    <?php endif; ?>
+
                     <p><?= htmlspecialchars($pub["conteudo"]) ?></p>
                     
                     <?php if (!empty($pub["url_midia"])): ?>
@@ -124,7 +133,7 @@ require_once('pesquisa.php');
     </div>
 
     <?php if (!empty($permissoes)): ?>
-        <a href="../publicacao.html" class="btn-criar-pub">Criar publicações</a>
+        <a href="../publicacao/publicacao.html" class="btn-criar-pub">Criar publicações</a>
     <?php endif; ?>
 </div>
 
@@ -149,5 +158,6 @@ require_once('pesquisa.php');
         </div>
     </main>
 </body>
+
 
 </html>

@@ -88,10 +88,7 @@ try {
     $stmt->execute();
     $stmt->close();
 
-    $stmt = $conn->prepare("DELETE FROM publicacao WHERE id_usuario = ?");
-    $stmt->bind_param("i", $id);
-    $stmt->execute();
-    $stmt->close();
+    require_once("deletar_publicacao.php");
 
     $stmt = $conn->prepare("DELETE FROM contatos WHERE id_usuario = ?");
     $stmt->bind_param("i", $id);
