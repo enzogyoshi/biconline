@@ -117,6 +117,16 @@ require_once 'usuario.php';
                     <?php endif; ?>
 
                     <small>Publicado em: <?= date('d/m/Y H:i', strtotime($pub["data_pub"])) ?></small>
+                    <?php if (!empty($permissoes)): ?>
+                        <div class="acoes-publicacao">
+                            <a class="btn-editar-publicacao" href="editar-publicacao.php?id=<?= (int)$pub['id'] ?>&amp;voltar=perfil" target="_blank" rel="noopener noreferrer">Editar</a>
+                            <form action="gerenciar-publicacao.php" method="post" onsubmit="return confirm('Deseja excluir esta publicação?');">
+                                <input type="hidden" name="acao" value="excluir">
+                                <input type="hidden" name="id" value="<?= (int)$pub['id'] ?>">
+                                <button type="submit" class="btn-excluir-publicacao">Excluir</button>
+                            </form>
+                        </div>
+                    <?php endif; ?>
                 </div>
             <?php endforeach; ?>
         <?php else: ?>
@@ -150,5 +160,4 @@ require_once 'usuario.php';
         </div>
     </main>
 </body>
-
 </html>

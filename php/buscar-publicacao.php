@@ -1,5 +1,8 @@
 <?php
 header("Content-Type: application/json; charset=UTF-8");
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 require_once "conn.php";
 $sql = "SELECT
             p.id,
@@ -7,6 +10,7 @@ $sql = "SELECT
             p.url_midia,
             p.link,
             p.data_pub,
+            p.id_usuario,
             u.nome,
             u.url_foto_perfil
         FROM publicacao p
@@ -22,6 +26,7 @@ if (!$resultado) {
 }
 $publicacoes = [];
 while ($linha = $resultado->fetch_assoc()) {
+    $linha["eh_dono"] = isset($_SESSION["usuario"]) && (int)$_SESSION["usuario"] === (int)$linha["id_usuario"];
     $publicacoes[] = $linha;
 }
 echo json_encode($publicacoes, JSON_UNESCAPED_UNICODE);
