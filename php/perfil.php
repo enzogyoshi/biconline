@@ -75,6 +75,9 @@ require_once 'usuario.php';
 
             <?php if (!empty($permissoes)): ?>
                 <a href="editar.php" class="btn-editar">Editar perfil</a>
+                <form action="logout.php" method="post" style="display: inline;">
+                    <button type="submit" class="btn-sair">Sair</button>
+                </form>
             <?php elseif (!empty($disponibilidade)): ?>
                 <a href="iniciar_chat.php?usuario=<?= (int)$id_usuario ?>" class="btn-editar">Conversar</a>
                 <button type="button" onclick="entrarContato()">Entrar em Contato</button>
