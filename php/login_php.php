@@ -35,6 +35,7 @@
         if (password_verify($senha, $row["senha"])) {
         session_regenerate_id(true);
         $_SESSION["usuario"] = $row["id"];
+
         header("Location: ../feed/feed.html");
         exit;
     }

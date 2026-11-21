@@ -1,5 +1,5 @@
 <?php
-require_once 'usuario.php';
+require_once("usuario.php");
 
 ?>
 
@@ -41,6 +41,7 @@ require_once 'usuario.php';
         </nav>
     </header>
     <main>
+
         <div class="perfil">
             <div class="foto-perfil">
                 <?php if (!empty($url_foto)): ?>
@@ -66,6 +67,15 @@ require_once 'usuario.php';
                         <?php endif; ?>
                     </p>
                 <?php endif; ?>
+
+                <?php if (!$permissoes): ?>
+                    <a href="denunciar.php">Denunciar Perfil</a>
+                <?php endif; ?>
+                
+                <?php if (!empty($is_moderador) && $permissoes == false): ?>
+                    <a href="moderar.php">Moderar Perfil</a>
+                <?php endif; ?>
+
             </div>
         </div>
 
@@ -106,6 +116,14 @@ require_once 'usuario.php';
         <?php if (!empty($publicacoes)): ?>
             <?php foreach ($publicacoes as $pub): ?>
                 <div class="publicacao">
+                    <?php if ($permissoes): ?>
+                        <a href="editar-publicacao.php?id=<?= htmlspecialchars($pub['id'] ?? '') ?>" class="btn-editar">Editar</a>
+                        <form action="deletar_publicacao.php" method="post" onsubmit="return confirm('Tem certeza que deseja deletar esta publicação?')">
+                            <input type="hidden" name="id" value="<?= htmlspecialchars($pub['id'] ?? '') ?>">
+                            <input type="submit" value="Deletar">
+                        </form>
+                    <?php endif; ?>
+
                     <p><?= htmlspecialchars($pub["conteudo"]) ?></p>
                     
                     <?php if (!empty($pub["url_midia"])): ?>
@@ -117,6 +135,16 @@ require_once 'usuario.php';
                     <?php endif; ?>
 
                     <small>Publicado em: <?= date('d/m/Y H:i', strtotime($pub["data_pub"])) ?></small>
+                    <?php if (!empty($permissoes)): ?>
+                        <div class="acoes-publicacao">
+                            <a class="btn-editar-publicacao" href="editar-publicacao.php?id=<?= (int)$pub['id'] ?>&amp;voltar=perfil" target="_blank" rel="noopener noreferrer">Editar</a>
+                            <form action="gerenciar-publicacao.php" method="post" onsubmit="return confirm('Deseja excluir esta publicação?');">
+                                <input type="hidden" name="acao" value="excluir">
+                                <input type="hidden" name="id" value="<?= (int)$pub['id'] ?>">
+                                <button type="submit" class="btn-excluir-publicacao">Excluir</button>
+                            </form>
+                        </div>
+                    <?php endif; ?>
                 </div>
             <?php endforeach; ?>
         <?php else: ?>
@@ -125,10 +153,15 @@ require_once 'usuario.php';
     </div>
 
     <?php if (!empty($permissoes)): ?>
+<<<<<<< HEAD
+
     <a href="../publicacoes/publicacao.html" class="btn-criar-pub">Criar publicações</a>
+
+=======
+    <a href="../publicacoes/publicacao.html" class="btn-criar-pub">Criar publicações</a>
+>>>>>>> 5e0995d7d2cbc710ab48183f03386c957c5b11c4
     <?php endif; ?>
 </div>
-
         </div>
 
         <div class="avaliacoes">
@@ -150,5 +183,10 @@ require_once 'usuario.php';
         </div>
     </main>
 </body>
+<<<<<<< HEAD
+
 
 </html>
+=======
+</html>
+>>>>>>> 5e0995d7d2cbc710ab48183f03386c957c5b11c4

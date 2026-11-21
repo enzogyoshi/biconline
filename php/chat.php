@@ -1,10 +1,10 @@
 <?php
-// Mostra uma conversa privada. Uso: chat.php?id=ID_DA_CONVERSA
-session_start();
-require_once __DIR__ . '/conn.php';
-require_once __DIR__ . '/config.local.php';
-require_once __DIR__ . '/gerar-token.php';
-require_once __DIR__ . '/conversas_lib.php';
+
+// Exemplo de página que mostra o chat para o usuário logado.
+require_once "proteger.php";
+require __DIR__ . '/config.local.php';
+require __DIR__ . '/gerar-token.php';
+
 
 if (empty($_SESSION['usuario'])) {
     header('Location: login.php');

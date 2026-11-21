@@ -32,7 +32,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.error("Erro ao publicar:", erro);
                 alert("Ocorreu um erro ao enviar sua publicação. Tente novamente.");
                 
-                // Reabilita o botão caso haja erro
                 if (btnPublicar) {
                     btnPublicar.disabled = false;
                     btnPublicar.textContent = "Publicar";

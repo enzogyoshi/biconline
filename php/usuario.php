@@ -4,7 +4,6 @@ require_once 'proteger.php';
 require_once("conn.php");
 
 
-
 $permissoes = false;
 $id_url = filter_input(INPUT_GET, 'pesquisa', FILTER_VALIDATE_INT);
 
@@ -20,7 +19,7 @@ if ($id_url && $id_url > 0) {
 }
 
 // Usuario
-$sql = "SELECT nome, cidade, uf, bio, score_avaliacao, url_foto_perfil FROM usuario WHERE id = ?";
+$sql = "SELECT nome, cidade, uf, bio, score_avaliacao, url_foto_perfil, is_moderador FROM usuario WHERE id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $id_usuario);
 $stmt->execute();
@@ -158,5 +157,8 @@ $uf = $usuario["uf"] ?? "";
 $bio = $usuario["bio"] ?? "Sem biografia";
 $score = $usuario["score_avaliacao"] ?? 0;
 $url_foto = $usuario["url_foto_perfil"] ?? "";
+$is_moderador = $usuario["is_moderador"] ?? 0;
+
+
 
 ?>
