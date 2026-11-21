@@ -1,6 +1,6 @@
 <?php
 // Exemplo de página que mostra o chat para o usuário logado.
-session_start();
+require_once "proteger.php";
 require __DIR__ . '/config.local.php';
 require __DIR__ . '/gerar-token.php';
 

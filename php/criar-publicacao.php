@@ -41,11 +41,10 @@ if (!empty($arquivo_midia["name"])) {
     $destino = $pasta . $nome_arquivo;
 
     if (move_uploaded_file($arquivo_midia["tmp_name"], $destino)) {
-        $url_midia = "../img/" . $nome_arquivo;
-    } else {
+        $url_midia = "/biconline/img/" . $nome_arquivo;
+    }else {
         die("Erro ao salvar a mídia.");
-    }
-}
+}}
 
 $sql = "INSERT INTO publicacao (conteudo, url_midia, link, data_pub, id_usuario)
         VALUES (?, ?, ?, NOW(), ?)";

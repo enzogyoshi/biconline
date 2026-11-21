@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     btnPublicar.textContent = "Publicando...";
                 }
 
-                const resposta = await fetch("php/criar-publicacao.php", {
+                const resposta = await fetch("../php/criar-publicacao.php", {
                     method: "POST",
                     body: dados
                 });
@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const retorno = await resposta.text();
                 console.log("Resposta do servidor:", retorno);
 
-                window.location.href = "php/perfil.php";
+                window.location.href = "../php/perfil.php";
 
             } catch (erro) {
                 console.error("Erro ao publicar:", erro);

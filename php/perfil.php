@@ -3,6 +3,7 @@ require_once("usuario.php");
 
 
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -67,6 +68,15 @@ require_once("usuario.php");
                         <?php endif; ?>
                     </p>
                 <?php endif; ?>
+
+                <?php if (!$permissoes): ?>
+                    <a href="denunciar.php">Denunciar Perfil</a>
+                <?php endif; ?>
+                
+                <?php if (!empty($is_moderador) && $permissoes == false): ?>
+                    <a href="moderar.php">Moderar Perfil</a>
+                <?php endif; ?>
+
             </div>
         </div>
 
@@ -133,10 +143,11 @@ require_once("usuario.php");
     </div>
 
     <?php if (!empty($permissoes)): ?>
-        <a href="../publicacao/publicacao.html" class="btn-criar-pub">Criar publicações</a>
+
+    <a href="../publicacoes/publicacao.html" class="btn-criar-pub">Criar publicações</a>
+
     <?php endif; ?>
 </div>
-
         </div>
 
         <div class="avaliacoes">
