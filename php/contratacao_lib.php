@@ -1,7 +1,4 @@
 <?php
-// Funções comuns da contratação pelo chat (PARTE 2).
-// Todas as páginas que incluem este arquivo precisam ter chamado session_start() antes.
-
 function respostaJson(int $codigo, array $dados): void {
     http_response_code($codigo);
     header('Content-Type: application/json; charset=utf-8');
@@ -23,7 +20,7 @@ function exigirPost(): void {
     }
 }
 
-// ---- proteção contra envio forjado (CSRF) ----
+//proteção contra envio forjado
 function csrfToken(): string {
     if (empty($_SESSION['csrf'])) {
         $_SESSION['csrf'] = bin2hex(random_bytes(32));
@@ -38,9 +35,6 @@ function exigirCsrf(): void {
     }
 }
 
-// ---- a conversa e o papel do usuário nela ----
-// Devolve null se a conversa não existir ou se o usuário não fizer parte dela.
-// papel 'contratante' = quem iniciou a conversa (chat.id_usuario); 'trabalhador' = o outro lado.
 function conversaDoUsuario(mysqli $conn, int $idChat, int $idUsuario): ?array {
     $stmt = $conn->prepare("
         SELECT c.id,
@@ -64,7 +58,7 @@ function conversaDoUsuario(mysqli $conn, int $idChat, int $idUsuario): ?array {
     return $c;
 }
 
-// a proposta mais recente da conversa (ou null)
+// a proposta mais recente da conversa 
 function propostaMaisRecente(mysqli $conn, int $idChat): ?array {
     $stmt = $conn->prepare("
         SELECT id, id_chat, descricao, valor, data_servico, status, criada_em, respondida_em, id_servico
@@ -75,8 +69,6 @@ function propostaMaisRecente(mysqli $conn, int $idChat): ?array {
     return $p ?: null;
 }
 
-// ---- leitura dos campos do formulário ----
-// "150", "150,5", "1.234,56" ou "1234.56". Vazio = sem valor (null). Inválido = false.
 function lerValor(string $txt) {
     $txt = trim(str_replace(['R$', ' '], '', $txt));
     if ($txt === '') {
@@ -92,7 +84,6 @@ function lerValor(string $txt) {
     return number_format((float)$txt, 2, '.', '');
 }
 
-// "AAAA-MM-DD", hoje ou futuro. Vazio = sem data (null). Inválido = false.
 function lerData(string $txt) {
     $txt = trim($txt);
     if ($txt === '') {

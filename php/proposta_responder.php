@@ -1,8 +1,4 @@
 <?php
-// PARTE 2 — Responder a uma proposta.
-// POST: csrf, id_proposta, acao = aceitar | recusar | cancelar
-//   aceitar/recusar: só o trabalhador da conversa
-//   cancelar:        só o contratante, e só enquanto estiver pendente
 session_start();
 require_once __DIR__ . '/conn.php';
 require_once __DIR__ . '/contratacao_lib.php';
@@ -24,9 +20,10 @@ try {
 
     // trava a proposta para ninguém responder duas vezes ao mesmo tempo
     $stmt = $conn->prepare("
-        SELECT p.id, p.id_chat, p.status,
-               c.id_usuario AS id_contratante,
-               t.id_usuario AS id_usuario_trabalhador
+        SELECT p.id, p.id_chat, p.status, p.descricao, p.data_servico,
+               c.id_usuario      AS id_contratante,
+               c.id_trabalhador  AS id_trabalhador,
+               t.id_usuario      AS id_usuario_trabalhador
         FROM proposta p
         JOIN chat c ON c.id = p.id_chat
         JOIN trabalhador t ON t.id = c.id_trabalhador
@@ -63,8 +60,9 @@ try {
         respostaJson(409, ['ok' => false, 'erro' => 'Esta proposta já foi respondida.']);
     }
 
-    // PARTE 4: quando $acao === 'aceitar', é aqui que será criado o registro em "servico"
-    // e gravado proposta.id_servico, ainda dentro desta transação.
+    if ($acao === 'aceitar') {
+        criarServicoAoAceitar($conn, $idProposta, $p);
+    }
 
     $conn->commit();
 } catch (Throwable $e) {
@@ -74,3 +72,28 @@ try {
 }
 
 respostaJson(200, ['ok' => true, 'id_proposta' => $idProposta, 'status' => $novoStatus]);
+
+// cria o registro em servico quando a proposta é aceita.
+// ATENÇÃO: em servico, id_contratado aponta para TRABALHADOR.id (não usuario.id).
+function criarServicoAoAceitar(mysqli $conn, int $idProposta, array $proposta): void {
+    $dataServico = $proposta['data_servico'] ?: date('Y-m-d'); // data_serv obrigatório
+
+    $stmt = $conn->prepare("
+        INSERT INTO servico (data_serv, servico_prestado, status_serv, id_contratante, id_contratado)
+        VALUES (?, ?, TRUE, ?, ?)");
+    $stmt->bind_param(
+        "ssii",
+        $dataServico,
+        $proposta['descricao'],
+        $proposta['id_contratante'],
+        $proposta['id_trabalhador']
+    );
+    if (!$stmt->execute()) {
+        throw new RuntimeException('Falha ao criar o trabalho.');
+    }
+
+    $idServico = (int)$stmt->insert_id;
+    $stmt = $conn->prepare("UPDATE proposta SET id_servico = ? WHERE id = ?");
+    $stmt->bind_param("ii", $idServico, $idProposta);
+    $stmt->execute();
+}
