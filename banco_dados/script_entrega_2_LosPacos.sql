@@ -52,6 +52,18 @@ CREATE TABLE moderacao(
     CONSTRAINT fk_usuario_alvo
     FOREIGN KEY (id_usuario_alvo) REFERENCES usuario(id)
     );
+
+CREATE TABLE denuncia(
+    id int AUTO_INCREMENT PRIMARY KEY,
+    motivo VARCHAR(200) NOT NULL,
+    descricao varchar(500),
+    id_usuario_denunciante INT,
+    id_usuario_denunciado INT,
+    CONSTRAINT fk_denuncia_denunciante
+    FOREIGN KEY (id_usuario_denunciante) REFERENCES usuario(id),
+    CONSTRAINT fk_denuncia_denunciado
+    FOREIGN KEY (id_usuario_denunciado) REFERENCES usuario(id)
+);
     
 CREATE TABLE publicacao(
 	id INT AUTO_INCREMENT PRIMARY KEY,
@@ -122,3 +134,14 @@ CREATE TABLE mensagem(
     CONSTRAINT fk_msg_usuario
     FOREIGN KEY (id_usuario) REFERENCES usuario(id)
     );
+
+    CREATE TABLE recuperacao_senha (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_usuario INT NOT NULL,
+    token_hash CHAR(64) NOT NULL,
+    expira_em DATETIME NOT NULL,
+    usado BOOLEAN NOT NULL DEFAULT FALSE,
+    CONSTRAINT fk_recuperacao_usuario
+    FOREIGN KEY (id_usuario) REFERENCES usuario(id)
+    ON DELETE CASCADE
+);
