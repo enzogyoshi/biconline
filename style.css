@@ -542,5 +542,58 @@ main {
   align-self: flex-end;
 }
 
+.acoes-publicacao {
+  display: flex;
+  gap: 8px;
+}
+
+.acoes-publicacao form {
+  margin: 0;
+}
+
+.form-editar-publicacao {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-editar-publicacao label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.form-editar-publicacao textarea,
+.form-editar-publicacao input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px;
+}
+
+.editar-publicacao-pagina {
+  max-width: 640px;
+  margin: 32px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+}
+
+.editar-publicacao-pagina > .midia-publicacao {
+  display: block;
+  max-width: 100%;
+  max-height: 400px;
+  margin-bottom: 16px;
+}
+
+.btn-voltar-publicacao {
+  display: inline-block;
+  margin-bottom: 16px;
+  padding: 8px 14px;
+  border-radius: 6px;
+  background: #e2e8f0;
+  color: #2d3748;
+  text-decoration: none;
+}
+
 
 

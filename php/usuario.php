@@ -1,6 +1,6 @@
 <?php
 require_once "proteger.php";
-require_once("conn.php");
+require_once "conn.php";
 
 
 $permissoes = false;

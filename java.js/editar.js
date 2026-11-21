@@ -1,6 +1,8 @@
 const ufsValidas = ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO'];
 let lista_cidades = [];
 
+
+
 document.addEventListener("DOMContentLoaded", function () {
     const ufSelect = document.getElementById("ufSelect");
     const checkboxTipo = document.getElementById("tipo");
@@ -101,7 +103,12 @@ function validar_edicao() {
     const email = document.getElementById("txtEmail");
     const cidade = document.getElementById("txtCidade");
     const uf = document.getElementById("ufSelect");
+    const experiencia = document.getElementById('experiencia')
 
+
+    if (experiencia.value < 0){
+        return cadInvalido(experiencia, "Numero negativo erro ao salvar.")
+    }
     if (nome && nome.value.trim() !== "") {
         const tamNome = nome.value.trim().length;
         if (tamNome < 3 || tamNome > 100) {

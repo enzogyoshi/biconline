@@ -116,6 +116,16 @@ async function carregarPublicacoes() {
                 cartao.appendChild(link);
             }
 
+            if (publicacao.eh_dono) {
+                const editar = document.createElement("a");
+                editar.href = `../php/editar-publicacao.php?id=${encodeURIComponent(publicacao.id)}&voltar=feed`;
+                editar.target = "_blank";
+                editar.rel = "noopener noreferrer";
+                editar.className = "btn-editar-publicacao";
+                editar.textContent = "Editar";
+                cartao.appendChild(editar);
+            }
+
             feed.appendChild(cartao);
         });
 
