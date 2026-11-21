@@ -4,7 +4,8 @@
 require_once "proteger.php";
 require __DIR__ . '/config.local.php';
 require __DIR__ . '/gerar-token.php';
-
+require __DIR__ . '/conn.php';
+require __DIR__ . '/conversas_lib.php';
 
 if (empty($_SESSION['usuario'])) {
     header('Location: login.php');

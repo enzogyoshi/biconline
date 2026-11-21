@@ -1,4 +1,13 @@
 <?php
+if (!function_exists('h')) {
+    function h($texto): string {
+        return htmlspecialchars((string)$texto, ENT_QUOTES, 'UTF-8');
+    }
+}
+function h($texto): string {
+    return htmlspecialchars((string)$texto, ENT_QUOTES, 'UTF-8');
+}
+
 function respostaJson(int $codigo, array $dados): void {
     http_response_code($codigo);
     header('Content-Type: application/json; charset=utf-8');
