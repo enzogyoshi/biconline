@@ -1,4 +1,5 @@
 const feed = document.getElementById("feed-publicacoes");
+
 function corrigirCaminho(caminho) {
     if (!caminho) return "";
 
@@ -10,9 +11,13 @@ function corrigirCaminho(caminho) {
         return caminho;
     }
 
-    const caminhoLimpo = caminho
+    let caminhoLimpo = caminho
         .replace(/^(\.\.\/|\.\/)+/, "")
         .replace(/^\/+/, "");
+
+    if (caminhoLimpo.startsWith("uploads/")) {
+        caminhoLimpo = "php/" + caminhoLimpo;
+    }
 
     return "/biconline/" + caminhoLimpo;
 }
@@ -50,21 +55,29 @@ async function carregarPublicacoes() {
             const cabecalho = document.createElement("div");
             cabecalho.className = "publicacao-cabecalho";
 
-            const foto = document.createElement("img");
-            foto.className = "publicacao-foto";
-            
-            const fotoUrl = publicacao.url_foto_perfil
-            ? corrigirCaminho(publicacao.url_foto_perfil)
-            : "/biconline/img/perfil-padrao.png";
-
             const usuario = document.createElement("div");
             usuario.className = "publicacao-usuario";
             usuario.textContent = publicacao.nome || "Usuário";
 
+            if (publicacao.url_foto_perfil) {
+                const foto = document.createElement("img");
+                foto.className = "publicacao-foto";
+                foto.src = corrigirCaminho(publicacao.url_foto_perfil);
+                foto.alt = "Foto de " + (publicacao.nome || "Usuário");
+                foto.onerror = () => {
+                    foto.remove();
+                };
+                cabecalho.appendChild(foto);
+            }
+
+            cabecalho.appendChild(usuario);
+
             const horario = document.createElement("div");
             horario.className = "publicacao-horario";
+
             if (publicacao.data_pub) {
                 const data = new Date(publicacao.data_pub.replace(" ", "T"));
+
                 horario.textContent = isNaN(data.getTime())
                     ? publicacao.data_pub
                     : data.toLocaleString("pt-BR", {
@@ -73,10 +86,37 @@ async function carregarPublicacoes() {
                         year: "numeric",
                         hour: "2-digit",
                         minute: "2-digit"
-                      });
+                    });
             }
 
-            cabecalho.append(foto, usuario, horario);
+            cabecalho.appendChild(horario);
+
+            if (publicacao.id_usuario) {
+                const menuContainer = document.createElement("div");
+                menuContainer.className = "menu-publicacao";
+
+                const botaoMenu = document.createElement("button");
+                botaoMenu.className = "botao-menu-publicacao";
+                botaoMenu.textContent = "⋮";
+                botaoMenu.type = "button";
+                botaoMenu.setAttribute("aria-label", "Opções da publicação");
+
+                const listaMenu = document.createElement("div");
+                listaMenu.className = "lista-menu-publicacao";
+
+                const denunciar = document.createElement("a");
+                denunciar.href = "../php/denuncia.php?id=" + encodeURIComponent(publicacao.id_usuario);
+                denunciar.textContent = "Denunciar";
+                denunciar.className = "opcao-denunciar";
+
+                botaoMenu.addEventListener("click", () => {
+                    listaMenu.classList.toggle("menu-aberto");
+                });
+
+                listaMenu.appendChild(denunciar);
+                menuContainer.append(botaoMenu, listaMenu);
+                cabecalho.appendChild(menuContainer);
+            }
 
             const texto = document.createElement("p");
             texto.className = "publicacao-texto";
@@ -86,9 +126,9 @@ async function carregarPublicacoes() {
 
             if (publicacao.url_midia) {
                 const caminhoMidia = corrigirCaminho(publicacao.url_midia);
-                const extensao = caminhoMidia.split('.').pop().toLowerCase();
+                const extensao = caminhoMidia.split(".").pop().toLowerCase();
 
-                if (['mp4', 'webm'].includes(extensao)) {
+                if (["mp4", "webm"].includes(extensao)) {
                     const video = document.createElement("video");
                     video.src = caminhoMidia;
                     video.controls = true;
@@ -96,7 +136,6 @@ async function carregarPublicacoes() {
                     video.style.maxWidth = "100%";
                     cartao.appendChild(video);
                 } else {
-                    // Se for imagem
                     const imagem = document.createElement("img");
                     imagem.src = caminhoMidia;
                     imagem.alt = "Mídia da publicação";
@@ -118,7 +157,7 @@ async function carregarPublicacoes() {
 
             if (publicacao.eh_dono) {
                 const editar = document.createElement("a");
-                editar.href = `../php/editar-publicacao.php?id=${encodeURIComponent(publicacao.id)}&voltar=feed`;
+                editar.href = "../php/editar-publicacao.php?id=" + encodeURIComponent(publicacao.id) + "&voltar=feed";
                 editar.target = "_blank";
                 editar.rel = "noopener noreferrer";
                 editar.className = "btn-editar-publicacao";
@@ -136,14 +175,5 @@ async function carregarPublicacoes() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll("button, a").forEach(elemento => {
-        if (elemento.textContent.trim() === "+") {
-            elemento.addEventListener("click", function (evento) {
-                evento.preventDefault();
-                window.location.href = "../publicacoes/publicacao.html";
-            });
-        }
-    });
-
     carregarPublicacoes();
 });

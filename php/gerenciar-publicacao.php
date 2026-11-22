@@ -101,6 +101,6 @@ $stmt->close();
 $conn->close();
 header("Location: " . ($acao === "editar"
     ? "editar-publicacao.php?id=" . $id_publicacao . "&voltar=" . $voltar . "&sucesso=1"
-    : ($voltar === "feed" ? "../feed/feed.html" : "perfil.php")));
+    : ($voltar === "feed" ? "../feed/feed.php" : "perfil.php")));
 exit;
 ?>

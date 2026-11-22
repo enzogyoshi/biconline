@@ -59,7 +59,21 @@ nav > img {
 }
 
 .nav-links img {
-    max-width: 65px;
+    width: 38px;
+    height: 38px;
+    max-width: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+}
+
+.avatar-header-vazio {
+    display: inline-block;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background-color: #e0e4e8;
+    border: 1px solid #c5ccd3;
 }
 
 #menu-toggle {
@@ -79,7 +93,6 @@ nav > img {
     font-size: 28px;
     font-weight: bold;
 }
-
 
 @media (max-width: 999px) {
     nav {
@@ -112,7 +125,6 @@ nav > img {
         transform: translateX(0);
     }
 }
-
 
 .conteudo {
     width: 100%;
@@ -148,7 +160,6 @@ nav > img {
     font-weight: 600;
     color: #343a40;
 }
-
 
 .wrapper {
     position: relative;
@@ -196,7 +207,6 @@ nav > img {
     width: 100%;
 }
 
-
 .feed {
     width: 100%;
     min-width: 0;
@@ -206,6 +216,37 @@ nav > img {
     margin: 0 0 18px;
     font-size: 22px;
     color: #343a40;
+}
+
+.criar-publicacao-topo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    padding: 12px 18px;
+    margin-bottom: 16px;
+    background-color: #ffffff;
+    border: 1px solid #dfe3e7;
+    border-radius: 28px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    text-decoration: none;
+    color: #5c6670;
+    font-size: 14px;
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.criar-publicacao-topo:hover {
+    background-color: #f8f9fa;
+    border-color: #b8c2cc;
+    color: #1d2226;
+}
+
+.icone-mais-publicacao {
+    font-size: 22px;
+    font-weight: bold;
+    line-height: 1;
+    color: #52789c;
 }
 
 #feed-publicacoes {
@@ -230,6 +271,7 @@ nav > img {
     gap: 12px;
     padding-bottom: 14px;
     border-bottom: 1px solid #edf0f2;
+    width: 100%;
 }
 
 .publicacao-foto {
@@ -275,28 +317,62 @@ nav > img {
     text-decoration: underline;
 }
 
-.botao-publicar {
+.menu-publicacao {
+    position: relative;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.botao-menu-publicacao {
     display: flex;
     align-items: center;
     justify-content: center;
-    align-self: center;
-    width: 52px;
-    height: 52px;
+    width: 30px;
+    height: 30px;
+    background: transparent;
+    border: none;
+    color: #777;
+    font-family: Arial, sans-serif;
+    font-size: 25px;
+    font-weight: bold;
+    cursor: pointer;
     border-radius: 50%;
-    background-color: #52789c;
-    color: #ffffff;
-    font-size: 32px;
-    font-weight: 400;
+}
+
+.botao-menu-publicacao:hover {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.lista-menu-publicacao {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 32px;
+    background-color: #ffffff;
+    border: 1px solid #e0e4e8;
+    border-radius: 8px;
+    min-width: 125px;
+    padding: 5px 0;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+    z-index: 100;
+}
+
+.lista-menu-publicacao.menu-aberto {
+    display: block;
+}
+
+.opcao-denunciar {
+    display: block;
+    padding: 9px 12px;
+    color: #e53935;
+    font-size: 13px;
     text-decoration: none;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.12);
-    transition: background-color 0.25s, transform 0.25s;
 }
 
-.botao-publicar:hover {
-    background-color: #385b7e;
-    transform: scale(1.06);
+.opcao-denunciar:hover {
+    background-color: #f5f5f5;
 }
-
 
 @media (max-width: 900px) {
     .conteudo {
@@ -313,10 +389,6 @@ nav > img {
 
     .lateral-direita .cartao {
         max-width: 240px;
-    }
-
-    .botao-publicar {
-        align-self: flex-start;
     }
 }
 
@@ -373,8 +445,21 @@ nav > img {
         flex: 1;
         min-width: 160px;
     }
+}
 
-    .botao-publicar {
-        align-self: center;
-    }
+nav {
+    height: 65px;
+    min-height: 65px;
+    padding: 8px 30px;
+    overflow: visible;
+}
+
+nav > img.logo {
+    width: 85px;
+    max-width: 85px;
+    height: 50px;
+    max-height: 50px;
+    object-fit: contain;
+    display: block;
+    flex-shrink: 0;
 }
