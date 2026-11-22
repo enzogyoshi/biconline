@@ -32,6 +32,9 @@ $conversa = conversaDoUsuario($conn, $idChat, $idUsuario);
 if (!$conversa) {
     respostaJson(403, ['ok' => false, 'erro' => 'Você não faz parte dessa conversa.']);
 }
+ if (!ehConversaValida($conversa)) {
+        respostaJson(403, ['ok' => false, 'erro' => 'Conversa inválida.']);
+}
 if ($conversa['papel'] !== 'contratante') {
     respostaJson(403, ['ok' => false, 'erro' => 'Só quem iniciou a conversa pode enviar uma proposta de contratação.']);
 }

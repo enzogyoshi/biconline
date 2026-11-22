@@ -36,7 +36,10 @@ try {
         $conn->rollback();
         respostaJson(404, ['ok' => false, 'erro' => 'Proposta não encontrada.']);
     }
-
+     if ((int)$p['id_contratante'] === (int)$p['id_usuario_trabalhador']) {
+        $conn->rollback();
+        respostaJson(403, ['ok' => false, 'erro' => 'Conversa inválida.']);
+    }
     $ehContratante = ((int)$p['id_contratante'] === $idUsuario);
     $ehTrabalhador = ((int)$p['id_usuario_trabalhador'] === $idUsuario);
 

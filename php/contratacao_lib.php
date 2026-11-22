@@ -66,7 +66,9 @@ function conversaDoUsuario(mysqli $conn, int $idChat, int $idUsuario): ?array {
     $c['papel'] = ((int)$c['id_contratante'] === $idUsuario) ? 'contratante' : 'trabalhador';
     return $c;
 }
-
+    function ehConversaValida(array $conversa): bool {
+        return (int)$conversa['id_contratante'] !== (int)$conversa['id_usuario_trabalhador'];
+    }
 // a proposta mais recente da conversa 
 function propostaMaisRecente(mysqli $conn, int $idChat): ?array {
     $stmt = $conn->prepare("

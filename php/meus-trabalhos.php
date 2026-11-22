@@ -61,7 +61,7 @@
             <span class="selo"><?= $s['status_serv'] ? 'Em andamento' : 'Concluído' ?></span>
 
             <?php if ($ehContratei && !$s['status_serv'] && !$s['id_avaliacao']): ?>
-                <form class="form-avaliar" method="post" action="cria_avaliacao.php">
+                <form class="form-avaliar" method="post" action="criar_avaliacao.php">
                     <input type="hidden" name="csrf" value="<?= h($csrf) ?>">
                     <input type="hidden" name="id_servico" value="<?= (int)$s['id'] ?>">
                     <select name="nota" required>
