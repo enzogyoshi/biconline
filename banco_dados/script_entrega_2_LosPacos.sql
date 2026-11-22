@@ -29,13 +29,16 @@ CREATE TABLE trabalhador(
     CONSTRAINT fk_perfil_usuario
     FOREIGN KEY (id_usuario) REFERENCES usuario(id)
     );
-    
-CREATE TABLE habilidades(
-	habilidade VARCHAR(50) NOT NULL,
-    id_trabalhador INT,
-    CONSTRAINT fk_habilidades_usuario
-    FOREIGN KEY (id_trabalhador) REFERENCES trabalhador(id)
-	);
+
+
+CREATE TABLE habilidades (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    habilidade VARCHAR(50) NOT NULL,
+    id_trabalhador INT NOT NULL,
+    CONSTRAINT fk_habilidades_trabalhador
+        FOREIGN KEY (id_trabalhador)
+        REFERENCES trabalhador(id)
+);
 
 CREATE TABLE moderacao(
 	id INT AUTO_INCREMENT PRIMARY KEY,
