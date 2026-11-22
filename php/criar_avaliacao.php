@@ -43,6 +43,10 @@ try {
         $conn->rollback();
         respostaJson(409, ['ok' => false, 'erro' => 'Você só pode avaliar um serviço já concluído.']);
     }
+    if ((int)$s['id_contratante'] === (int)$s['id_usuario_trabalhador']) {
+        $conn->rollback();
+        respostaJson(403, ['ok' => false, 'erro' => 'Serviço inválido.']);
+    }
 
     $idUsuarioTrabalhador = (int)$s['id_usuario_trabalhador'];
 

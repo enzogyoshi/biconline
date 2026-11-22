@@ -1,4 +1,6 @@
 <?php
+// PARTE 5 — (arquivo: concluir_servico.php) o trabalhador marca um serviço (que ele está realizando) como concluído.
+// POST: csrf, id_servico
 session_start();
 require_once __DIR__ . '/conn.php';
 require_once __DIR__ . '/contratacao_lib.php';

@@ -284,15 +284,15 @@
                              (?, ?, ?, ?, ?, ?, ?, ?);");
 
     $stmt->bind_param("ssssssss", $nome, $cpfLimpo, $cnpjLimpo, $hashSenha, $data_nasc, $email, $cidade, $uf);
-
+    
+    if (!$stmt->execute()) {
+            cadInvalido("estamos com problemas no servidor, tente novamente mais tarde");
+        }
     $idNovoUsuario = $conn->insert_id;
     $stmtT = $conn->prepare("INSERT INTO trabalhador (disponibilidade, experiencia, id_usuario) VALUES (TRUE, 0, ?)");
     $stmtT->bind_param("i", $idNovoUsuario);
     $stmtT->execute();
 
-    if (!$stmt->execute()) {
-        cadInvalido("estamos com problemas no servidor, tente novamente mais tarde");
-    }
     $stmt->close();
 
     $_SESSION['sucesso'] = "Cadastro realizado com sucesso! Faça seu login.";

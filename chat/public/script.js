@@ -81,13 +81,14 @@ function tratar(m) {
     tentativas = 0;
     habilitar(true);
     status.textContent = "online";
-  } else if (m.tipo === "historico") {
-    mensagens.replaceChildren();
-    m.mensagens.forEach(adicionar);
-    rolar();
-  } else if (m.tipo === "msg") {
-    adicionar(m);
-    rolar();
+   } else if (m.tipo === "historico") {
+        mensagens.replaceChildren();
+        m.mensagens.forEach((x) => (x.papel === "sistema" ? aviso(x.texto) : adicionar(x)));
+        if (!m.mensagens.length) mensagens.append(el("div", "vazio", "Nenhuma mensagem ainda."));
+        rolar();
+    } else if (m.tipo === "msg") {
+        if (m.papel === "sistema") { aviso(m.texto); } else { adicionar(m); }
+        rolar();
   } else if (m.tipo === "apagada") {
     const d = mensagens.querySelector('[data-mid="' + Number(m.mid) + '"]');
     if (d) d.remove();
