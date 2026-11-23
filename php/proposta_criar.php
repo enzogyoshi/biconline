@@ -1,9 +1,9 @@
 <?php
-// PARTE 2 — O contratante envia uma proposta de contratação dentro de uma conversa.
-// POST: csrf, id_chat, descricao, valor (opcional), data_servico (opcional, AAAA-MM-DD)
+
 session_start();
 require_once __DIR__ . '/conn.php';
 require_once __DIR__ . '/contratacao_lib.php';
+require_once __DIR__ . '/config.local.php';
 
 $idUsuario = exigirLoginJson();
 exigirPost();
@@ -27,7 +27,6 @@ if ($data === false) {
     respostaJson(400, ['ok' => false, 'erro' => 'Data inválida (use hoje ou uma data futura).']);
 }
 
-// a pessoa faz parte da conversa e é quem contrata?
 $conversa = conversaDoUsuario($conn, $idChat, $idUsuario);
 if (!$conversa) {
     respostaJson(403, ['ok' => false, 'erro' => 'Você não faz parte dessa conversa.']);
@@ -42,7 +41,6 @@ if ($conversa['papel'] !== 'contratante') {
 try {
     $conn->begin_transaction();
 
-    // trava a conversa: duas propostas ao mesmo tempo não passam pela checagem juntas
     $stmt = $conn->prepare("SELECT id FROM chat WHERE id = ? FOR UPDATE");
     $stmt->bind_param("i", $idChat);
     $stmt->execute();
@@ -68,6 +66,8 @@ try {
     error_log('proposta_criar: ' . $e->getMessage());
     respostaJson(500, ['ok' => false, 'erro' => 'Não foi possível criar a proposta.']);
 }
+
+enviarMensagemSistema('c' . $idChat, 'Nova proposta de contratação enviada: ' . $descricao);
 
 respostaJson(201, [
     'ok' => true,

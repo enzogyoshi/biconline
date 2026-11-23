@@ -106,3 +106,25 @@ function lerData(string $txt) {
     }
     return $txt;
 }
+//envia mensagem automática para o chat
+function enviarMensagemSistema(string $nomeSala, string $texto): void {
+    if (!defined('CHAT_URL') || !defined('CHAT_SEGREDO')) {
+        return; // sem config.local.php carregado, não quebra nada, só não envia
+    }
+    $payload = json_encode(['segredo' => CHAT_SEGREDO, 'sala' => $nomeSala, 'texto' => $texto]);
+ 
+    $ch = curl_init(rtrim(CHAT_URL, '/') . '/sistema/mensagem');
+    curl_setopt_array($ch, [
+        CURLOPT_POST => true,
+        CURLOPT_POSTFIELDS => $payload,
+        CURLOPT_HTTPHEADER => ['Content-Type: application/json'],
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_TIMEOUT => 2,       // não trava a página esperando o chat
+        CURLOPT_CONNECTTIMEOUT => 1,
+    ]);
+    curl_exec($ch);
+    if (curl_errno($ch)) {
+        error_log('enviarMensagemSistema: ' . curl_error($ch)); // só registra, nunca quebra a página
+    }
+    curl_close($ch);
+}

@@ -2,6 +2,7 @@
 session_start();
 require_once __DIR__ . '/conn.php';
 require_once __DIR__ . '/contratacao_lib.php';
+require_once __DIR__ . '/config.local.php';
 
 $idUsuario = exigirLoginJson();
 exigirPost();
@@ -18,7 +19,6 @@ if ($idProposta <= 0 || $novoStatus === null) {
 try {
     $conn->begin_transaction();
 
-    // trava a proposta para ninguém responder duas vezes ao mesmo tempo
     $stmt = $conn->prepare("
         SELECT p.id, p.id_chat, p.status, p.descricao, p.data_servico,
                c.id_usuario      AS id_contratante,
@@ -73,11 +73,16 @@ try {
     error_log('proposta_responder: ' . $e->getMessage());
     respostaJson(500, ['ok' => false, 'erro' => 'Não foi possível responder à proposta.']);
 }
+   
+if ($acao === 'aceitar' || $acao === 'recusar') {
+    $texto = ($acao === 'aceitar')
+        ? 'Proposta de contratação aceita.'
+        : 'Proposta de contratação recusada.';
+    enviarMensagemSistema('c' . (int)$p['id_chat'], $texto);
+}
 
 respostaJson(200, ['ok' => true, 'id_proposta' => $idProposta, 'status' => $novoStatus]);
 
-// cria o registro em servico quando a proposta é aceita.
-// ATENÇÃO: em servico, id_contratado aponta para TRABALHADOR.id (não usuario.id).
 function criarServicoAoAceitar(mysqli $conn, int $idProposta, array $proposta): void {
     $dataServico = $proposta['data_servico'] ?: date('Y-m-d'); // data_serv obrigatório
 
