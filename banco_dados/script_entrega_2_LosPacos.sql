@@ -54,6 +54,18 @@ CREATE TABLE moderacao(
     CONSTRAINT fk_motivo_denuncia
     FOREIGN KEY (motivo) REFERENCES denuncia(id)
     );
+
+CREATE TABLE denuncia(
+    id int AUTO_INCREMENT PRIMARY KEY,
+    motivo VARCHAR(200) NOT NULL,
+    descricao varchar(500),
+    id_usuario_denunciante INT,
+    id_usuario_denunciado INT,
+    CONSTRAINT fk_denuncia_denunciante
+    FOREIGN KEY (id_usuario_denunciante) REFERENCES usuario(id),
+    CONSTRAINT fk_denuncia_denunciado
+    FOREIGN KEY (id_usuario_denunciado) REFERENCES usuario(id)
+);
     
 CREATE TABLE publicacao(
 	id INT AUTO_INCREMENT PRIMARY KEY,

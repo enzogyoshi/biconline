@@ -24,7 +24,7 @@
         logInvalido("Preencha os dados para realizar o login");
     }
 
-    $stmt = $conn->prepare("SELECT id, senha FROM usuario WHERE email = ?");
+    $stmt = $conn->prepare("SELECT id, senha, is_moderador FROM usuario WHERE email = ?");
 
     $stmt->bind_param("s", $email);
     $stmt->execute();
@@ -35,6 +35,7 @@
         if (password_verify($senha, $row["senha"])) {
         session_regenerate_id(true);
         $_SESSION["usuario"] = $row["id"];
+        $_SESSION["moderador"] = $row["is_moderador"];
         header("Location: ../feed/feed.php"); // temporário, depois vira a página inicial
         exit;
     }
