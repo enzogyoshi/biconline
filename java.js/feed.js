@@ -91,7 +91,9 @@ async function carregarPublicacoes() {
 
             cabecalho.appendChild(horario);
 
-            if (publicacao.id_usuario) {
+            const temMenu = Boolean(publicacao.id_usuario || publicacao.eh_dono);
+
+            if (temMenu) {
                 const menuContainer = document.createElement("div");
                 menuContainer.className = "menu-publicacao";
 
@@ -104,16 +106,28 @@ async function carregarPublicacoes() {
                 const listaMenu = document.createElement("div");
                 listaMenu.className = "lista-menu-publicacao";
 
-                const denunciar = document.createElement("a");
-                denunciar.href = "../php/denuncia.php?id=" + encodeURIComponent(publicacao.id_usuario);
-                denunciar.textContent = "Denunciar";
-                denunciar.className = "opcao-denunciar";
+                if (publicacao.eh_dono) {
+                    const editar = document.createElement("a");
+                    editar.href = "../php/editar-publicacao.php?id=" + encodeURIComponent(publicacao.id) + "&voltar=feed";
+                    editar.target = "_blank";
+                    editar.rel = "noopener noreferrer";
+                    editar.className = "opcao-editar";
+                    editar.textContent = "Editar";
+                    listaMenu.appendChild(editar);
+                }
+
+                if (publicacao.id_usuario) {
+                    const denunciar = document.createElement("a");
+                    denunciar.href = "../php/denuncia.php?id=" + encodeURIComponent(publicacao.id_usuario);
+                    denunciar.textContent = "Denunciar";
+                    denunciar.className = "opcao-denunciar";
+                    listaMenu.appendChild(denunciar);
+                }
 
                 botaoMenu.addEventListener("click", () => {
                     listaMenu.classList.toggle("menu-aberto");
                 });
 
-                listaMenu.appendChild(denunciar);
                 menuContainer.append(botaoMenu, listaMenu);
                 cabecalho.appendChild(menuContainer);
             }
@@ -153,16 +167,6 @@ async function carregarPublicacoes() {
                 link.target = "_blank";
                 link.rel = "noopener noreferrer";
                 cartao.appendChild(link);
-            }
-
-            if (publicacao.eh_dono) {
-                const editar = document.createElement("a");
-                editar.href = "../php/editar-publicacao.php?id=" + encodeURIComponent(publicacao.id) + "&voltar=feed";
-                editar.target = "_blank";
-                editar.rel = "noopener noreferrer";
-                editar.className = "btn-editar-publicacao";
-                editar.textContent = "Editar";
-                cartao.appendChild(editar);
             }
 
             feed.appendChild(cartao);

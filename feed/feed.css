@@ -362,6 +362,18 @@ nav > img {
     display: block;
 }
 
+.opcao-editar {
+    display: block;
+    padding: 9px 12px;
+    color: #343a40;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.opcao-editar:hover {
+    background-color: #f5f5f5;
+}
+
 .opcao-denunciar {
     display: block;
     padding: 9px 12px;
