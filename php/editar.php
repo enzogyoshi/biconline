@@ -134,6 +134,8 @@ include("editar_perfil.php");
                 <input type="submit" value="Salvar Alterações" id="btnsubmit">
             </form>
 
+            <br><br>
+            
             <form action="deletar.php" method="post" onsubmit="return confirm('Tem certeza que deseja deletar o perfil?')">
                 <input type="hidden" name="id" value="<?php echo htmlspecialchars($_SESSION["usuario"] ?? ''); ?>">
                 <input type="submit" value="Deletar perfil">
