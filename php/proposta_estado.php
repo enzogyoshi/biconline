@@ -1,6 +1,4 @@
 <?php
-// PARTE 2 — Estado da contratação em uma conversa (usado pela tela, na Parte 3).
-// GET: id_chat
 session_start();
 require_once __DIR__ . '/conn.php';
 require_once __DIR__ . '/contratacao_lib.php';

@@ -2,7 +2,6 @@
 session_start();
 require_once __DIR__ . '/conn.php';
 require_once __DIR__ . '/contratacao_lib.php';
-require_once __DIR__ . '/config.local.php';
 
 $idUsuario = exigirLoginJson();
 exigirPost();
@@ -74,13 +73,6 @@ try {
     respostaJson(500, ['ok' => false, 'erro' => 'Não foi possível responder à proposta.']);
 }
    
-if ($acao === 'aceitar' || $acao === 'recusar') {
-    $texto = ($acao === 'aceitar')
-        ? 'Proposta de contratação aceita.'
-        : 'Proposta de contratação recusada.';
-    enviarMensagemSistema('c' . (int)$p['id_chat'], $texto);
-}
-
 respostaJson(200, ['ok' => true, 'id_proposta' => $idProposta, 'status' => $novoStatus]);
 
 function criarServicoAoAceitar(mysqli $conn, int $idProposta, array $proposta): void {

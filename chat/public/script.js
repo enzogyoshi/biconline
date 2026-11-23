@@ -1,9 +1,13 @@
+if (window.self !== window.top) document.documentElement.classList.add("embutido");
+
 const form = document.getElementById("form");
 const texto = document.getElementById("texto");
 const botao = form.querySelector("button");
 const mensagens = document.getElementById("mensagens");
 const status = document.getElementById("status");
 const titulo = document.getElementById("titulo");
+const avatar = document.getElementById("avatar");
+
 const params = new URLSearchParams(location.search);
 const tokenInicial = params.get("token");
 if (tokenInicial) history.replaceState(null, "", location.pathname);
@@ -22,15 +26,25 @@ function el(tag, classe, conteudo) {
   return e;
 }
 
+const iniciais = (n) => n.trim().split(/\s+/).slice(0, 2).map((p) => p[0]).join("").toUpperCase();
+function definirStatus(t, on) { status.textContent = t; status.classList.toggle("on", !!on); }
 function habilitar(sim) { texto.disabled = botao.disabled = !sim; }
 function rolar() { mensagens.scrollTop = mensagens.scrollHeight; }
 function enviar(obj) { if (socket && socket.readyState === 1) socket.send(JSON.stringify(obj)); }
 function aviso(t) { mensagens.append(el("div", "aviso", t)); rolar(); }
+function tirarVazio() { const v = mensagens.querySelector(".vazio"); if (v) v.remove(); }
+
+function atualizarPresenca() {
+  if (document.body.classList.contains("privada")) {
+    totalOnline > 1 ? definirStatus("online agora", true) : definirStatus("fora do chat agora", false);
+  } else {
+    definirStatus("online · " + totalOnline, true);
+  }
+}
 
 function dadosAuth() {
   const token = renovacao || tokenInicial;
   if (token) return { tipo: "auth", token };
-  // modo de testes: sem token, o servidor só aceita se estiver em MODO_DEV
   if (!nomeDev) {
     nomeDev = prompt("Qual é o seu nome?") || "Anônimo";
     guardar("nome", nomeDev);
@@ -39,6 +53,7 @@ function dadosAuth() {
 }
 
 function adicionar(m) {
+  tirarVazio();
   const minha = usuario && m.uid === usuario.id;
   const div = el("div", "msg " + (minha ? "enviada" : "recebida"));
   div.dataset.mid = m.mid;
@@ -75,20 +90,24 @@ function adicionar(m) {
 function tratar(m) {
   if (m.tipo === "ok") {
     usuario = m.usuario;
+    habilitar(true);
     moderacao = !!m.moderacao;
-    if (m.titulo) titulo.textContent = "" + m.titulo;
+    if (m.titulo) {
+      document.body.classList.add("privada");
+      if (titulo) titulo.textContent = m.titulo;
+      if (avatar) avatar.textContent = iniciais(m.titulo);
+    }
     renovacao = m.renovacao || renovacao;
     tentativas = 0;
-    habilitar(true);
-    status.textContent = "online";
-   } else if (m.tipo === "historico") {
-        mensagens.replaceChildren();
-        m.mensagens.forEach((x) => (x.papel === "sistema" ? aviso(x.texto) : adicionar(x)));
-        if (!m.mensagens.length) mensagens.append(el("div", "vazio", "Nenhuma mensagem ainda."));
-        rolar();
-    } else if (m.tipo === "msg") {
-        if (m.papel === "sistema") { aviso(m.texto); } else { adicionar(m); }
-        rolar();
+    atualizarPresenca();
+    texto.focus();
+  } else if (m.tipo === "historico") {
+    mensagens.replaceChildren();
+    m.mensagens.forEach(adicionar);
+    rolar();
+  } else if (m.tipo === "msg") {
+    adicionar(m);
+    rolar();
   } else if (m.tipo === "apagada") {
     const d = mensagens.querySelector('[data-mid="' + Number(m.mid) + '"]');
     if (d) d.remove();
@@ -96,7 +115,7 @@ function tratar(m) {
     aviso(m.texto);
   } else if (m.tipo === "online") {
     totalOnline = m.total;
-    status.textContent = "online · " + totalOnline;
+    if (usuario) atualizarPresenca();
   } else if (m.tipo === "erro") {
     encerrado = true;
     aviso(m.mensagem);
@@ -108,7 +127,7 @@ function conectar() {
   socket = new WebSocket(window.CHAT_URL || proto + location.host);
 
   socket.onopen = () => {
-    status.textContent = "autenticando...";
+    definirStatus("autenticando...", false);
     socket.send(JSON.stringify(dadosAuth()));
   };
 
@@ -121,8 +140,8 @@ function conectar() {
   socket.onclose = () => {
     usuario = null;
     habilitar(false);
-    if (encerrado) { status.textContent = "desconectado"; return; }
-    status.textContent = "reconectando...";
+    if (encerrado) { definirStatus("desconectado", false); return; }
+    definirStatus("reconectando...", false);
     tentativas++;
     setTimeout(conectar, Math.min(1000 * tentativas, 10000));
   };

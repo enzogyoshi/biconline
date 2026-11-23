@@ -3,7 +3,6 @@
 session_start();
 require_once __DIR__ . '/conn.php';
 require_once __DIR__ . '/contratacao_lib.php';
-require_once __DIR__ . '/config.local.php';
 
 $idUsuario = exigirLoginJson();
 exigirPost();
@@ -66,8 +65,6 @@ try {
     error_log('proposta_criar: ' . $e->getMessage());
     respostaJson(500, ['ok' => false, 'erro' => 'Não foi possível criar a proposta.']);
 }
-
-enviarMensagemSistema('c' . $idChat, 'Nova proposta de contratação enviada: ' . $descricao);
 
 respostaJson(201, [
     'ok' => true,

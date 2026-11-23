@@ -110,18 +110,11 @@
     acao("btn-cancelar", "cancelar");
   }
 
-  function usuarioEstaDigitando() {
-    // enquanto o campo de descrição tiver foco ou texto, não redesenha o painel
-    const campo = raiz.querySelector('[name="descricao"]');
-    return !!campo && (document.activeElement === campo || campo.value.trim() !== "");
-  }
-
   async function atualizar() {
-    if (usuarioEstaDigitando()) return; // evita apagar o que a pessoa está escrevendo
     try {
       const r = await fetch("proposta_estado.php?id_chat=" + idChat);
       const estado = await r.json();
-      if (estado.ok && !usuarioEstaDigitando()) render(estado);
+      if (estado.ok) render(estado);
     } catch (e) { /* tenta de novo no próximo ciclo */ }
   }
 
