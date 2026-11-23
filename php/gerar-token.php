@@ -11,5 +11,5 @@ function gerarTokenChat(array $u): string {
 
     $b64 = rtrim(strtr(base64_encode($dados), '+/', '-_'), '=');
     return $b64 . '.' . hash_hmac('sha256', $b64, CHAT_SEGREDO);
-
+}
 ?>
