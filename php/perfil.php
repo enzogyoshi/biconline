@@ -27,7 +27,7 @@ require_once("usuario.php");
             <label for="menu-toggle" class="menu-btn">☰</label>
             <ul class="nav-links">
                 <li>
-                    <a href="../feed/feed.html">
+                    <a href="../feed/feed.php">
                         <span class="icone-casa">⌂</span> HOME
                     </a>
                 </li>
