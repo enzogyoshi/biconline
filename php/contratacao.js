@@ -1,10 +1,13 @@
+// Painel de contratação dentro da conversa 
+// Não usa WebSocket — faz polling: pergunta pro servidor a cada 30s
+
 (function () {
   const raiz = document.getElementById("contratacao");
   if (!raiz) return;
 
   const idChat = Number(raiz.dataset.idChat);
   let csrf = "";
-
+//post simples 
   async function chamar(url, dados) {
     const fd = new FormData();
     Object.entries(dados).forEach(([k, v]) => fd.append(k, v));
@@ -12,7 +15,7 @@
     const r = await fetch(url, { method: "POST", body: fd });
     return r.json();
   }
-
+//formatação de valores e datas
   function formatoValor(v) {
     return v ? "R$ " + Number(v).toFixed(2).replace(".", ",") : "sem valor combinado";
   }
@@ -21,14 +24,14 @@
     const [a, m, dia] = d.split("-");
     return dia + "/" + m + "/" + a;
   }
-
+// Desenha o painel inteiro de novo, baseado no que o servidor respondeu
   function render(estado) {
     csrf = estado.csrf || csrf;
     const p = estado.proposta;
     let html = "";
 
-    if (estado.pode_propor) {
-      html += `
+    if (estado.pode_propor) { //Não tem proposta ativa, mostra o formulário "Contratar"
+      html += ` 
         <h3>Contratar ${escapeHtml(estado.outro_nome)}</h3>
         <div class="linha">
           <input name="descricao" placeholder="O que será feito" maxlength="150" autocomplete="off">
@@ -37,7 +40,7 @@
           <button type="button" id="btn-propor">Enviar proposta</button>
         </div>
         <div class="msg-erro" id="erro-contratacao"></div>`;
-    } else if (p && p.status === "pendente") {
+    } else if (p && p.status === "pendente") { // Tem proposta esperando resposta mostra ela + botões de ação
       html += `<h3>Proposta de contratação</h3>
         <div class="proposta">
           <b>${escapeHtml(p.descricao)}</b>
@@ -51,7 +54,7 @@
           </div>
           <div class="msg-erro" id="erro-contratacao"></div>
         </div>`;
-    } else if (p) {
+    } else if (p) { //mostra status final (aceita, recusada...)
       html += `<h3>Proposta de contratação</h3>
         <div class="proposta">
           <b>${escapeHtml(p.descricao)}</b>
@@ -63,13 +66,13 @@
     }
 
     raiz.innerHTML = html;
-    ligarBotoes(estado);
+    ligarBotoes(estado); //innerHtml apagou os antigos cliques
   }
 
   function legendaStatus(s) {
     return { aceita: "Contratação aceita ✓", recusada: "Proposta recusada", cancelada: "Proposta cancelada" }[s] || s;
   }
-
+//evita que o txt vire html
   function escapeHtml(t) {
     const d = document.createElement("div");
     d.textContent = t || "";
@@ -80,7 +83,7 @@
     const e = document.getElementById("erro-contratacao");
     if (e) { e.textContent = msg; e.style.display = "block"; }
   }
-
+//religa os cliques dos botões depois de cada render()
   function ligarBotoes(estado) {
     const btnPropor = document.getElementById("btn-propor");
     if (btnPropor) {
@@ -94,7 +97,7 @@
         if (!r.ok) { mostrarErro(r.erro || "Não foi possível enviar."); btnPropor.disabled = false; return; }
         atualizar();
       };
-    }
+    } //ligar os botões de ação
     const acao = (id, nome) => {
       const b = document.getElementById(id);
       if (!b) return;
