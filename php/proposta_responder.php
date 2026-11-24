@@ -1,4 +1,5 @@
 <?php
+//trabalhador usa pra responder proposta ou cancelar (trabalhador)
 session_start();
 require_once __DIR__ . '/conn.php';
 require_once __DIR__ . '/contratacao_lib.php';
@@ -9,7 +10,7 @@ exigirCsrf();
 
 $idProposta = (int)($_POST['id_proposta'] ?? 0);
 $acao = (string)($_POST['acao'] ?? '');
-$novoStatus = ['aceitar' => 'aceita', 'recusar' => 'recusada', 'cancelar' => 'cancelada'][$acao] ?? null;
+$novoStatus = ['aceitar' => 'aceita', 'recusar' => 'recusada', 'cancelar' => 'cancelada'][$acao] ?? null; //traduz a ação pro bd
 
 if ($idProposta <= 0 || $novoStatus === null) {
     respostaJson(400, ['ok' => false, 'erro' => 'Pedido inválido.']);
@@ -17,7 +18,7 @@ if ($idProposta <= 0 || $novoStatus === null) {
 
 try {
     $conn->begin_transaction();
-
+// evita cliques e multiplas propostas
     $stmt = $conn->prepare("
         SELECT p.id, p.id_chat, p.status, p.descricao, p.data_servico,
                c.id_usuario      AS id_contratante,
@@ -34,7 +35,7 @@ try {
     if (!$p) {
         $conn->rollback();
         respostaJson(404, ['ok' => false, 'erro' => 'Proposta não encontrada.']);
-    }
+    } //impede aceitar proposta contratante == trabalhador
      if ((int)$p['id_contratante'] === (int)$p['id_usuario_trabalhador']) {
         $conn->rollback();
         respostaJson(403, ['ok' => false, 'erro' => 'Conversa inválida.']);
@@ -53,7 +54,7 @@ try {
         $conn->rollback();
         respostaJson(409, ['ok' => false, 'erro' => 'Esta proposta já foi respondida.']);
     }
-
+    // camada dupla de segurança, atualiza só se tiver pendente
     $stmt = $conn->prepare("UPDATE proposta SET status = ?, respondida_em = NOW() WHERE id = ? AND status = 'pendente'");
     $stmt->bind_param("si", $novoStatus, $idProposta);
     $stmt->execute();
@@ -61,7 +62,7 @@ try {
         $conn->rollback();
         respostaJson(409, ['ok' => false, 'erro' => 'Esta proposta já foi respondida.']);
     }
-
+    // se aceitou, cria o serviço
     if ($acao === 'aceitar') {
         criarServicoAoAceitar($conn, $idProposta, $p);
     }
@@ -74,7 +75,7 @@ try {
 }
    
 respostaJson(200, ['ok' => true, 'id_proposta' => $idProposta, 'status' => $novoStatus]);
-
+//transforma a proposta em serviço
 function criarServicoAoAceitar(mysqli $conn, int $idProposta, array $proposta): void {
     $dataServico = $proposta['data_servico'] ?: date('Y-m-d'); // data_serv obrigatório
 
@@ -91,7 +92,7 @@ function criarServicoAoAceitar(mysqli $conn, int $idProposta, array $proposta): 
     if (!$stmt->execute()) {
         throw new RuntimeException('Falha ao criar o trabalho.');
     }
-
+    //guarda a ligação propsta -> serviço
     $idServico = (int)$stmt->insert_id;
     $stmt = $conn->prepare("UPDATE proposta SET id_servico = ? WHERE id = ?");
     $stmt->bind_param("ii", $idServico, $idProposta);

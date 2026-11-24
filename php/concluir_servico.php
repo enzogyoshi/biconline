@@ -1,5 +1,4 @@
-<?php
-// PARTE 5 — (arquivo: concluir_servico.php) o trabalhador marca um serviço (que ele está realizando) como concluído.
+<?php // trabalhador marca serviço concluido
 // POST: csrf, id_servico
 session_start();
 require_once __DIR__ . '/conn.php';
@@ -29,7 +28,7 @@ try {
     if (!$s) {
         $conn->rollback();
         respostaJson(404, ['ok' => false, 'erro' => 'Serviço não encontrado.']);
-    }
+    } //só o trabalhador pode marcar como concluido
     if ((int)$s['id_usuario_trabalhador'] !== $idUsuario) {
         $conn->rollback();
         respostaJson(403, ['ok' => false, 'erro' => 'Só o trabalhador responsável pode concluir este serviço.']);

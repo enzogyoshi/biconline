@@ -20,7 +20,7 @@ if ($idChat <= 0) {
     exit;
 }
 
-// a conversa existe E o usuário logado faz parte dela? (sem isso, ninguém entra)
+// verifica usuario logado e a conversa existe
 $stmt = $conn->prepare("
     SELECT c.id,
            CASE WHEN c.id_usuario = ? THEN ut.nome ELSE uc.nome END AS outro

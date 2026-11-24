@@ -1,4 +1,4 @@
-<?php
+<?php //endpoint trabalhador cria avaliação do serviço
 session_start();
 require_once __DIR__ . '/conn.php';
 require_once __DIR__ . '/contratacao_lib.php';
@@ -34,15 +34,15 @@ try {
     if (!$s) {
         $conn->rollback();
         respostaJson(404, ['ok' => false, 'erro' => 'Serviço não encontrado.']);
-    }
+    } // Só quem contrata pode avaliar
     if ((int)$s['id_contratante'] !== $idUsuario) {
         $conn->rollback();
         respostaJson(403, ['ok' => false, 'erro' => 'Só quem contratou pode avaliar este serviço.']);
-    }
+    } // Só dá pra avaliar depois de concluído , status_serv = 0
     if ((int)$s['status_serv'] !== 0) {
         $conn->rollback();
         respostaJson(409, ['ok' => false, 'erro' => 'Você só pode avaliar um serviço já concluído.']);
-    }
+    }//  nunca avaliar um serviço de auto-contratação.
     if ((int)$s['id_contratante'] === (int)$s['id_usuario_trabalhador']) {
         $conn->rollback();
         respostaJson(403, ['ok' => false, 'erro' => 'Serviço inválido.']);
