@@ -4,7 +4,8 @@
 require_once "proteger.php";
 require __DIR__ . '/config.local.php';
 require __DIR__ . '/gerar-token.php';
-
+require __DIR__ . '/conn.php';
+require __DIR__ . '/conversas_lib.php';
 
 if (empty($_SESSION['usuario'])) {
     header('Location: login.php');
@@ -71,14 +72,17 @@ $conversas = listarConversas($conn, $idUsuario);
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Conversa com <?= h($conversa['outro']) ?></title>
   <link rel="stylesheet" href="chat-paginas.css">
+  <link rel="stylesheet" href="contratacao.css">
 </head>
 <body>
   <div class="app com-conversa">
     <?php renderLateral($conversas, $idChat); ?>
     <section class="principal">
       <a class="voltar" href="conversas.php">&larr; Conversas</a>
+      <div id="contratacao" data-id-chat="<?= (int)$idChat ?>"></div>
       <iframe src="<?= h($src) ?>" title="Conversa com <?= h($conversa['outro']) ?>"></iframe>
     </section>
   </div>
+  <script src="contratacao.js"></script>
 </body>
 </html>

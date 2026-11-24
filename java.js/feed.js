@@ -55,10 +55,6 @@ async function carregarPublicacoes() {
             const cabecalho = document.createElement("div");
             cabecalho.className = "publicacao-cabecalho";
 
-            const usuario = document.createElement("div");
-            usuario.className = "publicacao-usuario";
-            usuario.textContent = publicacao.nome || "Usuário";
-
             if (publicacao.url_foto_perfil) {
                 const foto = document.createElement("img");
                 foto.className = "publicacao-foto";
@@ -69,6 +65,16 @@ async function carregarPublicacoes() {
                 };
                 cabecalho.appendChild(foto);
             }
+
+            let usuario;
+            if (publicacao.id_usuario) {
+                usuario = document.createElement("a");
+                usuario.href = "../php/perfil.php?id=" + encodeURIComponent(publicacao.id_usuario);
+            } else {
+                usuario = document.createElement("div");
+            }
+            usuario.className = "publicacao-usuario";
+            usuario.textContent = publicacao.nome || "Usuário";
 
             cabecalho.appendChild(usuario);
 
@@ -124,7 +130,8 @@ async function carregarPublicacoes() {
                     listaMenu.appendChild(denunciar);
                 }
 
-                botaoMenu.addEventListener("click", () => {
+                botaoMenu.addEventListener("click", (e) => {
+                    e.stopPropagation();
                     listaMenu.classList.toggle("menu-aberto");
                 });
 
@@ -177,6 +184,12 @@ async function carregarPublicacoes() {
         feed.textContent = "Erro ao carregar publicações.";
     }
 }
+
+document.addEventListener("click", () => {
+    document.querySelectorAll(".lista-menu-publicacao.menu-aberto").forEach(menu => {
+        menu.classList.remove("menu-aberto");
+    });
+});
 
 document.addEventListener("DOMContentLoaded", () => {
     carregarPublicacoes();

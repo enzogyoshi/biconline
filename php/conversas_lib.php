@@ -1,7 +1,8 @@
 <?php
-
-function h($texto): string {
-    return htmlspecialchars((string)$texto, ENT_QUOTES, 'UTF-8');
+if (!function_exists('h')) {
+    function h($texto): string {
+        return htmlspecialchars((string)$texto, ENT_QUOTES, 'UTF-8');
+    }
 }
 
 function iniciais(string $nome): string {

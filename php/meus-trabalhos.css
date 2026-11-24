@@ -1,0 +1,19 @@
+.pagina { max-width: 720px; margin: 24px auto; padding: 0 16px; font-family: system-ui, Arial, sans-serif; }
+.trabalhos-secao { margin-top: 24px; }
+.trabalhos-secao h3 { font-size: 16px; color: #6c5ce7; margin-bottom: 10px; }
+.mensagem-vazia { color: #7b8096; font-size: 14px; }
+.lista-trabalhos { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.trabalho-item {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+  padding: 12px 14px; border: 1px solid #e8eaf3; border-radius: 12px; font-size: 14px;
+}
+.trabalho-item strong { flex: 1 1 100%; }
+.trabalho-item .selo { margin-left: auto; font-weight: 600; font-size: 12px; padding: 3px 10px; border-radius: 99px; }
+.trabalho-item.status-ativo .selo { background: #eafaf1; color: #2ecc71; }
+.trabalho-item.status-concluido .selo { background: #eef0f8; color: #7b8096; }
+.saudacao { color: #7b8096; font-size: 14px; margin: 4px 0 14px; }
+.saudacao strong { color: #1d1f2b; }
+.busca-trabalhos {
+  width: 100%; padding: 10px 14px; border-radius: 10px; border: 1px solid #e8eaf3;
+  font-size: 14px; margin-bottom: 10px;
+}

@@ -1,0 +1,21 @@
+.contratacao {
+  border: 1px solid #e8eaf3; border-radius: 14px; margin: 12px 14px 0;
+  padding: 12px 14px; font-family: system-ui, Arial, sans-serif; font-size: 14px;
+}
+.contratacao h3 { font-size: 13px; margin: 0 0 8px; color: #6c5ce7; }
+.contratacao .msg-erro { color: #d63031; font-size: 13px; margin-top: 6px; display: none; }
+.contratacao input, .contratacao button {
+  padding: 8px 10px; border-radius: 8px; border: 1px solid #e8eaf3; font-size: 14px;
+}
+.contratacao button {
+  background: #6c5ce7; color: #fff; border: none; cursor: pointer; font-weight: 600;
+}
+.contratacao button.recusar, .contratacao button.cancelar { background: #d63031; }
+.contratacao button:disabled { opacity: .6; cursor: not-allowed; }
+.contratacao .linha { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+.contratacao .linha input[name="descricao"] { flex: 1 1 200px; }
+.contratacao .proposta { background: #eef0f8; border-radius: 10px; padding: 10px 12px; }
+.contratacao .proposta b { display: block; margin-bottom: 4px; }
+.contratacao .status-pendente { color: #e17055; font-weight: 600; }
+.contratacao .status-aceita { color: #2ecc71; font-weight: 600; }
+.contratacao .status-recusada, .contratacao .status-cancelada { color: #7b8096; font-weight: 600; }
