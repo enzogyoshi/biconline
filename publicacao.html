@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Publicacao - Biconline</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <img src="#" alt="Logo">
+            <input type="search" name="Pesquisar" placeholder="Pesquisar" class="logo">
+
+            <input type="checkbox" id="menu-toggle">
+
+            <label for="menu-toggle" class="menu-btn">☰ </label>
+            <ul class="nav-links">
+                <li>
+                    <a href="index.html">
+                        <span class="icone-casa">⌂</span> HOME
+                    </a>
+                </li>
+                <li>
+                    <a href="#">✉ VAGAS</a>
+                </li>
+                <li>
+                    <a href="Perfil.html">
+                        <img src="" alt="Perfil">
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+    </header>
+<br>
+    <form action="php/criar-publicacao.php" method="POST" enctype="multipart/form-data" class="formulario-post">
+    <div class="back-btn">
+        <a href="index.html" class="back-btn">X</a>
+    </div>
+    <hr>
+    <div class="form-body">
+        <label for="post-texto" class="sr-only"><strong>O que deseja compartilhar?</strong></label>
+        <textarea id="post-texto" name="texto" rows="5" placeholder="o que deseja compartilhar..." required></textarea>
+    </div>
+    <div class="form-extra">
+        <br>
+        <div class="file-input">
+            <label id="label-midia" for="post-midia">Adicionar foto / vídeo</label>
+            <br>
+            <input type="file" class="midia-form" name="midia" accept="image/*,video/*">
+        </div>
+        <br>
+        <div class="input-links">
+            <label for="post-link">Adicionar link (opcional)</label>
+            <br>
+            <input type="url" id="post-link" name="link" placeholder="https://exemplo.com">
+        </div>
+    </div>
+
+    <div class="form-footer">
+        <br>
+        <button type="submit" class="btn-publicar">Publicar</button>
+    </div>
+    <script src="java.js/publicacao.js"></script>
+</form>
+
+</body>
+</html>

@@ -284,6 +284,7 @@
                              (?, ?, ?, ?, ?, ?, ?, ?);");
 
     $stmt->bind_param("ssssssss", $nome, $cpfLimpo, $cnpjLimpo, $hashSenha, $data_nasc, $email, $cidade, $uf);
+<<<<<<< HEAD
     
     if (!$stmt->execute()) {
             cadInvalido("estamos com problemas no servidor, tente novamente mais tarde");
@@ -293,6 +294,12 @@
     $stmtT->bind_param("i", $idNovoUsuario);
     $stmtT->execute();
 
+=======
+
+    if (!$stmt->execute()) {
+        cadInvalido("estamos com problemas no servidor, tente novamente mais tarde");
+    }
+>>>>>>> main
     $stmt->close();
 
     $_SESSION['sucesso'] = "Cadastro realizado com sucesso! Faça seu login.";

@@ -1,10 +1,13 @@
 <?php
-     if (session_id() == "") {
+     if (session_status() === PHP_SESSION_NONE) {
         session_start();
+     }
+     if (isset($_SESSION["usuario"])) {
+        header("Location: ../feed/feed.html");
      }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,13 +21,13 @@
         <h2>login</h2>
         <?php
         if (isset($_SESSION["erro"])) {
-            echo "<p style='color: red;'>" . $_SESSION["erro"] . "</p>";
+            echo "<p style='color: red;'>" . htmlspecialchars($_SESSION["erro"], ENT_QUOTES, 'UTF-8') . "</p>";
             unset($_SESSION["erro"]);
         }
         ?>
         <?php
         if (isset($_SESSION["sucesso"])) {
-            echo "<p style='color: green;'>" . $_SESSION["sucesso"] . "</p>";
+            echo "<p style='color: green;'>" . htmlspecialchars($_SESSION["sucesso"], ENT_QUOTES, 'UTF-8') . "</p>";
             unset($_SESSION["sucesso"]);
         }
         ?>
@@ -60,13 +63,19 @@
                 <br><br>
 
             <button type="submit" class="btnSubmit" id="btnSubmit">Login</button>
+            
+            <p class="login-redirect">
+                <a href="esqueci_senha.php">Esqueci minha senha</a>
+            </p>
 
             <p class="login-redirect">
                 Não tem uma conta? <a href="cadastrar.php">cadastre-se</a>
             </p>
 
+
         </form>
         </div>
+    </section>
     <script src="../java.js/login.js"></script>
 </body>
 </html>

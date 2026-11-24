@@ -1,22 +1,29 @@
 <?php
+
 require_once 'proteger.php';
-
-require_once("conn.php");
-
+require_once 'conn.php';
+require_once 'ofuscar_id.php';
 
 $permissoes = false;
-$id_url = filter_input(INPUT_GET, 'pesquisa', FILTER_VALIDATE_INT);
 
-// Permissões
-if ($id_url && $id_url > 0) {
-    $id_usuario = $id_url;
+if (isset($_GET['pesquisa']) && trim($_GET['pesquisa']) !== '') {
+    $id_decodificado = revelarId(trim($_GET['pesquisa']));
+
+    if ($id_decodificado === null || $id_decodificado <= 0) {
+        http_response_code(404);
+        exit("Perfil inválido.");
+    }
+
+    $id_usuario = $id_decodificado;
+
     if ($id_usuario == $_SESSION['usuario']) {
         $permissoes = true;
     }
 } else {
-    $id_usuario = $_SESSION['usuario'];
+    $id_usuario = (int)$_SESSION['usuario'];
     $permissoes = true;
 }
+
 
 // Usuario
 $sql = "SELECT nome, cidade, uf, bio, score_avaliacao, url_foto_perfil, is_moderador FROM usuario WHERE id = ?";

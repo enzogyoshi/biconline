@@ -39,7 +39,7 @@ if (!$publicacao) {
 </head>
 <body>
     <main class="editar-publicacao-pagina">
-        <a class="btn-voltar-publicacao" href="<?= $voltar === "feed" ? "../feed/feed.html" : "perfil.php" ?>">Voltar</a>
+        <a class="btn-voltar-publicacao" href="<?= $voltar === "feed" ? "../feed/feed.php" : "perfil.php" ?>">Voltar</a>
         <h1>Editar publicação</h1>
         <?php if (isset($_GET["sucesso"])): ?>
             <p id="mensagem-sucesso">Publicação atualizada com sucesso. Esta aba será fechada.</p>

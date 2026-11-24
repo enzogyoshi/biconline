@@ -1,6 +1,5 @@
 <?php
 require_once("usuario.php");
-
 ?>
 
 <!DOCTYPE html>
@@ -16,16 +15,19 @@ require_once("usuario.php");
 <body>
     <header>
         <nav>
-            <img src="#" alt="Logo">
-            <form action="perfil.php" method="get">
-                <input type="search" name="pesquisa" placeholder="Pesquisar" class="logo">
-            </form>
+        <div class="logo">
+                <img src="../paco_minimalista.jpg" alt="Logo do site" class="logo">
+        </div>
 
+        <div class="search-container">
+            <input type="text" id="input-busca" placeholder="Pesquisar pessoas..." autocomplete="off">
+            <div id="resultados-busca" class="search-dropdown"></div>
+        </div>
             <input type="checkbox" id="menu-toggle">
             <label for="menu-toggle" class="menu-btn">☰</label>
             <ul class="nav-links">
                 <li>
-                    <a href="../feed/feed.html">
+                    <a href="../feed/feed.php">
                         <span class="icone-casa">⌂</span> HOME
                     </a>
                 </li>
@@ -69,7 +71,8 @@ require_once("usuario.php");
                 <?php endif; ?>
 
                 <?php if (!$permissoes): ?>
-                    <a href="denunciar.php">Denunciar Perfil</a>
+                    <a href="denunciar.php?usuario=<?= (int)$id_usuario ?>">Denunciar Perfil</a>
+
                 <?php endif; ?>
                 
                 <?php if (!empty($is_moderador) && $permissoes == false): ?>
@@ -85,9 +88,11 @@ require_once("usuario.php");
 
             <?php if (!empty($permissoes)): ?>
                 <a href="editar.php" class="btn-editar">Editar perfil</a>
+                <form action="logout.php" method="post" style="display: inline;">
+                    <button type="submit" class="btn-sair">Sair</button>
+                </form>
             <?php elseif (!empty($disponibilidade)): ?>
                 <a href="iniciar_chat.php?usuario=<?= (int)$id_usuario ?>" class="btn-editar">Conversar</a>
-                <button type="button" onclick="entrarContato()">Entrar em Contato</button>
             <?php endif; ?>
         </div>
 
@@ -116,13 +121,8 @@ require_once("usuario.php");
         <?php if (!empty($publicacoes)): ?>
             <?php foreach ($publicacoes as $pub): ?>
                 <div class="publicacao">
-                    <?php if ($permissoes): ?>
-                        <a href="editar-publicacao.php?id=<?= htmlspecialchars($pub['id'] ?? '') ?>" class="btn-editar">Editar</a>
-                        <form action="deletar_publicacao.php" method="post" onsubmit="return confirm('Tem certeza que deseja deletar esta publicação?')">
-                            <input type="hidden" name="id" value="<?= htmlspecialchars($pub['id'] ?? '') ?>">
-                            <input type="submit" value="Deletar">
-                        </form>
-                    <?php endif; ?>
+                    <a href="<?= htmlspecialchars($url_foto) ?? "" ?>"></a>
+                    <p><strong><?= htmlspecialchars($pub["nome"] ?? 'Usuário anônimo') ?>:</strong></p>
 
                     <p><?= htmlspecialchars($pub["conteudo"]) ?></p>
                     
@@ -134,7 +134,7 @@ require_once("usuario.php");
                         <p><a href="<?= htmlspecialchars($pub["link"]) ?>" target="_blank" rel="noopener noreferrer">Acessar link</a></p>
                     <?php endif; ?>
 
-                    <small>Publicado em: <?= date('d/m/Y H:i', strtotime($pub["data_pub"])) ?></small>
+                    <small>Publicado em: <?= date('d/m/Y ', strtotime($pub["data_pub"])) ?></small>
                     <?php if (!empty($permissoes)): ?>
                         <div class="acoes-publicacao">
                             <a class="btn-editar-publicacao" href="editar-publicacao.php?id=<?= (int)$pub['id'] ?>&amp;voltar=perfil" target="_blank" rel="noopener noreferrer">Editar</a>
@@ -153,13 +153,8 @@ require_once("usuario.php");
     </div>
 
     <?php if (!empty($permissoes)): ?>
-<<<<<<< HEAD
+   <a href="../publicacoes/publicacao.html" class="btn-criar-pub">Criar publicações</a>
 
-    <a href="../publicacoes/publicacao.html" class="btn-criar-pub">Criar publicações</a>
-
-=======
-    <a href="../publicacoes/publicacao.html" class="btn-criar-pub">Criar publicações</a>
->>>>>>> 5e0995d7d2cbc710ab48183f03386c957c5b11c4
     <?php endif; ?>
 </div>
         </div>
@@ -182,11 +177,10 @@ require_once("usuario.php");
             <?php endif; ?>
         </div>
     </main>
+    <script src="../java.js/pesquisa.js"></script>
 </body>
-<<<<<<< HEAD
+
 
 
 </html>
-=======
-</html>
->>>>>>> 5e0995d7d2cbc710ab48183f03386c957c5b11c4
+

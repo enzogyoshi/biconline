@@ -7,7 +7,13 @@ if (!isset($is_moderador) || $is_moderador != 1) {
     exit("Acesso negado. Você não tem permissão para acessar esta página.");
 }
 
-$id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+$sql = "SELECT d.id, d.motivo, d.descricao, u.nome AS denunciante_nome, u2.nome AS denunciado_nome
+        FROM denuncia d
+        JOIN usuario u ON d.id_usuario_denunciante = u.id
+        JOIN usuario u2 ON d.id_usuario_denunciado = u2.id";
+
+$resultado = $conn->query($sql);
+
 ?>
 
 <!DOCTYPE html>
@@ -19,7 +25,11 @@ $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
 </head>
 <body>
     <h1>Moderar</h1>
-    
+
+    <?php
+    if(isset($denuncia))
+        
+    ?>
 </body>
 </html>
 
