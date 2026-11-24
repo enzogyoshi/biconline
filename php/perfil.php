@@ -1,7 +1,32 @@
 <?php
 require_once("usuario.php");
-?>
 
+$fotoPadrao = "../foto_de_perfil.jpg";
+$fotoPerfilUrl = $fotoPadrao;
+
+if (!empty($_SESSION["usuario"])) {
+    $idUsuario = (int) $_SESSION["usuario"];
+    $stmt = $conn->prepare("SELECT url_foto_perfil FROM usuario WHERE id = ? LIMIT 1");
+    if ($stmt) {
+        $stmt->bind_param("i", $idUsuario);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        if ($row = $res->fetch_assoc()) {
+            $raw = trim((string) ($row["url_foto_perfil"] ?? ""));
+            if ($raw !== "") {
+                if (str_starts_with($raw, "http://") || str_starts_with($raw, "https://") || str_starts_with($raw, "/")) {
+                    $fotoPerfilUrl = $raw;
+                } elseif (str_starts_with($raw, "uploads/")) {
+                    $fotoPerfilUrl = "../php/" . $raw;
+                } else {
+                    $fotoPerfilUrl = "../php/" . ltrim($raw, "/");
+                }
+            }
+        }
+        $stmt->close();
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -9,48 +34,46 @@ require_once("usuario.php");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil de <?= htmlspecialchars($nome ?? 'Usuário') ?></title>
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../perfil.css">
 </head>
 
 <body>
     <header>
         <nav>
-        <div class="logo">
-                <img src="../paco_minimalista.jpg" alt="Logo do site" class="logo">
-        </div>
+            <img src="../paco_minimalista.jpg" alt="Logo" class="logo">
 
-        <div class="search-container">
-            <input type="text" id="input-busca" placeholder="Pesquisar pessoas..." autocomplete="off">
-            <div id="resultados-busca" class="search-dropdown"></div>
-        </div>
+            <div class="search-container">
+                <input type="text" id="input-busca" placeholder="Pesquisar pessoas..." autocomplete="off">
+                <div id="resultados-busca" class="search-dropdown"></div>
+            </div>
+
             <input type="checkbox" id="menu-toggle">
             <label for="menu-toggle" class="menu-btn">☰</label>
+
             <ul class="nav-links">
                 <li>
                     <a href="../feed/feed.php">
-                        <span class="icone-casa">⌂</span> HOME
+                        <span class="icone-casa">⌂</span> FEED
                     </a>
                 </li>
+                <?php if (!empty($_SESSION['is_moderador'])): ?>
+                    <li>
+                        <a href="../php/moderar.php">MODERAÇÃO</a>
+                    </li>
+                <?php endif; ?>
                 <li>
-                    <a href="#">✉ VAGAS</a>
-                </li>
-                <li>
-                    <a href="perfil.php">
-                        <img src="#" alt="Perfil">
+                    <a href="perfil.php" class="link-perfil-header" title="Perfil">
+                        <img src="<?= htmlspecialchars($fotoPerfilUrl, ENT_QUOTES, 'UTF-8') ?>" alt="Perfil" id="foto-perfil-header" onerror="this.onerror=null;this.src='<?= htmlspecialchars($fotoPadrao, ENT_QUOTES, 'UTF-8') ?>';">
                     </a>
                 </li>
             </ul>
         </nav>
     </header>
-    <main>
 
+    <main>
         <div class="perfil">
             <div class="foto-perfil">
-                <?php if (!empty($url_foto)): ?>
-                    <img src="<?= htmlspecialchars($url_foto) ?>" alt="Foto de perfil">
-                <?php else: ?>
-                    <img src="#" alt="Foto de perfil">
-                <?php endif; ?>
+                <img src="<?= htmlspecialchars(!empty($url_foto) ? $url_foto : $fotoPadrao) ?>" alt="Foto de perfil" onerror="this.onerror=null;this.src='<?= htmlspecialchars($fotoPadrao, ENT_QUOTES, 'UTF-8') ?>';">
             </div>
 
             <div class="dados-perfil">
@@ -71,14 +94,8 @@ require_once("usuario.php");
                 <?php endif; ?>
 
                 <?php if (!$permissoes): ?>
-                    <a href="denunciar.php?usuario=<?= (int)$id_usuario ?>">Denunciar Perfil</a>
-
+                    <a href="denunciar.php?id=<?= esconderId($id_usuario) ?>" class="btn-denunciar-perfil">Denunciar usuário</a>
                 <?php endif; ?>
-                
-                <?php if (!empty($is_moderador) && $permissoes == false): ?>
-                    <a href="moderar.php">Moderar Perfil</a>
-                <?php endif; ?>
-
             </div>
         </div>
 
@@ -89,7 +106,7 @@ require_once("usuario.php");
             <?php if (!empty($permissoes)): ?>
                 <a href="editar.php" class="btn-editar">Editar perfil</a>
             <?php elseif (!empty($disponibilidade)): ?>
-                <a href="iniciar_chat.php?usuario=<?= (int)$id_usuario ?>" class="btn-editar">Conversar</a>
+                <a href="iniciar_chat.php?usuario=<?= esconderId($id_usuario) ?>" class="btn-editar">Conversar</a>
             <?php endif; ?>
         </div>
 
@@ -112,49 +129,19 @@ require_once("usuario.php");
             <p>E-mail: <?= htmlspecialchars($email_contato ?? 'Não informado') ?></p>
         </div>
 
-<div class="Publicacoes">
-    <h2>Publicações</h2>
-    <div id="publicacoes-container">
-        <?php if (!empty($publicacoes)): ?>
-            <?php foreach ($publicacoes as $pub): ?>
-                <div class="publicacao">
-                    <a href="<?= htmlspecialchars($url_foto) ?? "" ?>"></a>
-                    <p><strong><?= htmlspecialchars($pub["nome"] ?? 'Usuário anônimo') ?>:</strong></p>
+        <section class="secao-publicacoes-perfil">
+            <div class="topo-publicacoes-perfil">
+                <h2>Publicações</h2>
+                <?php if (!empty($permissoes)): ?>
+                    <a href="../publicacao/publicacao.html" class="criar-publicacao-topo" aria-label="Criar publicação">
+                        <span>Criar publicação</span>
+                        <span class="icone-mais-publicacao" aria-hidden="true">+</span>
+                    </a>
+                <?php endif; ?>
+            </div>
 
-                    <p><?= htmlspecialchars($pub["conteudo"]) ?></p>
-                    
-                    <?php if (!empty($pub["url_midia"])): ?>
-                        <img src="<?= htmlspecialchars($pub["url_midia"]) ?>" alt="Mídia da publicação" class="midia-publicacao">
-                    <?php endif; ?>
-
-                    <?php if (!empty($pub["link"])): ?>
-                        <p><a href="<?= htmlspecialchars($pub["link"]) ?>" target="_blank" rel="noopener noreferrer">Acessar link</a></p>
-                    <?php endif; ?>
-
-                    <small>Publicado em: <?= date('d/m/Y ', strtotime($pub["data_pub"])) ?></small>
-                    <?php if (!empty($permissoes)): ?>
-                        <div class="acoes-publicacao">
-                            <a class="btn-editar-publicacao" href="editar-publicacao.php?id=<?= (int)$pub['id'] ?>&amp;voltar=perfil" target="_blank" rel="noopener noreferrer">Editar</a>
-                            <form action="gerenciar-publicacao.php" method="post" onsubmit="return confirm('Deseja excluir esta publicação?');">
-                                <input type="hidden" name="acao" value="excluir">
-                                <input type="hidden" name="id" value="<?= (int)$pub['id'] ?>">
-                                <button type="submit" class="btn-excluir-publicacao">Excluir</button>
-                            </form>
-                        </div>
-                    <?php endif; ?>
-                </div>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <p>Não há publicações para exibir.</p>
-        <?php endif; ?>
-    </div>
-
-    <?php if (!empty($permissoes)): ?>
-   <a href="../publicacoes/publicacao.html" class="btn-criar-pub">Criar publicações</a>
-
-    <?php endif; ?>
-</div>
-        </div>
+            <div id="feed-publicacoes" data-usuario="<?= htmlspecialchars(esconderId($id_usuario)) ?>"></div>
+        </section>
 
         <div class="avaliacoes">
             <h2>Avaliações</h2>
@@ -166,7 +153,6 @@ require_once("usuario.php");
                         <p><strong><?= htmlspecialchars($comentario['nome'] ?? 'Usuário anônimo') ?>:</strong></p>
                         <p><?= htmlspecialchars($comentario['nota'] ?? $nota) ?></p>
                         <p><?= htmlspecialchars($comentario['texto'] ?? $comentario) ?></p>
-
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>
@@ -174,10 +160,9 @@ require_once("usuario.php");
             <?php endif; ?>
         </div>
     </main>
+
     <script src="../java.js/pesquisa.js"></script>
+    <script src="../java.js/perfil.js"></script>
 </body>
 
-
-
 </html>
-

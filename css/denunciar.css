@@ -1,0 +1,162 @@
+/* =========================================
+   1. BASE GLOBAL
+   ========================================= */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f3f2ef;
+    color: #1d2226;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* =========================================
+   2. CONTAINER E CARD DA DENÚNCIA
+   ========================================= */
+.denuncia-container {
+    width: 100%;
+    max-width: 540px;
+    margin: 30px auto;
+    padding: 0 16px;
+    box-sizing: border-box;
+}
+
+.denuncia-card {
+    background-color: #ffffff;
+    border: 1px solid #d3ceb8;
+    border-radius: 10px;
+    padding: 30px 36px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.denuncia-card h1 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 1.55rem;
+    color: #1d2226;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 14px;
+}
+
+.denuncia-subtitulo {
+    font-size: 0.92rem;
+    color: #5e5e5e;
+    margin-top: 0;
+    margin-bottom: 20px;
+    line-height: 1.4;
+}
+
+/* =========================================
+   3. CAMPOS DO FORMULÁRIO
+   ========================================= */
+.denuncia-card label {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #333333;
+    margin-top: 16px;
+    margin-bottom: 6px;
+}
+
+.denuncia-card select,
+.denuncia-card textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #c0c0c0;
+    border-radius: 8px;
+    font-size: 0.98rem;
+    font-family: inherit;
+    color: #1d2226;
+    background-color: #f9f9f9;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.denuncia-card select:focus,
+.denuncia-card textarea:focus {
+    outline: none;
+    border-color: #0a66c2;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 1px #0a66c2;
+}
+
+.denuncia-card textarea {
+    resize: vertical;
+    min-height: 110px;
+    line-height: 1.4;
+}
+
+/* 
+   4. MENSAGEM DE ERRO E BOTÕES
+   ========================================= */
+.msg-erro-denuncia {
+    background-color: #fee2e2;
+    border: 1px solid #fca5a5;
+    color: #991b1b;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 0.92rem;
+    margin-bottom: 16px;
+}
+
+.acoes-denuncia {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.btn-enviar-denuncia {
+    flex: 1;
+    background-color: #d11124;
+    color: #ffffff;
+    border: none;
+    padding: 13px 20px;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-enviar-denuncia:hover {
+    background-color: #a30d1c;
+}
+
+.btn-cancelar-denuncia {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 13px 20px;
+    border-radius: 20px;
+    border: 1px solid #c0c0c0;
+    background-color: #ffffff;
+    color: #5e5e5e;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-cancelar-denuncia:hover {
+    background-color: #f3f2ef;
+    color: #1d2226;
+}
+
+
+@media (max-width: 500px) {
+    .denuncia-card {
+        padding: 22px 20px;
+    }
+
+    .acoes-denuncia {
+        flex-direction: column-reverse;
+    }
+
+    .btn-cancelar-denuncia {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}

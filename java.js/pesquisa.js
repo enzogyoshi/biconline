@@ -2,6 +2,9 @@ const inputBusca = document.getElementById('input-busca');
 const dropdown = document.getElementById('resultados-busca');
 let timeoutBusca = null;
 
+const estaNaPastaPhp = window.location.pathname.includes('/php/');
+const prefixoPhp = estaNaPastaPhp ? '' : '../php/';
+
 if (inputBusca && dropdown) {
     inputBusca.addEventListener('input', () => {
         clearTimeout(timeoutBusca);
@@ -21,8 +24,8 @@ if (inputBusca && dropdown) {
 
 async function buscarUsuarios(termo) {
     try {
-        const response = await fetch(`buscar_usuarios.php?q=${encodeURIComponent(termo)}`);
-        const textoBruto = await response.text(); // Lê como texto primeiro para diagnosticar erros PHP
+        const response = await fetch(`${prefixoPhp}buscar_usuarios.php?q=${encodeURIComponent(termo)}`);
+        const textoBruto = await response.text();
 
         let usuarios;
         try {
@@ -38,6 +41,17 @@ async function buscarUsuarios(termo) {
     }
 }
 
+function formatarCaminhoFoto(raw) {
+    if (!raw || raw.trim() === '') {
+        return `${prefixoPhp}assets/img/avatar-padrao.png`;
+    }
+    const caminho = raw.trim();
+    if (caminho.startsWith('http://') || caminho.startsWith('https://') || caminho.startsWith('/')) {
+        return caminho;
+    }
+    return `${prefixoPhp}${caminho.replace(/^\/+/, '')}`;
+}
+
 function renderizarResultados(usuarios) {
     dropdown.innerHTML = '';
 
@@ -48,17 +62,17 @@ function renderizarResultados(usuarios) {
     }
 
     usuarios.forEach(user => {
-        const foto = user.foto ? user.foto : 'assets/img/avatar-padrao.png';
-        
+        const foto = formatarCaminhoFoto(user.foto);
+
         const link = document.createElement('a');
-        link.href = `/biconline/php/perfil.php?pesquisa=${user.codigo_url}`;
+        link.href = `${prefixoPhp}perfil.php?pesquisa=${user.codigo_url}`;
         link.className = 'search-item';
-        
+
         link.innerHTML = `
             <img src="${foto}" alt="${user.nome}">
             <span>${user.nome}</span>
         `;
-        
+
         dropdown.appendChild(link);
     });
 

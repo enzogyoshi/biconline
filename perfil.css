@@ -1,0 +1,568 @@
+/* =========================================
+   1. BASE GLOBAL
+   ========================================= */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f3f2ef;
+    color: #1d2226;
+}
+
+/* =========================================
+   2. HEADER, NAVBAR E BUSCADOR
+   ========================================= */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    padding: 8px 30px;
+    border-bottom: 1px solid #777;
+    box-sizing: border-box;
+    height: 65px;
+    min-height: 65px;
+    gap: 20px;
+    overflow: visible;
+}
+
+nav > img.logo {
+    width: 85px;
+    max-width: 85px;
+    height: 50px;
+    max-height: 50px;
+    object-fit: contain;
+    display: block;
+    flex-shrink: 0;
+}
+
+.search-container {
+    position: relative;
+    width: 100%;
+    max-width: 350px;
+}
+
+#input-busca {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.search-dropdown {
+    position: absolute;
+    top: 105%;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: none;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.search-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    text-decoration: none;
+    color: #333;
+}
+
+.search-item:hover {
+    background-color: #f5f5f5;
+}
+
+.search-item img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links li {
+    display: inline-block;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: black;
+    font-size: 16px;
+}
+
+.nav-links a:hover {
+    color: blue;
+}
+
+.nav-links img {
+    width: 38px;
+    height: 38px;
+    max-width: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+}
+
+.avatar-header-vazio {
+    display: inline-block;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background-color: #e0e4e8;
+    border: 1px solid #c5ccd3;
+}
+
+#menu-toggle {
+    display: none;
+}
+
+.menu-btn {
+    display: none;
+    color: black;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 2000;
+}
+
+.icone-casa {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+/* =========================================
+   3. LAYOUT PRINCIPAL DO PERFIL
+   ========================================= */
+main {
+    width: 100%;
+    max-width: 850px;
+    margin: 30px auto;
+    padding: 0 15px;
+    box-sizing: border-box;
+}
+
+.perfil {
+    background-color: white;
+    padding: 25px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    margin-bottom: 15px;
+}
+
+.foto-perfil {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: #ddd;
+    flex-shrink: 0;
+}
+
+.foto-perfil img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.dados-perfil h1 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.dados-perfil p {
+    margin: 7px 0;
+    color: #555;
+}
+
+.dados-perfil button {
+    background-color: #0a66c2;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.dados-perfil button:hover {
+    background-color: #004182;
+}
+
+.sobre,
+.servicos,
+.informacoes,
+.fotos,
+.avaliacoes,
+.Publicacoes {
+    background-color: white;
+    padding: 25px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.Publicacoes h2 {
+    font-size: 1.25rem;
+    color: #333333;
+    margin-top: 0;
+    margin-bottom: 16px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 8px;
+}
+
+.sobre p {
+    line-height: 1.5;
+    color: #555;
+}
+
+.servicos li {
+    margin-bottom: 10px;
+}
+
+.informacoes p {
+    margin: 10px 0;
+}
+
+.nota {
+    color: #f5a623;
+    font-size: 20px;
+}
+
+.avaliacao {
+    border-top: 1px solid #ddd;
+    padding: 15px 0;
+}
+
+.avaliacao p {
+    color: #555;
+}
+
+/* =========================================
+   4. PUBLICAÇÕES NO PERFIL (IGUAL AO FEED)
+   ========================================= */
+.secao-publicacoes-perfil {
+    margin-bottom: 20px;
+}
+
+.topo-publicacoes-perfil {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    gap: 12px;
+}
+
+.topo-publicacoes-perfil h2 {
+    margin: 0;
+    font-size: 1.3rem;
+    color: #1d2226;
+}
+
+.criar-publicacao-topo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #ffffff;
+    border: 1px solid #d3ceb8;
+    border-radius: 20px;
+    padding: 8px 16px;
+    text-decoration: none;
+    color: #1d2226;
+    font-weight: 600;
+    font-size: 0.95rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    transition: background-color 0.2s ease;
+}
+
+.criar-publicacao-topo:hover {
+    background-color: #e9e7e2;
+}
+
+.icone-mais-publicacao {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background-color: #0a66c2;
+    color: #ffffff;
+    font-size: 1.1rem;
+    line-height: 1;
+}
+
+#feed-publicacoes {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.publicacao {
+    background-color: #ffffff;
+    border: 1px solid #d3ceb8;
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.publicacao-cabecalho {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eceae4;
+}
+
+.publicacao-foto {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.publicacao-usuario {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1d2226;
+}
+
+.publicacao-horario {
+    font-size: 0.85rem;
+    color: #5e5e5e;
+}
+
+.menu-publicacao {
+    position: relative;
+    margin-left: auto;
+}
+
+.botao-menu-publicacao {
+    background: transparent;
+    border: none;
+    font-size: 1.4rem;
+    cursor: pointer;
+    color: #5e5e5e;
+    padding: 4px 10px;
+    border-radius: 50%;
+}
+
+.botao-menu-publicacao:hover {
+    background-color: #f3f2ef;
+}
+
+.lista-menu-publicacao {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: #ffffff;
+    border: 1px solid #d3ceb8;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    z-index: 100;
+    min-width: 130px;
+    overflow: hidden;
+}
+
+.lista-menu-publicacao.menu-aberto {
+    display: flex;
+    flex-direction: column;
+}
+
+.lista-menu-publicacao a {
+    padding: 10px 14px;
+    text-decoration: none;
+    color: #1d2226;
+    font-size: 0.9rem;
+}
+
+.lista-menu-publicacao a:hover {
+    background-color: #f3f2ef;
+}
+
+.opcao-denunciar {
+    color: #d11124 !important;
+}
+
+.publicacao-texto {
+    color: #1d2226;
+    font-size: 0.98rem;
+    line-height: 1.5;
+    margin: 0;
+    white-space: pre-line;
+}
+
+.publicacao-midia {
+    width: 100%;
+    max-height: 500px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.publicacao-link {
+    display: inline-block;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #0a66c2;
+    text-decoration: none;
+}
+
+.publicacao-link:hover {
+    text-decoration: underline;
+}
+
+/* =========================================
+   5. RESPONSIVIDADE (TABLET E MOBILE)
+   ========================================= */
+@media (max-width: 999px) {
+    nav {
+        position: relative;
+    }
+
+    .menu-btn {
+        display: block;
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 65px;
+        right: 0;
+        width: 35vw;
+        height: calc(100vh - 65px);
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        margin: 0;
+        padding: 0;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+        z-index: 1500;
+        border-left: 1px solid #ddd;
+    }
+
+    #menu-toggle:checked + .menu-btn + .nav-links {
+        transform: translateX(0);
+    }
+}
+
+@media (max-width: 600px) {
+    nav {
+        flex-wrap: wrap;
+        height: auto;
+        min-height: 65px;
+        padding: 12px;
+        gap: 10px;
+    }
+
+    .search-container {
+        order: 3;
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+    }
+
+    .perfil {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .nav-links a {
+        font-size: 14px;
+    }
+}
+
+.lista-menu-publicacao form {
+    margin: 0;
+}
+
+.opcao-excluir {
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: none;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    font-family: inherit;
+    color: #d11124;
+    cursor: pointer;
+}
+
+.opcao-excluir:hover {
+    background-color: #f3f2ef;
+}
+
+
+
+.topo-publicacoes-perfil {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.topo-publicacoes-perfil h2 {
+    margin: 0;
+    font-size: 1.3rem;
+    color: #1d2226;
+}
+
+.criar-publicacao-topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    border: 1px solid #d3ceb8;
+    border-radius: 10px;
+    padding: 14px 18px;
+    text-decoration: none;
+    color: #5e5e5e;
+    font-weight: 600;
+    font-size: 0.98rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.criar-publicacao-topo:hover {
+    background-color: #f3f2ef;
+    border-color: #b8b29b;
+    color: #1d2226;
+}
+
+.icone-mais-publicacao {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: #0a66c2;
+    color: #ffffff;
+    font-size: 1.2rem;
+    font-weight: bold;
+    line-height: 1;
+}

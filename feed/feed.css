@@ -9,22 +9,32 @@ body {
     background-color: #f3f2ef;
     color: #1d2226;
 }
-
 nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: white;
-    padding: 15px 30px;
+    padding: 8px 30px;
     border-bottom: 1px solid #777;
     box-sizing: border-box;
-    height: 8vh;
+    height: 65px;
     min-height: 65px;
     gap: 20px;
+    overflow: visible;
 }
 
 nav > img {
     max-width: 150px;
+}
+
+nav > img.logo {
+    width: 85px;
+    max-width: 85px;
+    height: 50px;
+    max-height: 50px;
+    object-fit: contain;
+    display: block;
+    flex-shrink: 0;
 }
 
 .pesquisa-header {
@@ -33,6 +43,55 @@ nav > img {
     padding: 3px;
     margin-left: auto;
     margin-right: auto;
+}
+
+.search-container {
+    position: relative;
+    width: 100%;
+    max-width: 350px;
+}
+
+#input-busca {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    outline: none;
+}
+
+.search-dropdown {
+    position: absolute;
+    top: 105%;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: none;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.search-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    text-decoration: none;
+    color: #333;
+}
+
+.search-item:hover {
+    background-color: #f5f5f5;
+}
+
+.search-item img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
 .nav-links {
@@ -94,6 +153,65 @@ nav > img {
     font-weight: bold;
 }
 
+/* Responsividade Tablet / Menu Lateral */
+@media (max-width: 999px) {
+    nav {
+        position: relative;
+    }
+
+    .menu-btn {
+        display: block;
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 65px;
+        right: 0;
+        width: 35vw;
+        height: calc(100vh - 65px);
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        margin: 0;
+        padding: 0;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+        z-index: 1500;
+    }
+
+    #menu-toggle:checked + .menu-btn + .nav-links {
+        transform: translateX(0);
+    }
+}
+
+/* Responsividade Mobile */
+@media (max-width: 600px) {
+    nav {
+        flex-wrap: wrap;
+        height: auto;
+        min-height: 65px;
+        padding: 12px;
+        gap: 10px;
+    }
+
+    .pesquisa-header,
+    .search-container {
+        order: 3;
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+    }
+
+    .nav-links {
+        gap: 12px;
+    }
+
+    .nav-links a {
+        font-size: 12px;
+    }
+}
 @media (max-width: 999px) {
     nav {
         position: relative;

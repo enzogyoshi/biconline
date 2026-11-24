@@ -132,6 +132,7 @@ CREATE TABLE denuncia(
     descricao varchar(500),
     id_usuario_denunciante INT NOT NULL,
     id_usuario_denunciado INT NOT NULL,
+    id_publicacao INT NULL,
     CONSTRAINT fk_denuncia_denunciante
     FOREIGN KEY (id_usuario_denunciante) REFERENCES usuario(id),
     CONSTRAINT fk_denuncia_denunciado

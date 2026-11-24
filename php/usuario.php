@@ -4,6 +4,35 @@ require_once 'proteger.php';
 require_once 'conn.php';
 require_once 'ofuscar_id.php';
 
+$id_logado = (int)$_SESSION['usuario'];
+
+$stmt_ban = $conn->prepare("SELECT acao FROM moderacao WHERE id_usuario_alvo = ? AND acao = 'Banir' LIMIT 1");
+$stmt_ban->bind_param("i", $id_logado);
+$stmt_ban->execute();
+$foi_banido = $stmt_ban->get_result()->num_rows > 0;
+$stmt_ban->close();
+
+if ($foi_banido) {
+    $permissoes = false;
+    session_unset();
+    session_destroy();
+    header("Location: login.php?erro=conta_banida");
+    exit;
+} 
+
+
+// is_Moderador
+$stmt_mod = $conn->prepare("SELECT is_moderador FROM usuario WHERE id = ?");
+$stmt_mod->bind_param("i", $id_logado);
+$stmt_mod->execute();
+$res_mod = $stmt_mod->get_result()->fetch_assoc();
+$stmt_mod->close();
+
+$moderador = (int)($res_mod['is_moderador'] ?? 0);
+$_SESSION['is_moderador'] = $moderador;
+
+
+
 $permissoes = false;
 
 if (isset($_GET['pesquisa']) && trim($_GET['pesquisa']) !== '') {
@@ -24,9 +53,8 @@ if (isset($_GET['pesquisa']) && trim($_GET['pesquisa']) !== '') {
     $permissoes = true;
 }
 
-
 // Usuario
-$sql = "SELECT nome, cidade, uf, bio, score_avaliacao, url_foto_perfil, is_moderador FROM usuario WHERE id = ?";
+$sql = "SELECT nome, cidade, uf, bio, score_avaliacao, url_foto_perfil FROM usuario WHERE id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $id_usuario);
 $stmt->execute();
@@ -65,9 +93,9 @@ $experiencia = $trabalhador["experiencia"] ?? 0;
 $disponibilidade = $trabalhador["disponibilidade"] ?? 0;
 $id_trab = $trabalhador["id"] ?? null;
 
-//  Habilidades 
+// Habilidades e Serviços
 $habilidades_lista = [];
-
+$servicos = [];
 
 $sql_servicos = "SELECT 
                         s.id AS id_servico,
@@ -91,7 +119,6 @@ if ($stmt_serv = $conn->prepare($sql_servicos)) {
     }
     $stmt_serv->close();
 
-
     if ($eh_trabalhador && $id_trab) {
         $sql2 = 'SELECT habilidade FROM habilidades WHERE id_trabalhador = ?';
         $stmt2 = $conn->prepare($sql2);
@@ -102,7 +129,6 @@ if ($stmt_serv = $conn->prepare($sql_servicos)) {
             $habilidades_lista[] = $row_hab["habilidade"];
         }
         $stmt2->close();
-
 
         $sql_servicos = "SELECT 
                         s.id AS id_servico,
@@ -127,7 +153,6 @@ if ($stmt_serv = $conn->prepare($sql_servicos)) {
         }
     }
 }
-
 
 // Publicações 
 $publicacoes = [];
@@ -157,15 +182,11 @@ if ($id_usuario) {
     }
 }
 
-
 $nome = $usuario["nome"] ?? "Sem nome";
 $cidade = $usuario["cidade"] ?? "Sem cidade";
 $uf = $usuario["uf"] ?? "";
 $bio = $usuario["bio"] ?? "Sem biografia";
 $score = $usuario["score_avaliacao"] ?? 0;
 $url_foto = $usuario["url_foto_perfil"] ?? "";
-$is_moderador = $usuario["is_moderador"] ?? 0;
-
-
 
 ?>

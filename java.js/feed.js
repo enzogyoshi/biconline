@@ -118,7 +118,7 @@ async function carregarPublicacoes() {
 
                 if (publicacao.id_usuario) {
                     const denunciar = document.createElement("a");
-                    denunciar.href = "../php/denuncia.php?id=" + encodeURIComponent(publicacao.id_usuario);
+                    denunciar.href = "../php/denunciar.php?id=" + encodeURIComponent(publicacao.id_usuario) + "&id_publicacao=" + encodeURIComponent(publicacao.id) ;
                     denunciar.textContent = "Denunciar";
                     denunciar.className = "opcao-denunciar";
                     listaMenu.appendChild(denunciar);

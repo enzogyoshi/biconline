@@ -1,50 +1,60 @@
 <?php
+header('Content-Type: application/json; charset=utf-8');
+require_once 'proteger.php';
+require_once 'conn.php';
+require_once 'ofuscar_id.php';
 
-header("Content-Type: application/json; charset=UTF-8");
+$idLogado = (int)($_SESSION['usuario'] ?? 0);
+$codigoUsuario = trim($_GET['usuario'] ?? '');
+$idFiltroUsuario = null;
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
+if ($codigoUsuario !== '') {
+    $idFiltroUsuario = revelarId($codigoUsuario);
+    if ($idFiltroUsuario === null || $idFiltroUsuario <= 0) {
+        echo json_encode([]);
+        exit;
+    }
 }
 
-require_once "conn.php";
-
-$sql = "SELECT
+$sql = "SELECT 
             p.id,
+            p.id_usuario,
             p.conteudo,
             p.url_midia,
             p.link,
             p.data_pub,
-            p.id_usuario,
             u.nome,
             u.url_foto_perfil
         FROM publicacao p
-        LEFT JOIN usuario u ON p.id_usuario = u.id
-        ORDER BY p.data_pub DESC, p.id DESC";
+        INNER JOIN usuario u ON p.id_usuario = u.id";
 
-$resultado = $conn->query($sql);
-
-if (!$resultado) {
-    http_response_code(500);
-
-    echo json_encode([
-        "erro" => "Não foi possível buscar as publicações."
-    ], JSON_UNESCAPED_UNICODE);
-
-    exit;
+if ($idFiltroUsuario !== null) {
+    $sql .= " WHERE p.id_usuario = ? ORDER BY p.data_pub DESC, p.id DESC";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $idFiltroUsuario);
+} else {
+    $sql .= " ORDER BY p.data_pub DESC, p.id DESC";
+    $stmt = $conn->prepare($sql);
 }
+
+$stmt->execute();
+$resultado = $stmt->get_result();
 
 $publicacoes = [];
-
-while ($linha = $resultado->fetch_assoc()) {
-
-    $linha["eh_dono"] = isset($_SESSION["usuario"]) &&
-        (int)$_SESSION["usuario"] === (int)$linha["id_usuario"];
-
-    $publicacoes[] = $linha;
+while ($row = $resultado->fetch_assoc()) {
+    $ehDono = ((int)$row['id_usuario'] === $idLogado);
+    $publicacoes[] = [
+        'id'              => (int)$row['id'],
+        'id_usuario'      => esconderId((int)$row['id_usuario']),
+        'nome'            => $row['nome'],
+        'url_foto_perfil' => $row['url_foto_perfil'],
+        'conteudo'        => $row['conteudo'],
+        'url_midia'       => $row['url_midia'],
+        'link'            => $row['link'],
+        'data_pub'        => $row['data_pub'],
+        'eh_dono'         => $ehDono
+    ];
 }
 
-echo json_encode($publicacoes, JSON_UNESCAPED_UNICODE);
-
-$conn->close();
-
-?>
+$stmt->close();
+echo json_encode($publicacoes);

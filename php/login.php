@@ -23,6 +23,11 @@
         }
         ?>
         <?php
+        if (isset($_GET["erro"]) && $_GET["erro"] === "conta_banida") {
+            echo "<p style='color: red;'>Sua conta foi banida. Entre em contato com o suporte para mais informações.</p>";
+        }
+        ?>
+        <?php
         if (isset($_SESSION["sucesso"])) {
             echo "<p style='color: green;'>" . $_SESSION["sucesso"] . "</p>";
             unset($_SESSION["sucesso"]);
