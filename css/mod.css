@@ -164,7 +164,7 @@ nav > img.logo {
 }
 
 /* =========================================
-   3. CONTEÚDO DO PAINEL DE MODERAÇÃO
+   3. CONTEÚDO DO PAINEL (MODERAR.PHP)
    ========================================= */
 main {
     width: 100%;
@@ -265,9 +265,6 @@ td:nth-child(3) {
     color: #92400e;
 }
 
-/* =========================================
-   5. BOTÃO ANALISAR (.btn)
-   ========================================= */
 .btn {
     display: inline-block;
     background-color: #0a66c2;
@@ -286,6 +283,219 @@ td:nth-child(3) {
 
 .btn:active {
     transform: scale(0.97);
+}
+
+/* =========================================
+   5. FORMULÁRIO DE ANÁLISE (FORM.MODERAR.PHP)
+   ========================================= */
+.analise-container {
+    width: 100%;
+    max-width: 680px;
+    margin: 30px auto;
+    padding: 0 16px;
+    box-sizing: border-box;
+}
+
+.analise-card,
+form.form-moderacao,
+body > form {
+    width: 100%;
+    max-width: 680px;
+    margin: 30px auto;
+    background-color: #ffffff;
+    border: 1px solid #d3ceb8;
+    border-top: 5px solid #0a66c2;
+    border-radius: 10px;
+    padding: 30px 34px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    box-sizing: border-box;
+}
+
+.analise-card h1,
+.analise-card h2,
+form h2 {
+    margin-top: 0;
+    margin-bottom: 18px;
+    padding: 0 0 14px 0;
+    border: none;
+    border-bottom: 1px solid #eceae4;
+    border-radius: 0;
+    box-shadow: none;
+    font-size: 1.45rem;
+    color: #1d2226;
+}
+
+.info-denuncia {
+    background-color: #f9f9f7;
+    border: 1px solid #e6e3d8;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.info-denuncia p,
+.analise-card > p {
+    margin: 0;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    text-align: left;
+    font-size: 0.96rem;
+    line-height: 1.5;
+    color: #2d3748;
+}
+
+.info-denuncia strong {
+    color: #1d2226;
+}
+
+.info-denuncia a {
+    color: #0a66c2;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.info-denuncia a:hover {
+    text-decoration: underline;
+}
+
+.previa-publicacao {
+    background-color: #f3f2ef;
+    border: 1px solid #d3ceb8;
+    border-left: 4px solid #f59e0b;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+}
+
+.previa-publicacao img {
+    max-width: 100%;
+    max-height: 320px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-top: 10px;
+    display: block;
+}
+
+form label {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #333333;
+    margin-top: 16px;
+    margin-bottom: 6px;
+}
+
+form select,
+form input[type="text"],
+form textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #c0c0c0;
+    border-radius: 8px;
+    font-size: 0.98rem;
+    font-family: inherit;
+    color: #1d2226;
+    background-color: #f9f9f9;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+form select:focus,
+form input[type="text"]:focus,
+form textarea:focus {
+    outline: none;
+    border-color: #0a66c2;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 1px #0a66c2;
+}
+
+form textarea {
+    resize: vertical;
+    min-height: 100px;
+    line-height: 1.4;
+}
+
+.acoes-form {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid #eceae4;
+    flex-wrap: wrap;
+}
+
+form button,
+form input[type="submit"],
+.btn-confirmar {
+    background-color: #0a66c2;
+    color: #ffffff;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 20px;
+    font-size: 0.96rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 16px;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.acoes-form button,
+.acoes-form input[type="submit"] {
+    margin-top: 0;
+}
+
+form button:hover,
+form input[type="submit"]:hover,
+.btn-confirmar:hover {
+    background-color: #004182;
+}
+
+.btn-banir,
+form button[value="banir"] {
+    background-color: #d11124;
+}
+
+.btn-banir:hover,
+form button[value="banir"]:hover {
+    background-color: #a30d1c;
+}
+
+.btn-ignorar,
+form button[value="ignorar"] {
+    background-color: #e4e3e0;
+    color: #333333;
+}
+
+.btn-ignorar:hover,
+form button[value="ignorar"]:hover {
+    background-color: #d1cfc9;
+}
+
+.btn-voltar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 11px 20px;
+    border-radius: 20px;
+    border: 1px solid #c0c0c0;
+    background-color: #ffffff;
+    color: #5e5e5e;
+    text-decoration: none;
+    font-size: 0.94rem;
+    font-weight: 600;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-voltar:hover {
+    background-color: #f3f2ef;
+    color: #1d2226;
 }
 
 /* =========================================
@@ -382,6 +592,27 @@ td:nth-child(3) {
 
     .btn {
         display: block;
+        text-align: center;
+    }
+
+    .analise-card,
+    form.form-moderacao,
+    body > form {
+        padding: 22px 18px;
+        margin: 16px 12px;
+        width: auto;
+    }
+
+    .acoes-form {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    form button,
+    form input[type="submit"],
+    .btn-voltar {
+        width: 100%;
+        box-sizing: border-box;
         text-align: center;
     }
 }

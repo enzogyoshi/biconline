@@ -41,30 +41,43 @@ $item_denunciado = ($id_publicacao > 0) ? 'publicacao' : 'Perfil do usuario';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Moderar <?= htmlspecialchars($item_denunciado) ?></title>
+    <link rel="stylesheet" href="../css/mod.css?v=3">
 </head>
 <body>
-    <h2>Analisando Denúncia #<?= $denuncia['id'] ?></h2>
-    <p><strong>Usuário Alvo:</strong> <?= htmlspecialchars($denuncia['nome_alvo']) ?></p>
-    <p><strong>Motivo:</strong> <?= htmlspecialchars($denuncia['motivo']) ?></p>
-    <p><strong>Descrição:</strong> <?= htmlspecialchars($denuncia['descricao'] ?? '') ?></p>
+    <main class="analise-container">
+        <div class="analise-card">
+            <h2>Analisando Denúncia #<?= $denuncia['id'] ?></h2>
 
-    <form action="exec_mod.php" method="POST">
-        <input type="hidden" name="id_denuncia" value="<?= $denuncia['id'] ?>">
-        <input type="hidden" name="id_usuario_alvo" value="<?= $denuncia['id_usuario_denunciado'] ?>">
-        <input type="hidden" name="id_publicacao" value="<?= $id_publicacao ?>">
-        <input type="hidden" name="item_denunciado" value="<?= htmlspecialchars($item_denunciado) ?>">
-        <input type="hidden" name="motivo" value="<?= htmlspecialchars($denuncia['motivo']) ?>">
+            <div class="info-denuncia">
+                <p><strong>Usuário Alvo:</strong> <?= htmlspecialchars($denuncia['nome_alvo']) ?></p>
+                <p><strong>Tipo:</strong> <?= htmlspecialchars($item_denunciado) ?></p>
+                <p><strong>Motivo:</strong> <?= htmlspecialchars($denuncia['motivo']) ?></p>
+                <p><strong>Descrição:</strong> <?= htmlspecialchars($denuncia['descricao'] ?? 'Sem detalhes adicionais.') ?></p>
+            </div>
 
-        <label for="acao">Ação:</label>
-        <select name="acao" id="acao" required>
-            <option value="Banir">Banir Usuário</option>
-            <?php if ($id_publicacao > 0): ?>
-                <option value="Deletar Publicacao">Deletar Publicação</option>
-            <?php endif; ?>
-            <option value="Rejeitar">Rejeitar</option>
-        </select>
+            <form action="exec_mod.php" method="POST" class="form-moderacao">
+                <input type="hidden" name="id_denuncia" value="<?= $denuncia['id'] ?>">
+                <input type="hidden" name="id_usuario_alvo" value="<?= $denuncia['id_usuario_denunciado'] ?>">
+                <input type="hidden" name="id_publicacao" value="<?= $id_publicacao ?>">
+                <input type="hidden" name="item_denunciado" value="<?= htmlspecialchars($item_denunciado) ?>">
+                <input type="hidden" name="motivo" value="<?= htmlspecialchars($denuncia['motivo']) ?>">
 
-        <button type="submit">Moderar</button>
-    </form>
+                <label for="acao">Ação:</label>
+                <select name="acao" id="acao" required>
+                    <option value="">Selecione uma ação:</option>
+                    <option value="Banir">Banir Usuário</option>
+                    <?php if ($id_publicacao > 0): ?>
+                        <option value="Deletar Publicacao">Deletar Publicação</option>
+                    <?php endif; ?>
+                    <option value="Rejeitar">Rejeitar</option>
+                </select>
+
+                <div class="acoes-form">
+                    <a href="moderar.php" class="btn-voltar">Voltar</a>
+                    <button type="submit">Moderar</button>
+                </div>
+            </form>
+        </div>
+    </main>
 </body>
 </html>
