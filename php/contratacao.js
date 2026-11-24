@@ -31,9 +31,9 @@
       html += `
         <h3>Contratar ${escapeHtml(estado.outro_nome)}</h3>
         <div class="linha">
-          <input name="descricao" placeholder="O que será feito" maxlength="150">
-          <input name="valor" placeholder="Valor (opcional)" style="width:110px">
-          <input name="data_servico" type="date" style="width:150px">
+          <input name="descricao" placeholder="O que será feito" maxlength="150" autocomplete="off">
+          <input name="valor" placeholder="Valor (opcional)" style="width:110px" autocomplete="off">
+          <input name="data_servico" type="date" style="width:150px" autocomplete="off">
           <button type="button" id="btn-propor">Enviar proposta</button>
         </div>
         <div class="msg-erro" id="erro-contratacao"></div>`;
@@ -111,13 +111,15 @@
   }
 
   async function atualizar() {
-    try {
-      const r = await fetch("proposta_estado.php?id_chat=" + idChat);
-      const estado = await r.json();
-      if (estado.ok) render(estado);
-    } catch (e) { /* tenta de novo no próximo ciclo */ }
-  }
+  const campo = raiz.querySelector('[name="descricao"]');
+  if (campo && document.activeElement === campo) return; // só pula se o campo estiver com foco agora
+  try {
+    const r = await fetch("proposta_estado.php?id_chat=" + idChat);
+    const estado = await r.json();
+    if (estado.ok) render(estado);
+  } catch (e) { /* tenta de novo no próximo ciclo */ }
+}
 
   atualizar();
-  setInterval(atualizar, 4000);
+  setInterval(atualizar, 30000);
 })();

@@ -101,7 +101,7 @@
 <body>
     <header class="cabecalho">
         <nav class="navegacao">
-            <a href="../feed/feed.html">Home</a>
+            <a href="../feed/feed.php">Home</a>
         </nav>
     </header>
     <main class="pagina">
