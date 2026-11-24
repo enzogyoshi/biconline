@@ -286,6 +286,12 @@ nav > img {
     font-size: 14px;
     font-weight: bold;
     color: #343a40;
+    text-decoration: none;
+}
+
+a.publicacao-usuario:hover {
+    text-decoration: underline;
+    color: #52789c;
 }
 
 .publicacao-horario {

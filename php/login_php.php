@@ -2,7 +2,7 @@
     session_start();
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         $_SESSION['erro'] = 'nenhum formulario enviado';
-        header("Location: ../feed/feed.html");
+        header("Location: ../feed/feed.php");
         exit;
     }
 
@@ -36,7 +36,7 @@
         session_regenerate_id(true);
         $_SESSION["usuario"] = $row["id"];
 
-        header("Location: ../feed/feed.html");
+        header("Location: ../feed/feed.php");
         $_SESSION["moderador"] = $row["is_moderador"];
         header("Location: ../feed/feed.php"); // temporário, depois vira a página inicial
         exit;

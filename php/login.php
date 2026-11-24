@@ -3,7 +3,7 @@
         session_start();
      }
      if (isset($_SESSION["usuario"])) {
-        header("Location: ../feed/feed.html");
+        header("Location: ../feed/feed.php");
      }
 ?>
 <!DOCTYPE html>
