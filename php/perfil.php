@@ -102,15 +102,14 @@ if (!empty($_SESSION["usuario"])) {
         <div class="sobre">
             <h2>Sobre mim</h2>
             <p><?= htmlspecialchars($bio ?? '') ?></p>
+
             <?php if (!empty($permissoes)): ?>
-                <div class="acoes-sobre-perfil">
-                    <a href="editar.php" class="btn-editar">Editar perfil</a>
-                    <form action="logout.php" method="post">
-                        <button type="submit" class="btn-sair">Sair</button>
-                    </form>
-                </div>
+                <a href="editar.php" class="btn-editar">Editar perfil</a>
+                <form action="logout.php" method="post" style="display: inline;">
+                    <button type="submit" class="btn-sair">Sair</button>
+                </form>
             <?php elseif (!empty($disponibilidade)): ?>
-                <a href="iniciar_chat.php?usuario=<?= esconderId($id_usuario) ?>" class="btn-editar">Conversar</a>
+                <a href="iniciar_chat.php?usuario=<?= (int)$id_usuario ?>" class="btn-editar">Conversar</a>
             <?php endif; ?>
         </div>
 

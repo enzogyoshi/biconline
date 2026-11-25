@@ -6,6 +6,8 @@ require __DIR__ . '/config.local.php';
 require __DIR__ . '/gerar-token.php';
 require __DIR__ . '/conn.php';
 require __DIR__ . '/conversas_lib.php';
+require_once "ofuscar_id.php";
+
 
 if (empty($_SESSION['usuario'])) {
     header('Location: login.php');
