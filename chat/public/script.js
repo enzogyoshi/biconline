@@ -1,3 +1,5 @@
+//conecta por websocket no server.js, autentica o token, mensagens, reconecta sozinho se cair, mostra ações do moderador
+//ajusta o css
 if (window.self !== window.top) document.documentElement.classList.add("embutido");
 
 const form = document.getElementById("form");
@@ -7,7 +9,7 @@ const mensagens = document.getElementById("mensagens");
 const status = document.getElementById("status");
 const titulo = document.getElementById("titulo");
 const avatar = document.getElementById("avatar");
-
+//tira o token da url
 const params = new URLSearchParams(location.search);
 const tokenInicial = params.get("token");
 if (tokenInicial) history.replaceState(null, "", location.pathname);
@@ -15,10 +17,10 @@ if (tokenInicial) history.replaceState(null, "", location.pathname);
 const ler = (k) => { try { return localStorage.getItem(k); } catch { return null; } };
 const guardar = (k, v) => { try { localStorage.setItem(k, v); } catch {} };
 
-let nomeDev = params.get("nome") || ler("nome");
+let nomeDev = params.get("nome") || ler("nome"); //teste modo_dev
 let socket, usuario = null, renovacao = null, moderacao = false;
 let tentativas = 0, encerrado = false, totalOnline = 0;
-
+//evita criar document.createElement várias vezes
 function el(tag, classe, conteudo) {
   const e = document.createElement(tag);
   if (classe) e.className = classe;
@@ -28,12 +30,13 @@ function el(tag, classe, conteudo) {
 
 const iniciais = (n) => n.trim().split(/\s+/).slice(0, 2).map((p) => p[0]).join("").toUpperCase();
 function definirStatus(t, on) { status.textContent = t; status.classList.toggle("on", !!on); }
-function habilitar(sim) { texto.disabled = botao.disabled = !sim; }
-function rolar() { mensagens.scrollTop = mensagens.scrollHeight; }
+function habilitar(sim) { texto.disabled = botao.disabled = !sim; } //trava o campo até autenticar
+function rolar() { mensagens.scrollTop = mensagens.scrollHeight; } //desce pro final de cada msg nova
 function enviar(obj) { if (socket && socket.readyState === 1) socket.send(JSON.stringify(obj)); }
-function aviso(t) { mensagens.append(el("div", "aviso", t)); rolar(); }
-function tirarVazio() { const v = mensagens.querySelector(".vazio"); if (v) v.remove(); }
+function aviso(t) { mensagens.append(el("div", "aviso", t)); rolar(); } //mensagem de sistema 
+function tirarVazio() { const v = mensagens.querySelector(".vazio"); if (v) v.remove(); } //tira placeholder
 
+//mostra status da conversa privada (online ou não)
 function atualizarPresenca() {
   if (document.body.classList.contains("privada")) {
     totalOnline > 1 ? definirStatus("online agora", true) : definirStatus("fora do chat agora", false);
@@ -41,7 +44,7 @@ function atualizarPresenca() {
     definirStatus("online · " + totalOnline, true);
   }
 }
-
+//monta mensagem mensagem de autenticação que vai pro servidor 
 function dadosAuth() {
   const token = renovacao || tokenInicial;
   if (token) return { tipo: "auth", token };
@@ -52,6 +55,7 @@ function dadosAuth() {
   return { tipo: "auth", dev: true, nome: nomeDev, sala: params.get("sala") || "geral" };
 }
 
+//cria os balões das mensagens
 function adicionar(m) {
   tirarVazio();
   const minha = usuario && m.uid === usuario.id;
@@ -64,7 +68,7 @@ function adicionar(m) {
     div.append(n);
   }
   div.append(el("div", "conteudo", m.texto), el("div", "hora", m.hora));
-
+//apagar as próprias mensagens 
   const acoes = el("div", "acoes");
   if (minha || moderacao) {
     const apagar = el("button", "", "🗑");
@@ -86,30 +90,30 @@ function adicionar(m) {
   if (acoes.children.length) div.append(acoes);
   mensagens.append(div);
 }
-
+//trata cada mensagem do servidor envia pelo websocket
 function tratar(m) {
   if (m.tipo === "ok") {
-    usuario = m.usuario;
+    usuario = m.usuario; //o servidor confirma quem eu sou e minhas permissões
     habilitar(true);
-    moderacao = !!m.moderacao;
+    moderacao = !!m.moderacao; //true - sala geral
     if (m.titulo) {
       document.body.classList.add("privada");
       if (titulo) titulo.textContent = m.titulo;
       if (avatar) avatar.textContent = iniciais(m.titulo);
     }
-    renovacao = m.renovacao || renovacao;
+    renovacao = m.renovacao || renovacao; //token de 2h, pra reconectar sem recarregar pag
     tentativas = 0;
     atualizarPresenca();
     texto.focus();
-  } else if (m.tipo === "historico") {
+  } else if (m.tipo === "historico") { //histórico
     mensagens.replaceChildren();
     m.mensagens.forEach(adicionar);
     rolar();
-  } else if (m.tipo === "msg") {
-    adicionar(m);
+  } else if (m.tipo === "msg") { //mensagem nova
+    adicionar(m); 
     rolar();
-  } else if (m.tipo === "apagada") {
-    const d = mensagens.querySelector('[data-mid="' + Number(m.mid) + '"]');
+  } else if (m.tipo === "apagada") { //mensagem apagada
+    const d = mensagens.querySelector('[data-mid="' + Number(m.mid) + '"]'); //acha pelo Id e remove da tela
     if (d) d.remove();
   } else if (m.tipo === "aviso") {
     aviso(m.texto);
@@ -117,11 +121,11 @@ function tratar(m) {
     totalOnline = m.total;
     if (usuario) atualizarPresenca();
   } else if (m.tipo === "erro") {
-    encerrado = true;
+    encerrado = true; //token inválido, expirado - encerra 
     aviso(m.mensagem);
   }
 }
-
+// abre/reabre conexão websocket e reconexão automática
 function conectar() {
   const proto = location.protocol === "https:" ? "wss://" : "ws://";
   socket = new WebSocket(window.CHAT_URL || proto + location.host);
@@ -140,13 +144,13 @@ function conectar() {
   socket.onclose = () => {
     usuario = null;
     habilitar(false);
-    if (encerrado) { definirStatus("desconectado", false); return; }
+    if (encerrado) { definirStatus("desconectado", false); return; } // não tenta de novo o erro definitivo
     definirStatus("reconectando...", false);
     tentativas++;
     setTimeout(conectar, Math.min(1000 * tentativas, 10000));
   };
 }
-
+// envia mensagem do formulário
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   const conteudo = texto.value.trim();
@@ -155,7 +159,7 @@ form.addEventListener("submit", (e) => {
   texto.value = "";
   texto.focus();
 });
-
+// envia ping a cada 25s pra manter conexão viva
 setInterval(() => enviar({ tipo: "ping" }), 25000);
 
 conectar();

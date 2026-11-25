@@ -1,13 +1,14 @@
 <?php
-
+//cria proposta no banco
 session_start();
 require_once __DIR__ . '/conn.php';
 require_once __DIR__ . '/contratacao_lib.php';
 
-$idUsuario = exigirLoginJson();
-exigirPost();
-exigirCsrf();
+$idUsuario = exigirLoginJson(); // 401 não logado
+exigirPost(); //405 se não for POST
+exigirCsrf(); //403 se token CSRF inválido
 
+//validação dos campos do formulários
 $idChat = (int)($_POST['id_chat'] ?? 0);
 $descricao = trim((string)($_POST['descricao'] ?? ''));
 $valor = lerValor((string)($_POST['valor'] ?? ''));
@@ -25,26 +26,26 @@ if ($valor === false) {
 if ($data === false) {
     respostaJson(400, ['ok' => false, 'erro' => 'Data inválida (use hoje ou uma data futura).']);
 }
-
+// verifica se a pessoa faz parte da conversa
 $conversa = conversaDoUsuario($conn, $idChat, $idUsuario);
 if (!$conversa) {
     respostaJson(403, ['ok' => false, 'erro' => 'Você não faz parte dessa conversa.']);
-}
+} // debug: contratar a si mesmo, avaliar a si mesmo
  if (!ehConversaValida($conversa)) {
         respostaJson(403, ['ok' => false, 'erro' => 'Conversa inválida.']);
-}
+} //só quem iniciou a conversa pode enviar proposta
 if ($conversa['papel'] !== 'contratante') {
     respostaJson(403, ['ok' => false, 'erro' => 'Só quem iniciou a conversa pode enviar uma proposta de contratação.']);
 }
 
 try {
     $conn->begin_transaction();
-
+    //evita que cliques rápidos gerem multiplas propostas, trava a linha do chat até a transação terminar
     $stmt = $conn->prepare("SELECT id FROM chat WHERE id = ? FOR UPDATE");
     $stmt->bind_param("i", $idChat);
     $stmt->execute();
     $stmt->get_result();
-
+   
     $stmt = $conn->prepare("SELECT id FROM proposta WHERE id_chat = ? AND status = 'pendente' LIMIT 1");
     $stmt->bind_param("i", $idChat);
     $stmt->execute();

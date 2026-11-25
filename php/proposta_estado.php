@@ -1,4 +1,5 @@
 <?php
+//pooling, verifica proposta
 session_start();
 require_once __DIR__ . '/conn.php';
 require_once __DIR__ . '/contratacao_lib.php';
