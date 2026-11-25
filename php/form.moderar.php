@@ -17,10 +17,16 @@ if ($eh_mod !== 1) {
 
 $id_denuncia = (int)($_GET['id'] ?? 0);
 
+if ($id_denuncia <= 0) {
+    exit("ID de denúncia inválido.");
+}
+
 $sql = "SELECT d.*, u.nome AS nome_alvo 
         FROM denuncia d 
         JOIN usuario u ON d.id_usuario_denunciado = u.id 
-        WHERE d.id = ?";
+        LEFT JOIN moderacao m ON d.id = m.id_denuncia
+        WHERE d.id = ? AND m.id IS NULL";
+
 $stmt = $conn->prepare($sql);
 $stmt->bind_param('i', $id_denuncia);
 $stmt->execute();
@@ -28,7 +34,7 @@ $denuncia = $stmt->get_result()->fetch_assoc();
 $stmt->close();
 
 if (!$denuncia) {
-    exit("Denúncia não encontrada.");
+    exit("Denúncia não encontrada ou já moderada.");
 }
 
 $id_publicacao = (int)($denuncia['id_publicacao'] ?? 0);
@@ -40,27 +46,27 @@ $item_denunciado = ($id_publicacao > 0) ? 'publicacao' : 'Perfil do usuario';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Moderar <?= htmlspecialchars($item_denunciado) ?></title>
+    <title>Moderar <?= htmlspecialchars($item_denunciado, ENT_QUOTES, 'UTF-8') ?></title>
     <link rel="stylesheet" href="../css/mod.css?v=3">
 </head>
 <body>
     <main class="analise-container">
         <div class="analise-card">
-            <h2>Analisando Denúncia #<?= $denuncia['id'] ?></h2>
+            <h2>Analisando Denúncia #<?= (int)$denuncia['id'] ?></h2>
 
             <div class="info-denuncia">
-                <p><strong>Usuário Alvo:</strong> <?= htmlspecialchars($denuncia['nome_alvo']) ?></p>
-                <p><strong>Tipo:</strong> <?= htmlspecialchars($item_denunciado) ?></p>
-                <p><strong>Motivo:</strong> <?= htmlspecialchars($denuncia['motivo']) ?></p>
-                <p><strong>Descrição:</strong> <?= htmlspecialchars($denuncia['descricao'] ?? 'Sem detalhes adicionais.') ?></p>
+                <p><strong>Usuário Alvo:</strong> <?= htmlspecialchars($denuncia['nome_alvo'], ENT_QUOTES, 'UTF-8') ?></p>
+                <p><strong>Tipo:</strong> <?= htmlspecialchars($item_denunciado, ENT_QUOTES, 'UTF-8') ?></p>
+                <p><strong>Motivo:</strong> <?= htmlspecialchars($denuncia['motivo'], ENT_QUOTES, 'UTF-8') ?></p>
+                <p><strong>Descrição:</strong> <?= htmlspecialchars($denuncia['descricao'] ?? 'Sem detalhes adicionais.', ENT_QUOTES, 'UTF-8') ?></p>
             </div>
 
             <form action="exec_mod.php" method="POST" class="form-moderacao">
-                <input type="hidden" name="id_denuncia" value="<?= $denuncia['id'] ?>">
-                <input type="hidden" name="id_usuario_alvo" value="<?= $denuncia['id_usuario_denunciado'] ?>">
+                <input type="hidden" name="id_denuncia" value="<?= (int)$denuncia['id'] ?>">
+                <input type="hidden" name="id_usuario_alvo" value="<?= (int)$denuncia['id_usuario_denunciado'] ?>">
                 <input type="hidden" name="id_publicacao" value="<?= $id_publicacao ?>">
-                <input type="hidden" name="item_denunciado" value="<?= htmlspecialchars($item_denunciado) ?>">
-                <input type="hidden" name="motivo" value="<?= htmlspecialchars($denuncia['motivo']) ?>">
+                <input type="hidden" name="item_denunciado" value="<?= htmlspecialchars($item_denunciado, ENT_QUOTES, 'UTF-8') ?>">
+                <input type="hidden" name="motivo" value="<?= htmlspecialchars($denuncia['motivo'], ENT_QUOTES, 'UTF-8') ?>">
 
                 <label for="acao">Ação:</label>
                 <select name="acao" id="acao" required>

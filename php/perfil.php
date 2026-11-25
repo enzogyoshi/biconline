@@ -1,7 +1,7 @@
 <?php
 require_once("usuario.php");
 
-$fotoPadrao = "../foto_de_perfil.jpg";
+$fotoPadrao = "../foto_de_perfil_vazio.webp";
 $fotoPerfilUrl = $fotoPadrao;
 
 if (!empty($_SESSION["usuario"])) {

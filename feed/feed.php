@@ -23,7 +23,7 @@ if ($foi_banido) {
 
 
 
-$fotoPadrao = "../foto_de_perfil.jpg";
+$fotoPadrao = "../foto_de_perfil_vazio.webp";
 $fotoPerfilUrl = $fotoPadrao;
 
 if (!empty($_SESSION["usuario"])) {
@@ -88,8 +88,6 @@ if (!empty($_SESSION["usuario"])) {
                     <a href="../php/perfil.php" class="link-perfil-header" title="Perfil">
                         <?php if ($fotoPerfilUrl !== ""): ?>
                             <img src="<?= htmlspecialchars($fotoPerfilUrl, ENT_QUOTES, 'UTF-8') ?>" alt="Perfil" id="foto-perfil-header">
-                        <?php else: ?>
-                            <img src="../foto_de_perfil.webp" alt="Perfil" id="foto-perfil-header">
                         <?php endif; ?>
                     </a>
                 </li>
@@ -108,14 +106,6 @@ if (!empty($_SESSION["usuario"])) {
                 </div>
             </section>
 
-            <section class="cartao">
-                <h2>Notificações</h2>
-                <div class="wrapper">
-                    <a href="../php/notificacoes.php" class="btn-animated">
-                        <span>Notificações</span>
-                    </a>
-                </div>
-            </section>
         </aside>
 
         <section class="feed">

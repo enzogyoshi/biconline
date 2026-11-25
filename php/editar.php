@@ -131,14 +131,15 @@ include("editar_perfil.php");
                     value="<?php echo htmlspecialchars($usuario["email_contato"] ?? ''); ?>">
                 <br><br>
 
-                <input type="submit" value="Salvar Alterações" id="btnsubmit">
+                <input type="submit" value="Salvar Alterações"  class="btnSubmit"  id="btnsubmit" style="margin: top 20px;">
+
             </form>
 
-            <br><br>
+
             
-            <form action="deletar.php" method="post" onsubmit="return confirm('Tem certeza que deseja deletar o perfil?')">
+            <form action="deletar.php" method="post" onsubmit="return confirm('Tem certeza que deseja deletar o perfil?')" style="margin-top: 20px;">
                 <input type="hidden" name="id" value="<?php echo htmlspecialchars($_SESSION["usuario"] ?? ''); ?>">
-                <input type="submit" value="Deletar perfil">
+                <input type="submit" value="Deletar perfil" class="btnSubmit" style="background-color:red">
             </form>
         </div>
     </section>

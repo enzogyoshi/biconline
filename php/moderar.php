@@ -5,22 +5,13 @@ if (!isset($moderador) || (int)$moderador !== 1) {
     http_response_code(403);
     exit("Acesso negado. Você não tem permissão para acessar esta página.");
 }
-
-$sql = "SELECT 
-            d.id, 
-            d.motivo, 
-            u.nome AS denunciante_nome, 
-            u2.nome AS denunciado_nome
-        FROM denuncia d
-        JOIN usuario u ON d.id_usuario_denunciante = u.id
-        JOIN usuario u2 ON d.id_usuario_denunciado = u2.id
-        LEFT JOIN moderacao m ON d.motivo = m.motivo
-        WHERE m.id IS NULL
-        ORDER BY d.id ASC";
+$sql = "SELECT d.id, d.motivo, u.nome AS denunciante_nome, u2.nome AS denunciado_nome FROM denuncia d JOIN usuario u ON d.id_usuario_denunciante = u.id JOIN usuario u2 ON d.id_usuario_denunciado = u2.id ORDER BY d.id ASC";
 
 $resultado = $conn->query($sql);
 
-
+if (!$resultado) {
+    die("Erro SQL: " . $conn->error);
+}
 
 
 $fotoPadrao = "../foto_de_perfil.jpg";

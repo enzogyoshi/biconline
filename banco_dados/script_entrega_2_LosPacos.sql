@@ -41,19 +41,18 @@ CREATE TABLE habilidades (
 );
 
 CREATE TABLE moderacao(
-	id INT AUTO_INCREMENT PRIMARY KEY,
-	item_denunciado VARCHAR(200) NOT NULL,
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    item_denunciado VARCHAR(200) NOT NULL,
     motivo VARCHAR(200) NOT NULL,
     acao VARCHAR(150) NOT NULL,
-	id_moderador INT,
+    id_moderador INT,
     id_usuario_alvo INT,
+    id_denuncia INT NULL,
     CONSTRAINT fk_moderador 
-    FOREIGN KEY (id_moderador) REFERENCES usuario(id),
+        FOREIGN KEY (id_moderador) REFERENCES usuario(id),
     CONSTRAINT fk_usuario_alvo
-    FOREIGN KEY (id_usuario_alvo) REFERENCES usuario(id),
-    CONSTRAINT fk_motivo_denuncia
-    FOREIGN KEY (motivo) REFERENCES denuncia(id)
-    );
+        FOREIGN KEY (id_usuario_alvo) REFERENCES usuario(id),
+);
 
 CREATE TABLE denuncia(
     id int AUTO_INCREMENT PRIMARY KEY,
@@ -177,20 +176,3 @@ CREATE TABLE recuperacao_senha (
         FOREIGN KEY (id_usuario) REFERENCES usuario(id)
         ON DELETE CASCADE
 );
-<<<<<<< HEAD
-=======
-CREATE TABLE proposta (
-  id            INT AUTO_INCREMENT PRIMARY KEY,
-  id_chat       INT NOT NULL,
-  descricao     VARCHAR(150) NOT NULL,
-  valor         DECIMAL(10,2) NULL,
-  data_servico  DATE NULL,
-  status        ENUM('pendente','aceita','recusada','cancelada') NOT NULL DEFAULT 'pendente',
-  criada_em     DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  respondida_em DATETIME NULL,
-  id_servico    INT NULL,
-  CONSTRAINT fk_proposta_chat    FOREIGN KEY (id_chat)    REFERENCES chat(id),
-  CONSTRAINT fk_proposta_servico FOREIGN KEY (id_servico) REFERENCES servico(id)
-);
-CREATE INDEX idx_proposta_chat ON proposta (id_chat, status);
->>>>>>> main
